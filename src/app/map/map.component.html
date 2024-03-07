@@ -1,0 +1,122 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-2 mt-4">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="https://www.cognitivenavigation.com">
+                    <img src="https://www.cognitivenavigation.com/wp-content/uploads/2021/02/cropped-C_Name.png"
+                        alt="Cognitive Navigation Pvt. Ltd" class="d-inline-block align-text-top">
+                </a>
+            </div>
+            <form [formGroup]="Airform" autocomplete="on" novalidate class="d-flex-center">
+                <div class="example-container">
+
+                    <!--Select Airport -->
+                    <div class="height-Top">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Airport</mat-label>
+                            <mat-select formControlName="selectedAirport" [(ngModel)]="selectedAirport">
+                                <mat-option>--</mat-option>
+                                <mat-option *ngFor="let option of optionsAirport" [value]="option.value">
+                                    {{ option.label }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-icon matSuffix class="position"><img
+                                    src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAAB4UlEQVR4nO2WuUpDQRSGv6gExQVUiHHDTm3EzhcwhQj6BFYivoBgQPERLCxtVOy0EGsFRUJeQMWlcKm00UJFG9GRCxMYLtebuUtyF+aDA2Fy5tzzzzmzgCEdCGmJR4QgpJ2UCMkBO8Ai0ErCWysHXAJvwCYwToL3SB64VmKWgDmg2WVOB9AVx83eC9wocS17AdaBEcVvTFbuE3gGMrofKNuC65i1on7oA24d4v0CJ8CpMvYDbHkJ7lVE0ErlgSuXuJW9NOo1sNfEdP27Xf6bkStuF3EU5HSrlZAl4A7YAApAixRw7FKNab8i1MSyGr5ZD0KsTXpo6/nK71dg2ybiEWgMIuRcBipq+BalrzVHh07gXkn2AliQ1Rm0CVkjIAUZyDruhlz8BoAP6TvlIf6ynPMuL8cKPYqIb6CfENiXAfcC+jgxK+et2sa7FCEHhES11Z7UrJoTw8CTw2nUpgjxUuHILsQmYN7l4HgAGsIQUo8LMfPPmABWCIla3SM6fMlnS+KF7BIiUQqZICVCQsUIiRvCtFbMEKYiMUOYikRMOcBDsZ5WqiYk6gRFWC/s2D4xFIyQ1FRE+Ohbv70uNPaCESJMRYhXa9UTYYTYMBWJa2uJBJgrpRgkKDTszF2GwWDAxh9CvUCVxRLBQQAAAABJRU5ErkJggg=="></mat-icon>
+                            <mat-hint>Select Airport</mat-hint>
+                        </mat-form-field>
+                    </div>
+
+
+                    <!--Select Runway -->
+                    <div class="height-Top">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Runway</mat-label>
+                            <mat-select formControlName="selectedRunway" [(ngModel)]="selectedRunway">
+                                <mat-option *ngFor="let option of optionsRunway" [value]="option.value">
+                                    {{ option.label }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-icon matSuffix class="position"> <img
+                                    src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAACA0lEQVR4nO2YTysFURjGfy4pO1mxYiFLWbBgQxILyso3sBGxUIrPoJCwUHZsLAiR76CUBRtX1/9YsVAoRkfvqdM0c407515z3fPU2505532fd545f94zFxwc/hSeWDHFBsIJwY3IN9zUCoNbIzHhJWnXSlRezwnBFcTETS13RMGNSDjc1IoJL0mLPVF5vVIXMgxcATfASAHzWiUcNOK0DRWjkBOJGQdG5fqkAHmtE75LTJWYJ21FJ8TzxdjgiA0nBLsvIzbciGD3ZcRGyY5IdxYh3XnMa42wFlg3/M+MvjOjfQOoS6KQcmAMeBK/F2AGqDR81PW09CmfZ2ACqIiR99fIRtgGHBk+u0ADUAZ0GH4d0lYPbBv+x0B7DnlzQhBhNbAMfEhfRg6KrcCsnHr9a+RS+pT4AeBC2hXHKlATIW8s+Am7gHvj/LQPzAHnASdeP4e2NDAP7AFv0vYI9BZSyKnRph9C2x2wkEWIevhbX4zJkSmkEL1gPeNNrgCdQCokxrxPie8S8ODj+sjCYV3Ionz1rQF9ITtP1IKodrweWSPX8vtTTM4o2cr+b4Q0GzEpMX3fkse81gjVfJ8EXn3bbNq4V31TP1T0PxeyFVAvwuzAYt7IiEqo/3BQ9gkcSgXvlwfXpwBt5ZbyRkZUwk0piKrKNwX0N8oRRRXEHYt5HRzIE74A2beFM/qxv+YAAAAASUVORK5CYII=">
+                            </mat-icon>
+                            <mat-hint>Select Runway</mat-hint>
+                        </mat-form-field>
+                    </div>
+
+                    <!--Select Type of Procedure -->
+                    <div class="height-Top">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Type of Procedure</mat-label>
+                            <mat-select formControlName="selectedTypeofProcedure" multiple
+                                [(ngModel)]="selectedTypeofProcedure">
+                                <mat-option *ngFor="let option of optionsTypeofProcedure" [value]="option.value">
+                                    {{ option.label }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-icon matSuffix class="position">
+                                <img
+                                    src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAACzUlEQVR4nO2aSWgUQRSGvzFxCRgUkwgjKAoieFCC5JAg5CRRRDy4gUpUEFzBUy4KAQlGFESUGBAVFUE8TkQQFBRD3CFiDnFB1GDAZYwOLiS4jrT8LUXTGbsTW6fa+aBh+r161KuZ7np/VQ0UKJAX7AY+AM+Aa8AhYBIWkgaynusxUIFlpJT8QaAGaNf9JaAIi6hT4k+BEcBEoFe2PVhEAnikxBfK5vwyn4DvwBIsokEDOWfYtsr2HpiJJZQBA8A3YJphP6HBPATGYQmnlbQzHbuUAJ2yn9VjmPfUKuHXwBjDPh3IyLcDS+hWwqs89sV68b8C87GAbRpIh4+vWb4+YOrfSui4On0D7A0RNx74qNhZHp9THC/K16n3J3IyHsnh1ocgHFVMq4+vHOiR35nRIueWOmszvsGgM84cxbwDSn38VZqqnTabiJgWY5Zx5cayEPE3fpPoevmd6l9NhKxTR2eADfr8ACgOGL9GMV052hxRm+dAkoiYbcjxIg3Cua8PGD/akPc1OdrcVpurwEgioBjo19zvyI+VPmuOoNepHP1MUQHNDvNKA1eAzcAobycdarRA8rxriJ0MaLYajHnAlz8wmKyubqmJX+yTo5H8pxxYAdwz1kYTXOdyH2me74wF7ijv/a5xsgwvsYtK5f3KNSRleIGdA+kzFavNj1ara9wlw07ynwq90+7L3qOy8ZMLMi6yefpNAG/lSFpSENuBLd6COEMNeiVR7g9DolQHkCiXQ+i4UKxWBylDqYYRjWsVczfAuiVS0XhAnTQBT/R5aYj4m4pxlLMf9fJ/BuYSIdfV0fkhLKwqjY250kH8/WqzkYjJxGWpe8z46Q/bvPkQm+2g/3qDrtYoTk6N8Nsy3Y5Fm9jNhq3EEHFtNmxilxnHCubzf9K2Y4WGOBz0JOJy9FYXl8PQVFyOp9Nx+cNAk+qE+xeOlihleYEC/Ht+AGO8f70m8/aPAAAAAElFTkSuQmCC">
+                            </mat-icon>
+                            <mat-hint>Select Type of Procedure</mat-hint>
+                        </mat-form-field>
+                    </div>
+
+                    <!--Select Procedure Name -->
+                    <div class="height-Top">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Procedure Name</mat-label>
+                            <mat-select formControlName="selectedOptions" multiple [(ngModel)]="selectedProcedureName"
+                                (selectionChange)="updateMapLayers()">
+                                <mat-option *ngFor="let option of optionsProcedureName" [value]="option.value">
+                                    {{ option.label }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-icon matSuffix class="position">
+                                <img
+                                    src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAAA6klEQVR4nO2aQQ6CQAxF/xIvhTdU8Ui6MN5EuMR3UxIWOiFMaQX/S7qgIXQ+7TSTdAAhfoYngEeC3x2aRfurOAC4AhgmAaaBGOAfAHQAmhohly9BIoXQ7FwjpLePtIml1drza8H6i8HuAG4f3l3Tz9p9s8rGy1gHJcQXKiOGSssZqrRm/Ak6WXpGuBchkVBCDGXEGaq0ArvWnC7GLbTfdCGRUEIMZcQZqrT+6dDIvQiJhBJiKCPOUKWVcGgssYn2my4kEkqIoYw4Q5VWYRgazdFjGFoaT0fbqUZIY2LGzGRYbzP2qgsDQmAZb15H1KBW7TMcAAAAAElFTkSuQmCC">
+                            </mat-icon>
+                            <mat-hint>Select Procedure Name</mat-hint>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </form>
+            <div class="d-grid gap-2 button-Top  mx-auto">
+                <button type="button" value="Export
+                GeoJSON" class="btn btn-outline-primary rounded-5 py-2 px-4">Export GeoJSON</button>
+                <span class="Exportting"></span>
+
+                <button type="button" value="Export CSV" class="btn btn-outline-primary rounded-5 py-2 px-4">Export
+                    CSV</button>
+                <span class="Exportting"></span>
+            </div>
+        </div>
+        <div class="col-lg-10">
+            <div class="content">
+                <div class="map-container">
+                    <button class="live-location-button btn " style="color: blue;" type="button"
+                        (click)="getLiveLocation()"><i class="bi bi-record-circle"></i></button>
+
+                    <button class="btn layer " style="color: blue;" type="button">
+                        <i class="bi bi-stack"></i></button>
+                    <button class="airplane btn " style="color: blue;" type="button">
+                        <i class="bi bi-airplane-engines"></i></button>
+                    <button class=" btn circle " style="color: blue;" type="button">
+                        <i class="bi bi-c-circle"></i></button>
+
+
+                    <button class=" btn pentagon  " style="color: blue;" type="button">
+                        <i class="bi bi-pentagon"></i></button>
+
+                    <button class=" btn triangle  " style="color: blue;" type="button">
+                        <i class="bi bi-triangle-fill"></i></button>
+
+                    <button class=" btn  grid " style="color: blue;" type="button">
+                        <i class="bi bi-grid-3x3"></i></button>
+
+
+                    <div id="map" style="height: 700px; "></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
