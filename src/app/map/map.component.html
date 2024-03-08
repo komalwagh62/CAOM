@@ -65,8 +65,8 @@
                     <div class="height-Top">
                         <mat-form-field appearance="outline">
                             <mat-label>Procedure Name</mat-label>
-                            <mat-select formControlName="selectedOptions" multiple [(ngModel)]="selectedProcedureName"
-                                (selectionChange)="updateMapLayers()">
+                            <mat-select formControlName="selectedProcedureName" multiple
+                                [(ngModel)]="selectedProcedureName" (selectionChange)="updateLayers()">
                                 <mat-option *ngFor="let option of optionsProcedureName" [value]="option.value">
                                     {{ option.label }}
                                 </mat-option>

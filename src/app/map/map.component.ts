@@ -11,12 +11,8 @@ export class MapComponent implements OnInit {
 
 
   Airform !: FormGroup;
-  options: { value: any; label: any; }[] = [
-    { value: 'option1', label: 'Option 1' },
-    { value: 'option2', label: 'Option 2' },
-  ];
 
-  selectedOptions: string[] = [];
+
   selectedAirport: string[] = [];
   selectedRunway: string[] = [];
   selectedTypeofProcedure: string[] = [];
@@ -55,13 +51,11 @@ export class MapComponent implements OnInit {
 
 
   map!: L.Map;
-  citiesLayer!: L.LayerGroup;
-  parksLayer!: L.LayerGroup;
-  geojsonLayer!: L.LayerGroup;
+  airportLayerGroup!: L.LayerGroup;
 
   ngOnInit(): void {
     this.Airform = this.formbuilder.group({
-      selectedOptions: [[]],
+
       selectedAirport: [[]],
       selectedRunway: [[]],
       selectedTypeofProcedure: [[]],
@@ -101,49 +95,50 @@ export class MapComponent implements OnInit {
     // Add Zoom Control
     L.control.zoom({ position: 'bottomright' }).addTo(this.map);
     // Customize the position of the attribution control
+    // Initialize LayerGroup for airports
+    this.airportLayerGroup = L.layerGroup().addTo(this.map);
 
-
-    // Load the custom layer JSON
-    fetch('assets/Height.geojsonl.json')
-      .then(response => response.json())
-      .then(geojsonData => {
-        this.geojsonLayer = new L.GeoJSON(geojsonData)
-      })
-
-      
-
-    // Define Layer Groups
-    this.citiesLayer = L.layerGroup();
-    this.parksLayer = L.layerGroup();
-    this.geojsonLayer = L.layerGroup();
-
-    // Add Layer Groups to the map
-    this.citiesLayer.addTo(this.map);
-    this.parksLayer.addTo(this.map);
-    this.geojsonLayer.addTo(this.map);
   }
-
-  updateMapLayers(): void {
+  updateLayers(): void {
     // Clear existing layers
-    this.citiesLayer.clearLayers();
-    this.parksLayer.clearLayers();
-    this.geojsonLayer.clearLayers();
+    this.airportLayerGroup.clearLayers();
 
-    // Add selected layers based on selectedOptions
+    // Add GeoJSON layers based on form control selections
     if (this.selectedProcedureName.includes('AKTIM 7A')) {
-      const cityMarker = L.marker([19.0760, 72.8777]).bindPopup('This is Mumbai');
-      this.citiesLayer.addLayer(cityMarker);
+      fetch('assets/AKTIM 7A/Point_SID.geojson')
+        .then(response => response.json())
+        .then(data => {
+          
+          const geoJsonLayer = L.geoJSON(data);
+          this.airportLayerGroup.addLayer(geoJsonLayer);
+
+          // Fit the map to the GeoJSON layer bounds
+          this.map.fitBounds(geoJsonLayer.getBounds());
+        })
+        .catch(error => {
+          console.error('Error loading GeoJSON:', error);
+        });
     }
-    if (this.selectedProcedureName.includes('ANIRO 7A')) {
-      const parkPolygon = L.polygon([
-        [19.0760, 72.8777],
-        [19.0805, 72.8645],
-        [19.0644, 72.8825]
-      ]).bindPopup('This is a park');
-      this.parksLayer.addLayer(parkPolygon);
+    if (this.selectedProcedureName.includes('AKTIM 7A')) {
+      fetch('assets/AKTIM 7A/Line_SID.geojson')
+        .then(response => response.json())
+        .then(data => {
+          const geoJsonLayer = L.geoJSON(data);
+          this.airportLayerGroup.addLayer(geoJsonLayer);
+
+          // Fit the map to the GeoJSON layer bounds
+          this.map.fitBounds(geoJsonLayer.getBounds());
+        })
+        .catch(error => {
+          console.error('Error loading GeoJSON:', error);
+        });
     }
+
+
 
   }
+
+
 
   getLiveLocation(): void {
     if (navigator.geolocation) {
