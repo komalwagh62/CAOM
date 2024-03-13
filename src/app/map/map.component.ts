@@ -73,10 +73,16 @@ export class MapComponent implements OnInit {
 
     const satellite = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
 
+
+    });
+    const stadiamaps = L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png', {
+
+
     });
     const baseMaps = {
       'Streets': streets,
-      'Satellite': satellite
+      'Satellite': satellite,
+      'stadiamaps': stadiamaps
     };
 
     // const layerGroup1 = L.layerGroup();
@@ -108,8 +114,19 @@ export class MapComponent implements OnInit {
       fetch('assets/AKTIM 7A/Point_SID.geojson')
         .then(response => response.json())
         .then(data => {
-          
-          const geoJsonLayer = L.geoJSON(data);
+
+          const stepIcon = L.icon({
+            iconUrl: 'assets/AKTIM 7A/Fly-over.png', // the background image you want
+            iconSize: [60, 50], // size of the icon
+          });
+          const geoJsonLayer = L.geoJSON(data, {
+            pointToLayer: (feature, latlng) => {
+              const marker = L.marker(latlng, { icon: stepIcon });
+
+              marker.bindTooltip(`<b>${feature.properties.Name}</b><br>${feature.properties.Speed}<br>${feature.properties.Altitude}`, { permanent: true, direction: 'auto', className: 'labelstyle' });
+              return marker;
+            }
+          });
           this.airportLayerGroup.addLayer(geoJsonLayer);
 
           // Fit the map to the GeoJSON layer bounds
@@ -120,10 +137,33 @@ export class MapComponent implements OnInit {
         });
     }
     if (this.selectedProcedureName.includes('AKTIM 7A')) {
+
+      // Add GeoJSON layer
       fetch('assets/AKTIM 7A/Line_SID.geojson')
         .then(response => response.json())
         .then(data => {
-          const geoJsonLayer = L.geoJSON(data);
+          const stepIcon = L.divIcon({
+            iconUrl: 'assets/AKTIM 7A/penta.png', // Path to your custom marker image
+            iconSize: [60, 50], // Size of the custom marker icon
+            html: '<div class="pentagon"></div>'
+          });
+
+          const geoJsonLayer = L.geoJSON(data, {
+            pointToLayer: (feature, latlng) => {
+              return L.marker(latlng, { icon: stepIcon });
+            },
+
+            onEachFeature: (feature, layer) => {
+              if (feature.properties && feature.properties.Distance && feature.properties.Bearing) {
+                layer.bindTooltip(`<b></b> ${feature.properties.Distance}<br><b></b> ${feature.properties.Bearing}`, {
+                  permanent: true, direction: 'center',
+                  className: 'labelstyle',
+                  offset: [10, 0],
+                  opacity: 1,
+                });
+              }
+            }
+          });
           this.airportLayerGroup.addLayer(geoJsonLayer);
 
           // Fit the map to the GeoJSON layer bounds
@@ -133,9 +173,6 @@ export class MapComponent implements OnInit {
           console.error('Error loading GeoJSON:', error);
         });
     }
-
-
-
   }
 
 
