@@ -111,70 +111,76 @@ export class MapComponent implements OnInit {
 
     // Add GeoJSON layers based on form control selections
     if (this.selectedProcedureName.includes('AKTIM 7A')) {
-      fetch('assets/AKTIM 7A/Point_SID.geojson')
+      // Load Point_SID GeoJSON data
+      fetch('assets/AKTIM_7A/Point_SID.geojson')
         .then(response => response.json())
         .then(data => {
-
           const stepIcon = L.icon({
-            iconUrl: 'assets/AKTIM 7A/Fly-over.png', // the background image you want
-            iconSize: [60, 50], // size of the icon
+            iconUrl: 'assets/AKTIM_7A/Fly-over.png',
+            iconSize: [60, 50],
           });
           const geoJsonLayer = L.geoJSON(data, {
             pointToLayer: (feature, latlng) => {
               const marker = L.marker(latlng, { icon: stepIcon });
-
-              marker.bindTooltip(`<b>${feature.properties.Name}</b><br>${feature.properties.Speed}<br>${feature.properties.Altitude}`, { permanent: true, direction: 'auto', className: 'labelstyle' });
+              marker.bindTooltip(`<b>${feature.properties.Name}</b><br>${feature.properties.Speed}<br>${feature.properties.Altitude}`, {
+                permanent: true, direction: 'center', className: 'labelstyle'
+              });
               return marker;
             }
           });
           this.airportLayerGroup.addLayer(geoJsonLayer);
-
-          // Fit the map to the GeoJSON layer bounds
           this.map.fitBounds(geoJsonLayer.getBounds());
         })
         .catch(error => {
-          console.error('Error loading GeoJSON:', error);
+          console.error('Error loading Point_SID GeoJSON:', error);
         });
-    }
-    if (this.selectedProcedureName.includes('AKTIM 7A')) {
 
-      // Add GeoJSON layer
-      fetch('assets/AKTIM 7A/Line_SID.geojson')
+      // Load Line_SID GeoJSON data
+      fetch('assets/AKTIM_7A/Line_SID.geojson')
         .then(response => response.json())
         .then(data => {
-          const stepIcon = L.divIcon({
-            iconUrl: 'assets/AKTIM 7A/penta.png', // Path to your custom marker image
-            iconSize: [60, 50], // Size of the custom marker icon
-            html: '<div class="pentagon"></div>'
-          });
-
           const geoJsonLayer = L.geoJSON(data, {
-            pointToLayer: (feature, latlng) => {
-              return L.marker(latlng, { icon: stepIcon });
-            },
-
             onEachFeature: (feature, layer) => {
-              if (feature.properties && feature.properties.Distance && feature.properties.Bearing) {
-                layer.bindTooltip(`<b></b> ${feature.properties.Distance}<br><b></b> ${feature.properties.Bearing}`, {
-                  permanent: true, direction: 'center',
-                  className: 'labelstyle',
-                  offset: [10, 0],
-                  opacity: 1,
+              if (feature.properties && feature.properties.Distance) {
+                const customIcon = L.icon({
+                  iconUrl: 'assets/AKTIM_7A/penta.png',
+                  iconSize: [60, 60],
+                  // rotationAngle: feature.properties.Bearing
+                });
+                // Get the coordinates of the line
+                let coordinates: number[][] = [];
+                if (feature.geometry.type === 'MultiLineString') {
+                  coordinates = feature.geometry.coordinates[0]; // For MultiLineString, we choose the first line
+                } else if (feature.geometry.type === 'LineString') {
+                  coordinates = feature.geometry.coordinates;
+                }
+
+                // Calculate the center point of the line
+                const center = coordinates.reduce((acc, curr) => [acc[0] + curr[0], acc[1] + curr[1]], [0, 0]);
+                center[0] /= coordinates.length;
+                center[1] /= coordinates.length;
+
+                // Create a marker with custom icon at the center point
+                const marker = L.marker(L.latLng(center[1], center[0]), { icon: customIcon, }).addTo(this.airportLayerGroup);
+                // Rotate the marker icon using iconAngle option
+                // const markerElement = marker.getElement();
+                // if (markerElement) {
+                //   markerElement.style.transform += ' rotate(' + feature.properties.Bearing + 'deg)';
+                // }
+                // Bind tooltip with distance to the marker
+                marker.bindTooltip(`${feature.properties.Distance}`, {
+                  permanent: true, direction: 'center', className: 'labelstyle', opacity: 1,
                 });
               }
             }
           });
           this.airportLayerGroup.addLayer(geoJsonLayer);
-
-          // Fit the map to the GeoJSON layer bounds
-          this.map.fitBounds(geoJsonLayer.getBounds());
         })
         .catch(error => {
-          console.error('Error loading GeoJSON:', error);
+          console.error('Error loading Line_SID GeoJSON:', error);
         });
     }
   }
-
 
 
   getLiveLocation(): void {
