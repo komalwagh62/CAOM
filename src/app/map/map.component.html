@@ -32,7 +32,7 @@
                         <mat-form-field appearance="outline">
                             <mat-label>Runway</mat-label>
                             <mat-select formControlName="selectedRunway" [(ngModel)]="selectedRunway">
-                                <mat-option *ngFor="let option of optionsRunway" [value]="option.value">
+                                <mat-option *ngFor="let option of optionsBengaluruKIARunway" [value]="option.value">
                                     {{ option.label }}
                                 </mat-option>
                             </mat-select>
@@ -49,7 +49,7 @@
                             <mat-label>Type of Procedure</mat-label>
                             <mat-select formControlName="selectedTypeofProcedure" multiple
                                 [(ngModel)]="selectedTypeofProcedure">
-                                <mat-option *ngFor="let option of optionsTypeofProcedure" [value]="option.value">
+                                <mat-option *ngFor="let option of optionsRWY_09LTypeofProcedure" [value]="option.value">
                                     {{ option.label }}
                                 </mat-option>
                             </mat-select>
