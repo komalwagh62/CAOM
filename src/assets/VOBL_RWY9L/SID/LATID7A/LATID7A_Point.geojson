@@ -1,0 +1,11 @@
+{
+"type": "FeatureCollection",
+"name": "LATID7A_Point",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:EPSG::32643" } },
+"features": [
+{ "type": "Feature", "properties": { "Name": "BL402", "Altitude": null, "Speed": null }, "geometry": { "type": "Point", "coordinates": [ 816447.343615264166147, 1461657.523884834488854 ] } },
+{ "type": "Feature", "properties": { "Name": "BL701", "Altitude": null, "Speed": null }, "geometry": { "type": "Point", "coordinates": [ 816421.176919471356086, 1474629.296925239264965 ] } },
+{ "type": "Feature", "properties": { "Name": "BL406", "Altitude": "-FL110", "Speed": null }, "geometry": { "type": "Point", "coordinates": [ 801151.922034665360115, 1500110.99753502313979 ] } },
+{ "type": "Feature", "properties": { "Name": "LATID", "Altitude": null, "Speed": null }, "geometry": { "type": "Point", "coordinates": [ 817894.676237908191979, 1602448.449467310216278 ] } }
+]
+}

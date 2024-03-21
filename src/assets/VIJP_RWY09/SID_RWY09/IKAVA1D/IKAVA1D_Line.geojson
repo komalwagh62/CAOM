@@ -1,0 +1,10 @@
+{
+    "type": "FeatureCollection",
+    "name": "Line_SID",
+    "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+    "features": [
+{ "type": "Feature", "properties": { "Bearing": "159.05°", "Distance": "21.63" }, "geometry": { "type": "LineString", "coordinates": [ [ 75.98355, 26.7226917 ], [ 76.1249889, 26.3842667 ] ] } },
+{ "type": "Feature", "properties": { "Bearing": "152.41°", "Distance": "32.27" }, "geometry": { "type": "LineString", "coordinates": [ [ 76.1249889, 26.3842667 ], [ 76.3988611, 25.90475 ] ] } },
+{ "type": "Feature", "properties": { "Bearing": "83.65°", "Distance": null }, "geometry": { "type": "LineString", "coordinates": [ [ 75.98355, 26.7226917 ], [ 75.8577235, 26.8976877 ] ] } }
+]
+}

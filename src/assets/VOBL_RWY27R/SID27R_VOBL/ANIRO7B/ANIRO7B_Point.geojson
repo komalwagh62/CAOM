@@ -1,0 +1,8 @@
+{
+"type": "FeatureCollection",
+"name": "ANIRO7B_Point",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "Name": "BL801", "Altitude": null, "Speed": null }, "geometry": { "type": "Point", "coordinates": [ 77.5087333, 13.3094139 ] } }
+]
+}
