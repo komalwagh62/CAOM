@@ -124,133 +124,6 @@ export class MapComponent implements OnInit {
 
   }
 
-  // updateLayers(): void {
-  //   // Clear existing layers
-  //   this.airportLayerGroup.clearLayers();
-
-  //   const loadSIDProcedure = (procedureName: string, pointFileName: string, lineFileName: string) => {
-  //     // Load Point_SID GeoJSON data
-  //     fetch(pointFileName)
-  //       .then(response => response.json())
-  //       .then(data => {
-  //         const stepIcon = L.icon({
-  //           iconUrl: 'assets/AKTIM_7A/Fly-over.png',
-  //           iconSize: [60, 50],
-  //         });
-  //         const geoJsonLayer = L.geoJSON(data, {
-  //           pointToLayer: (feature, latlng) => {
-  //             const marker = L.marker(latlng, { icon: stepIcon });
-  //             marker.bindTooltip(`<b>${feature.properties.Name}</b><br>${feature.properties.Speed}<br>${feature.properties.Altitude}`, {
-  //               permanent: true, direction: 'center', className: 'labelstyle'
-  //             });
-  //             return marker;
-  //           }
-  //         });
-  //         this.airportLayerGroup.addLayer(geoJsonLayer);
-  //         this.map.fitBounds(geoJsonLayer.getBounds());
-  //       })
-  //       .catch(error => {
-  //         console.error('Error loading Point_SID GeoJSON:', error);
-  //       });
-
-  //     // Load Line_SID GeoJSON data
-  //     fetch(lineFileName)
-  //       .then(response => response.json())
-  //       .then(data => {
-  //         const geoJsonLayer = L.geoJSON(data, {
-  //           style: {
-  //             color: 'blue', // Set line color
-  //             weight: 2 // Set line weight
-  //           },
-  //           onEachFeature: (feature, layer) => {
-  //             if (feature.properties && feature.properties.Distance) {
-  //               const customIcon = L.icon({
-  //                 iconUrl: 'assets/AKTIM_7A/penta.png',
-  //                 iconSize: [60, 60],
-  //                 // rotationAngle: feature.properties.Bearing
-  //               });
-  //               // Get the coordinates of the line
-  //               let coordinates: number[][] = [];
-  //               if (feature.geometry.type === 'MultiLineString') {
-  //                 coordinates = feature.geometry.coordinates[0]; // For MultiLineString, we choose the first line
-  //               } else if (feature.geometry.type === 'LineString') {
-  //                 coordinates = feature.geometry.coordinates;
-  //               }
-
-  //               // Calculate the center point of the line
-  //               const center = coordinates.reduce((acc, curr) => [acc[0] + curr[0], acc[1] + curr[1]], [0, 0]);
-  //               center[0] /= coordinates.length;
-  //               center[1] /= coordinates.length;
-
-  //               // Create a marker with custom icon at the center point
-  //               const marker = L.marker(L.latLng(center[1], center[0]), { icon: customIcon, }).addTo(this.airportLayerGroup);
-  //               // Rotate the marker icon using iconAngle option
-  //               // const markerElement = marker.getElement();
-  //               // if (markerElement) {
-  //               //   markerElement.style.transform += ' rotate(' + feature.properties.Bearing + 'deg)';
-  //               // }
-  //               // Bind tooltip with distance to the marker
-  //               marker.bindTooltip(`${feature.properties.Distance}`, {
-  //                 permanent: true, direction: 'center', className: 'labelstyle', opacity: 1,
-  //               });
-  //             }
-  //           }
-  //         });
-  //         this.airportLayerGroup.addLayer(geoJsonLayer);
-  //       })
-  //       .catch(error => {
-  //         console.error('Error loading Line_SID GeoJSON:', error); // Log any errors
-  //       });
-  //   };
-  //   //VOBL_RWY9L sid procedures
-  //   if (this.selectedProcedureName.includes('AKTIM 7A')) {
-  //     loadSIDProcedure('AKTIM 7A', 'assets/VOBL_RWY9L/SID/AKTIM7A/AKTIM7A_Point.geojson', 'assets/VOBL_RWY9L/SID/AKTIM7A/AKTIM7A_line.geojson');
-  //   }
-
-  //   if (this.selectedProcedureName.includes('ANIRO 7A')) {
-  //     loadSIDProcedure('ANIRO 7A', 'assets/VOBL_RWY9L/SID/ANIRO7A/ANIRO7A_Point.geojson', 'assets/VOBL_RWY9L/SID/ANIRO7A/ANIRO7A_line.geojson');
-  //   }
-
-  //   if (this.selectedProcedureName.includes('GUNIM 7A')) {
-  //     loadSIDProcedure('GUNIM 7A', 'assets/VOBL_RWY9L/SID/GUNIM7A/GUNIM7A_Point.geojson', 'assets/VOBL_RWY9L/SID/GUNIM7A/GUNIM7A_Line.geojson');
-  //   }
-
-  //   if (this.selectedProcedureName.includes('VAGPU 7A')) {
-  //     loadSIDProcedure('VAGPU 7A', 'assets/VOBL_RWY9L/SID/VAGPU7A/VAGPU7A_Point.geojson', 'assets/VOBL_RWY9L/SID/VAGPU7A/VAGPU7A_Line.geojson');
-  //   }
-
-  //   if (this.selectedProcedureName.includes('GUNIM 7L')) {
-  //     loadSIDProcedure('GUNIM 7L', 'assets/VOBL_RWY9L/SID/GUNIM7A/GUNIM7A_Point.geojson', 'assets/VOBL_RWY9L/SID/GUNIM7A/GUNIM7A_Line.geojson');
-  //   }
-
-
-  //   if (this.selectedProcedureName.includes('OPAMO 7A')) {
-  //     loadSIDProcedure('OPAMO 7A', 'assets/VOBL_RWY9L/SID/OPAMO7A/OPAMO7A_Point.geojson', 'assets/VOBL_RWY9L/SID/OPAMO7A/OPAMO7A_Line.geojson');
-
-  //   }
-  //   if (this.selectedProcedureName.includes('PEXEG 7A')) {
-  //     loadSIDProcedure('PEXEG 7A', 'assets/VOBL_RWY9L/SID/PEXEG7A/PEXEG7A_Point.geojson', 'assets/VOBL_RWY9L/SID/PEXEG7A/PEXEG7A_Line.geojson');
-
-  //   }
-  //   if (this.selectedProcedureName.includes('TULNA 7A')) {
-  //     loadSIDProcedure('TULNA 7A', 'assets/VOBL_RWY9L/SID/TULNA7A/TULNA7A_Point.geojson', 'assets/VOBL_RWY9L/SID/TULNA7A/TULNA7A_Line.geojson');
-
-  //   }
-  //   if (this.selectedProcedureName.includes('VEMBO 7A')) {
-  //     loadSIDProcedure('VEMBO 7A', 'assets/VOBL_RWY9L/SID/VEMBO7A/VEMBO7A_Point.geojson', 'assets/VOBL_RWY9L/SID/VEMBO7A/VEMBO7A_Line.geojson');
-
-  //   }
-  //   if (this.selectedProcedureName.includes('LATID 7A')) {
-  //     loadSIDProcedure('LATID 7A', 'assets/VOBL_RWY9L/SID/LATID7A/LATID7A_Point.geojson', 'assets/VOBL_RWY9L/SID/LATID7A/LATID7A_Line.geojson');
-
-  //   }
-  //   if (this.selectedProcedureName.includes('SAI 7A')) {
-  //     loadSIDProcedure('SAI 7A', 'assets/VOBL_RWY9L/SID/SAI7A/SAI7A_Point.geojson', 'assets/VOBL_RWY9L/SID/SAI7A/SAI7A_Line.geojson');
-
-  //   }
-  // }
-
-
   updateLayers(): void {
     // Clear existing layers
     this.airportLayerGroup.clearLayers();
@@ -292,10 +165,7 @@ export class MapComponent implements OnInit {
           },
           onEachFeature: (feature, layer) => {
             if (feature.properties && feature.properties.Distance) {
-              const customIcon = L.icon({
-                iconUrl: 'assets/AKTIM_7A/penta.png',
-                iconSize: [60, 60],
-              });
+
               // Get the coordinates of the line
               let coordinates: number[][] = [];
               if (feature.geometry.type === 'MultiLineString') {
@@ -310,13 +180,11 @@ export class MapComponent implements OnInit {
               center[1] /= coordinates.length;
 
               // Create a marker with custom icon at the center point
-              const marker = L.marker(L.latLng(center[1], center[0]), { icon: customIcon, }).addTo(this.airportLayerGroup);
-              // Bind tooltip with distance to the marker
-              marker.bindTooltip(`${feature.properties.Distance}`, {
-                permanent: true,
-                direction: 'center',
-                className: 'labelstyle',
-                opacity: 1,
+              const marker = L.marker(L.latLng(center[1], center[0])).addTo(this.airportLayerGroup);
+              // Bind popup with distance to the marker
+              const distancePopup = `<b>Distance:</b> ${feature.properties.Distance} <br><b>Bearing:</b> ${feature.properties.Bearing}`;
+              marker.bindPopup(distancePopup, {
+                className: 'labelstyle'
               });
             }
           }
@@ -633,9 +501,6 @@ export class MapComponent implements OnInit {
     }
   }
 
-
-
-
   getLiveLocation(): void {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position) => {
@@ -656,81 +521,16 @@ export class MapComponent implements OnInit {
     }
   }
 
-  // watchAirportChanges(): void {
-  //   this.Airform.get('selectedAirport')?.valueChanges.subscribe((selectedAirport: string[]) => {
-  //     // Check if VOBL/Bengaluru (KIA) is selected
-  //     if (selectedAirport.includes('VOBL/Bengaluru (KIA)')) {
-  //       this.optionsBengaluruKIARunway = [
-  //         { value: 'RWY 09L', label: 'RWY 09L' },
-  //         { value: 'RWY 09R', label: 'RWY 09R' },
-  //         { value: 'RWY 27L', label: 'RWY 27L' },
-  //         { value: 'RWY 27R', label: 'RWY 27R' },
-  //       ];
-  //     } else {
-  //       this.optionsBengaluruKIARunway = [];
-  //     }
-  //   });
-  //   this.Airform.get('selectedRunway')?.valueChanges.subscribe((selectedRunway: string[]) => {
-  //     // Check if RWY 09L is selected
-  //     if (selectedRunway.includes('RWY 09L')) {
-  //       this.optionsRWY_09LTypeofProcedure = [
-  //         { value: 'SID', label: 'SID' },
-  //         { value: 'STAR', label: 'STAR' },
-  //         { value: 'APCH', label: 'APCH' },
-  //         // Add other options here if needed
-  //       ];
-  //     } else {
-  //       this.optionsRWY_09LTypeofProcedure = [];
-  //     }
-  //   });
-  //   this.Airform.get('selectedTypeofProcedure')?.valueChanges.subscribe((selectedTypeofProcedure: string[]) => {
-  //     // Check if SID is selected
-  //     if (selectedTypeofProcedure.includes('SID')) {
-  //       // Show optionsProcedureName
-  //       this.optionsProcedureName = [
-  //         { value: 'AKTIM 7A', label: 'AKTIM 7A' },
-  //         { value: 'ANIRO 7A', label: 'ANIRO 7A' },
-  //         { value: 'GUNIM 7A', label: 'GUNIM 7A' },
-  //         { value: 'VAGPU 7A', label: 'VAGPU 7A' },
-  //         { value: 'GUNIM 7L', label: 'GUNIM 7L' },
-  //         { value: 'OPAMO 7A', label: 'OPAMO 7A' },
-  //         { value: 'PEXEG 7A', label: 'PEXEG 7A' },
-  //         { value: 'TULNA 7A', label: 'TULNA 7A' },
-  //         { value: 'VEMBO 7A', label: 'VEMBO 7A' },
-  //         { value: 'LATID 7A', label: 'LATID 7A' },
-  //         { value: 'SAI 7A', label: 'SAI 7A' },
-  //       ];
-  //     } else if (selectedTypeofProcedure.includes('APCH')) {
-  //       // Hide optionsProcedureName
-  //       this.optionsProcedureName = [
-  //       ];
-  //     } else if (selectedTypeofProcedure.includes('STAR')) {
-  //       // Show optionsProcedureName for STAR
-  //       this.optionsProcedureName = [
-  //         { value: 'ADKAL7E', label: 'ADKAL7E' },
-  //         { value: 'GUNIM7E', label: 'GUNIM7E' },
-  //         { value: 'LEKAP7E', label: 'LEKAP7E' },
-  //         { value: 'PEXEG7E', label: 'PEXEG7E' },
-  //         { value: 'RIKBU7E', label: 'RIKBU7E' },
-  //         { value: 'SUSIK7E', label: 'SUSIK7E' },
-  //         { value: 'SUSIK7J', label: 'SUSIK7J' },
-  //         { value: 'TELUV7E', label: 'TELUV7E' },
-  //         { value: 'UGABA7E', label: 'UGABA7E' },
-  //         { value: 'XIVIL7E', label: 'XIVIL7E' },
-
-  //         // Add other STAR options here if needed
-  //       ];
-  //     } else {
-  //       // Hide optionsProcedureName if none of the types are selected
-  //       this.optionsProcedureName = [];
-  //     }
-  //   });
-
-  // }
-
-
   watchAirportChanges(): void {
     this.Airform.get('selectedAirport')?.valueChanges.subscribe((selectedAirport: string[]) => {
+      this.optionsBengaluruKIARunway = [];
+      this.optionsVIJPJAIPURRunway = [];
+      this.optionsVEPYPAKYONGRunway = [];
+      this.optionsRWY_09LTypeofProcedure = [];
+      this.optionsVEPYTypeofProcedure = [];
+      this.optionsRWY_27RTypeofProcedure = [];
+      this.optionsProcedureName = [];
+
       // Check if VOBL/Bengaluru (KIA) is selected
       if (selectedAirport.includes('VOBL/Bengaluru (KIA)')) {
         this.optionsBengaluruKIARunway = [
@@ -774,7 +574,7 @@ export class MapComponent implements OnInit {
       this.optionsRWY_27RTypeofProcedure = [];
       this.optionsVEPYTypeofProcedure = [];
       // Check if RWY 09L or RWY 27R is selected
-      if (selectedRunway.includes('RWY 09L') || selectedRunway.includes('RWY 27R') || selectedRunway.includes('RWY 09') || selectedRunway.includes('RWY 27')) {
+      if (selectedRunway.includes('RWY 09L') || selectedRunway.includes('RWY 27R') || selectedRunway.includes('RWY 09') || selectedRunway.includes('RWY 02') || selectedRunway.includes('RWY 20') || selectedRunway.includes('RWY 27')) {
         // Set options for SID, STAR, APCH
         this.optionsRWY_09LTypeofProcedure = [
           { value: 'SID', label: 'SID' },
@@ -782,24 +582,8 @@ export class MapComponent implements OnInit {
           { value: 'APCH', label: 'APCH' },
           // Add other options here if needed
         ];
-      } else {
-        // Clear VEPY/PAKYONG options
-        this.optionsRWY_09LTypeofProcedure = [];
-        this.optionsRWY_27RTypeofProcedure = [];
       }
-      // Check if RWY 09L or RWY 27R is selected
-      if (selectedRunway.includes('RWY 02') || selectedRunway.includes('RWY 20')) {
-        // Set options for SID, STAR, APCH
-        this.optionsVEPYTypeofProcedure = [
-          { value: 'SID', label: 'SID' },
-          { value: 'APCH', label: 'APCH' },
-          // Add other options here if needed
-        ];
-      } else {
-        // Clear VEPY/PAKYONG options
-        this.optionsVEPYTypeofProcedure = [];
-        
-      }
+
     });
 
     this.Airform.get('selectedTypeofProcedure')?.valueChanges.subscribe((selectedTypeofProcedure: string[]) => {
@@ -960,14 +744,14 @@ export class MapComponent implements OnInit {
 
           filteredOptions = filteredOptions.concat([
             { value: 'BGD1', label: 'BGD1' },
-       
+
 
           ]);
         }
         this.optionsProcedureName = filteredOptions;
       }
       if (this.Airform.get('selectedRunway')?.value.includes('RWY 02')) {
-       
+
         if (selectedTypeofProcedure.includes('APCH')) {
           filteredOptions = filteredOptions.concat([
             { value: 'RNP_Y_RWY02', label: 'RNP_Y_RWY02' },
