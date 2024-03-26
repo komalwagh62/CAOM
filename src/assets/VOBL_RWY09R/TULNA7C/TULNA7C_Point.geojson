@@ -1,0 +1,11 @@
+{
+"type": "FeatureCollection",
+"name": "TULNA7C_Point",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:EPSG::32643" } },
+"features": [
+{ "type": "Feature", "properties": { "Name": "BL401", "Altitude": null, "Speed": null }, "geometry": { "type": "Point", "coordinates": [ 805403.208788627525792, 1461634.448533655377105 ] } },
+{ "type": "Feature", "properties": { "Name": "BL402", "Altitude": "+7000", "Speed": null }, "geometry": { "type": "Point", "coordinates": [ 816447.343615264166147, 1461657.523884834488854 ] } },
+{ "type": "Feature", "properties": { "Name": "TULNA", "Altitude": null, "Speed": null }, "geometry": { "type": "Point", "coordinates": [ 944496.489089634036645, 1437203.191089594736695 ] } },
+{ "type": "Feature", "properties": { "Name": null, "Altitude": "+3400", "Speed": null }, "geometry": { "type": "Point", "coordinates": [ 795462.864851734484546, 1461169.993983343010768 ] } }
+]
+}

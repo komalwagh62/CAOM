@@ -1,0 +1,15 @@
+{
+"type": "FeatureCollection",
+"name": "GUNIM7C_Point",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:EPSG::32643" } },
+"features": [
+{ "type": "Feature", "properties": { "Name": "BL401", "Altitude": null, "Speed": null }, "geometry": { "type": "Point", "coordinates": [ 805403.208788627525792, 1461634.448533655377105 ] } },
+{ "type": "Feature", "properties": { "Name": "BL402", "Altitude": "+7000", "Speed": null }, "geometry": { "type": "Point", "coordinates": [ 816447.343615264166147, 1461657.523884834488854 ] } },
+{ "type": "Feature", "properties": { "Name": "BL701", "Altitude": null, "Speed": null }, "geometry": { "type": "Point", "coordinates": [ 816421.176919471356086, 1474629.296925239264965 ] } },
+{ "type": "Feature", "properties": { "Name": "BL406", "Altitude": "-FL110", "Speed": null }, "geometry": { "type": "Point", "coordinates": [ 801143.776245052926242, 1500825.986414785031229 ] } },
+{ "type": "Feature", "properties": { "Name": "BL703", "Altitude": "+FL150", "Speed": null }, "geometry": { "type": "Point", "coordinates": [ 768434.077397210756317, 1500473.501010121544823 ] } },
+{ "type": "Feature", "properties": { "Name": "BL407", "Altitude": null, "Speed": null }, "geometry": { "type": "Point", "coordinates": [ 675750.796790607972071, 1509950.704577052034438 ] } },
+{ "type": "Feature", "properties": { "Name": "GUNIM", "Altitude": null, "Speed": null }, "geometry": { "type": "Point", "coordinates": [ 557829.320185487973504, 1557263.371186414500698 ] } },
+{ "type": "Feature", "properties": { "Name": null, "Altitude": "+3400", "Speed": null }, "geometry": { "type": "Point", "coordinates": [ 795462.864851734484546, 1461169.993983343010768 ] } }
+]
+}

@@ -1,0 +1,14 @@
+{
+"type": "FeatureCollection",
+"name": "AKTIM7C_Point",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:EPSG::32643" } },
+"features": [
+{ "type": "Feature", "properties": { "Name": "BL401", "Altitude": null, "Speed": null }, "geometry": { "type": "Point", "coordinates": [ 805403.208788627525792, 1461634.448533655377105 ] } },
+{ "type": "Feature", "properties": { "Name": "BL402", "Altitude": "+7000", "Speed": null }, "geometry": { "type": "Point", "coordinates": [ 816447.343615264166147, 1461657.523884834488854 ] } },
+{ "type": "Feature", "properties": { "Name": "BL403", "Altitude": null, "Speed": null }, "geometry": { "type": "Point", "coordinates": [ 816118.723452021135017, 1447585.240885973675177 ] } },
+{ "type": "Feature", "properties": { "Name": "BL404", "Altitude": "-FL110", "Speed": null }, "geometry": { "type": "Point", "coordinates": [ 793599.569820386124775, 1440114.523104862077162 ] } },
+{ "type": "Feature", "properties": { "Name": "OMUKA", "Altitude": null, "Speed": null }, "geometry": { "type": "Point", "coordinates": [ 787416.151710582431406, 1387964.756356343859807 ] } },
+{ "type": "Feature", "properties": { "Name": "AKTIM", "Altitude": null, "Speed": null }, "geometry": { "type": "Point", "coordinates": [ 781175.611141256289557, 1334634.214676923584193 ] } },
+{ "type": "Feature", "properties": { "Name": null, "Altitude": "+3400", "Speed": null }, "geometry": { "type": "Point", "coordinates": [ 795462.864851734484546, 1461169.993983343010768 ] } }
+]
+}

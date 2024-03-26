@@ -45,7 +45,22 @@ export class MapComponent implements OnInit {
     // { value: 'RWY 27L', label: 'RWY 27L' },
     // { value: 'RWY 27R', label: 'RWY 27R' },
   ];
-
+  optionsRWY_09TypeofProcedure: { value: any; label: any; }[] = [
+    // { value: 'SID', label: 'SID' },
+    // { value: 'option2', label: 'Option 2' },
+  ];
+  optionsRWY_27TypeofProcedure: { value: any; label: any; }[] = [
+    // { value: 'SID', label: 'SID' },
+    // { value: 'option2', label: 'Option 2' },
+  ];
+  optionsRWY_02TypeofProcedure: { value: any; label: any; }[] = [
+    // { value: 'SID', label: 'SID' },
+    // { value: 'option2', label: 'Option 2' },
+  ];
+  optionsRWY_20TypeofProcedure: { value: any; label: any; }[] = [
+    // { value: 'SID', label: 'SID' },
+    // { value: 'option2', label: 'Option 2' },
+  ];
   optionsRWY_09LTypeofProcedure: { value: any; label: any; }[] = [
     // { value: 'SID', label: 'SID' },
     // { value: 'option2', label: 'Option 2' },
@@ -412,8 +427,12 @@ export class MapComponent implements OnInit {
         'assets/VIJP_RWY09/STAR_RWO9/RIDRA1C/RIDRA1C_Line.geojson'
       ],
       'INTIL 1C': [
-        'assets/VIJP_RWY09/STAR_RWO9/INTIL1C/INTIL1C_Point.geojson',
-        'assets/VIJP_RWY09/STAR_RWO9/INTIL1C/INTIL1C_Line.geojson'
+        'assets/VIJP_RWY09/STAR_RWO9/INTILC/INTIL1C_Point.geojson',
+        'assets/VIJP_RWY09/STAR_RWO9/INTILC/INTIL1C_Line.geojson'
+      ],
+      'UXENI 1C': [
+        'assets/VIJP_RWY09/STAR_RWO9/UXENI1C/UXENI1C_Point.geojson',
+        'assets/VIJP_RWY09/STAR_RWO9/UXENI1C/UXENI1C_Line.geojson'
       ],
       //VIJP_RWY09 APCH procedures
       'RNP_Y_RWY_09': [
@@ -490,6 +509,56 @@ export class MapComponent implements OnInit {
         'assets/VEPY/SID_RWY20/BGD1_Departure/BGD1_Point.geojson',
         'assets/VEPY/SID_RWY20/BGD1_Departure/BGD1_Line.geojson'
       ],
+      //VOBL_RWY09R SID procedures
+      'AKTIM 7C': [
+        'assets/VOBL_RWY09R/AKTIM7C/AKTIM7C_Point.geojson',
+        'assets/VOBL_RWY09R/AKTIM7C/AKTIM7C_Line.geojson'
+      ],
+      'ANIRO 7C': [
+        'assets/VOBL_RWY09R/ANIRO7C/ANIRO7C_Point.geojson',
+        'assets/VOBL_RWY09R/ANIRO7C/ANIRO7C_Line.geojson'
+      ],
+      'GUNIM 7C': [
+        'assets/VOBL_RWY09R/GUNIM7C/GUNIM7C_Point.geojson',
+        'assets/VOBL_RWY09R/GUNIM7C/GUNIM7C_Line.geojson'
+      ],
+      'GUNIM 7M': [
+        'assets/VOBL_RWY09R/GUNIM7M/GUNIM7M_Point.geojson',
+        'assets/VOBL_RWY09R/GUNIM7M/GUNIM7M_Line.geojson'
+      ],
+      'LATID 7C': [
+        'assets/VOBL_RWY09R/LATID7C/LATID7C_Point.geojson',
+        'assets/VOBL_RWY09R/LATID7C/LATID7C_Line.geojson'
+      ],
+      'OPAMO 7C': [
+        'assets/VOBL_RWY09R/OPAMO7C/OPAMO7C_Point.geojson',
+        'assets/VOBL_RWY09R/OPAMO7C/OPAMO7C_Line.geojson'
+      ],
+      'PEXEG 7C': [
+        'assets/VOBL_RWY09R/PEXEG7C/PEXEG7C_Point.geojson',
+        'assets/VOBL_RWY09R/PEXEG7C/PEXEG7C_Line.geojson'
+      ],
+      'SAI 7C': [
+        'assets/VOBL_RWY09R/SAI7C/SAI7C_Point.geojson',
+        'assets/VOBL_RWY09R/SAI7C/SAI7C_Line.geojson'
+      ],
+      'TULNA 7C': [
+        'assets/VOBL_RWY09R/TULNA7C/TULNA7C_Point.geojson',
+        'assets/VOBL_RWY09R/TULNA7C/TULNA7C_Line.geojson'
+      ],
+      'VAGPU 7C': [
+        'assets/VOBL_RWY09R/VAGPU7C/VAGPU7C_Point.geojson',
+        'assets/VOBL_RWY09R/VAGPU7C/VAGPU7C_Line.geojson'
+      ],
+      'VEMBO 7C': [
+        'assets/VOBL_RWY09R/VEMBO7C/VEMBO7C_Point.geojson',
+        'assets/VOBL_RWY09R/VEMBO7C/VEMBO7C_Line.geojson'
+      ],
+        //VOBL_RWY09R APCH procedures
+        'RNP_Y_RWY09R': [
+          'assets/VOBL_RWY09R/VOBL_APCH09R/RNP_Y_RWY09R_Point.geojson',
+          'assets/VOBL_RWY09R/VOBL_APCH09R/RNP_Y_RWY09R_Line.geojson'
+        ],
     };
 
     // Iterate over selected procedures and load them
@@ -521,6 +590,7 @@ export class MapComponent implements OnInit {
     }
   }
 
+
   watchAirportChanges(): void {
     this.Airform.get('selectedAirport')?.valueChanges.subscribe((selectedAirport: string[]) => {
       this.optionsBengaluruKIARunway = [];
@@ -535,7 +605,7 @@ export class MapComponent implements OnInit {
       if (selectedAirport.includes('VOBL/Bengaluru (KIA)')) {
         this.optionsBengaluruKIARunway = [
           { value: 'RWY 09L', label: 'RWY 09L' },
-          { value: 'RWY 09R', label: 'RWY 09R' },
+          { value: 'RWY_9R', label: 'RWY 09R' },
           { value: 'RWY 27L', label: 'RWY 27L' },
           { value: 'RWY 27R', label: 'RWY 27R' },
         ];
@@ -547,8 +617,8 @@ export class MapComponent implements OnInit {
       if (selectedAirport.includes('VIJP/JAIPUR')) {
         // Show options for VIJP/JAIPUR
         this.optionsVIJPJAIPURRunway = [
-          { value: 'RWY 09', label: 'RWY 09' },
-          { value: 'RWY 27', label: 'RWY 27' },
+          { value: 'RWY_09', label: 'RWY_09' },
+          { value: 'RWY_27', label: 'RWY_27' },
         ];
       } else {
         // Clear VIJP/JAIPUR options
@@ -574,7 +644,10 @@ export class MapComponent implements OnInit {
       this.optionsRWY_27RTypeofProcedure = [];
       this.optionsVEPYTypeofProcedure = [];
       // Check if RWY 09L or RWY 27R is selected
-      if (selectedRunway.includes('RWY 09L') || selectedRunway.includes('RWY 27R') || selectedRunway.includes('RWY 09') || selectedRunway.includes('RWY 02') || selectedRunway.includes('RWY 20') || selectedRunway.includes('RWY 27')) {
+      if (selectedRunway.includes('RWY 09L') || selectedRunway.includes('RWY 27R') ||
+        selectedRunway.includes('RWY_09') || selectedRunway.includes('RWY 02') ||
+        selectedRunway.includes('RWY 20') || selectedRunway.includes('RWY_27') ||
+        selectedRunway.includes('RWY_9R')) {
         // Set options for SID, STAR, APCH
         this.optionsRWY_09LTypeofProcedure = [
           { value: 'SID', label: 'SID' },
@@ -673,7 +746,7 @@ export class MapComponent implements OnInit {
         }
         this.optionsProcedureName = filteredOptions;
       }
-      if (this.Airform.get('selectedRunway')?.value.includes('RWY 09')) {
+      if (this.Airform.get('selectedRunway')?.value.includes('RWY_09')) {
         if (selectedTypeofProcedure.includes('SID')) {
 
           filteredOptions = filteredOptions.concat([
@@ -705,7 +778,7 @@ export class MapComponent implements OnInit {
         }
         this.optionsProcedureName = filteredOptions;
       }
-      if (this.Airform.get('selectedRunway')?.value.includes('RWY 27')) {
+      if (this.Airform.get('selectedRunway')?.value.includes('RWY_27')) {
         if (selectedTypeofProcedure.includes('SID')) {
 
           filteredOptions = filteredOptions.concat([
@@ -760,7 +833,34 @@ export class MapComponent implements OnInit {
         }
         this.optionsProcedureName = filteredOptions;
       }
+
+      if (this.Airform.get('selectedRunway')?.value.includes('RWY_9R')) {
+        if (selectedTypeofProcedure.includes('SID')) {
+
+          filteredOptions = filteredOptions.concat([
+            { value: 'AKTIM 7C', label: 'AKTIM 7C' },
+            { value: 'ANIRO 7C', label: 'ANIRO 7C' },
+            { value: 'GUNIM 7C', label: 'GUNIM 7C' },
+            { value: 'GUNIM 7M', label: 'GUNIM 7M' },
+            { value: 'LATID 7C', label: 'LATID 7C' },
+            { value: 'OPAMO 7C', label: 'OPAMO 7C' },
+            { value: 'PEXEG 7C', label: 'PEXEG 7C' },
+            { value: 'SAI 7C', label: 'SAI 7C' },
+            { value: 'TULNA 7C', label: 'TULNA 7C' },
+            { value: 'VAGPU 7C', label: 'VAGPU 7C' },
+            { value: 'VEMBO 7C', label: 'VEMBO 7C' },
+
+          ]);
+        }
+
+        if (selectedTypeofProcedure.includes('APCH')) {
+          filteredOptions = filteredOptions.concat([
+            { value: 'RNP_Y_RWY09R', label: 'RNP_Y_RWY09R' },
+
+          ]);
+        }
+        this.optionsProcedureName = filteredOptions;
+      }
     });
   }
-
 }
