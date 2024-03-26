@@ -554,11 +554,61 @@ export class MapComponent implements OnInit {
         'assets/VOBL_RWY09R/VEMBO7C/VEMBO7C_Point.geojson',
         'assets/VOBL_RWY09R/VEMBO7C/VEMBO7C_Line.geojson'
       ],
-        //VOBL_RWY09R APCH procedures
-        'RNP_Y_RWY09R': [
-          'assets/VOBL_RWY09R/VOBL_APCH09R/RNP_Y_RWY09R_Point.geojson',
-          'assets/VOBL_RWY09R/VOBL_APCH09R/RNP_Y_RWY09R_Line.geojson'
-        ],
+      //VOBL_RWY09R APCH procedures
+      'RNP_Y_RWY09R': [
+        'assets/VOBL_RWY09R/VOBL_APCH09R/RNP_Y_RWY09R_Point.geojson',
+        'assets/VOBL_RWY09R/VOBL_APCH09R/RNP_Y_RWY09R_Line.geojson'
+      ],
+      //VOBL_RWY27L SID procedures
+      'AKTIM 7D': [
+        'assets/VOBL_RW27L/AKTIM7D/AKTIM7D_Point.geojson',
+        'assets/VOBL_RW27L/AKTIM7D/AKTIM7D_Line.geojson'
+      ],
+      'ANIRO 7D': [
+        'assets/VOBL_RW27L/ANIRO7D/ANIRO7D_Point.geojson',
+        'assets/VOBL_RW27L/ANIRO7D/ANIRO7D_Line.geojson'
+      ],
+      'GUNIM 7D': [
+        'assets/VOBL_RW27L/GUNIM7D/GUNIM7D_Point.geojson',
+        'assets/VOBL_RW27L/GUNIM7D/GUNIM7D_Line.geojson'
+      ],
+      'GUNIM 7U': [
+        'assets/VOBL_RW27L/GUNIM7U/GUNIM7U_Point.geojson',
+        'assets/VOBL_RW27L/GUNIM7U/GUNIM7U_Line.geojson'
+      ],
+      'LATID 7D': [
+        'assets/VOBL_RW27L/LATID7D/LATID7D_Point.geojson',
+        'assets/VOBL_RW27L/LATID7D/LATID7D_Line.geojson'
+      ],
+      'OPAMO 7D': [
+        'assets/VOBL_RW27L/OPAMO7D/OPAMO7D_Point.geojson',
+        'assets/VOBL_RW27L/OPAMO7D/OPAMO7D_Line.geojson'
+      ],
+      'PEXEG 7D': [
+        'assets/VOBL_RW27L/PEXEG7D/PEXEG7D_Point.geojson',
+        'assets/VOBL_RW27L/PEXEG7D/PEXEG7D_Line.geojson'
+      ],
+      'SAI 7D': [
+        'assets/VOBL_RW27L/SAI7D/SAI7D_Point.geojson',
+        'assets/VOBL_RW27L/SAI7D/SAI7D_Line.geojson'
+      ],
+      'TULNA 7D': [
+        'assets/VOBL_RW27L/TULNA7D/TULNA7D_Point.geojson',
+        'assets/VOBL_RW27L/TULNA7D/TULNA7D_Line.geojson'
+      ],
+      'VAGPU 7D': [
+        'assets/VOBL_RW27L/VAGPU7D/VAGPU7D_Point.geojson',
+        'assets/VOBL_RW27L/VAGPU7D/VAGPU7D_Line.geojson'
+      ],
+      'VEMBO 7D': [
+        'assets/VOBL_RW27L/VEMBO7D/VEMBO7D_Point.geojson',
+        'assets/VOBL_RW27L/VEMBO7D/VEMBO7D_Line.geojson'
+      ],
+      //VOBL_RWY27L APCH procedures
+      'RNP_Y_RWY27L': [
+        'assets/VOBL_RW27L/VOBL_APCH27L/RNP_Y_RWY27L_Point.geojson',
+        'assets/VOBL_RW27L/VOBL_APCH27L/RNP_Y_RWY27L_Line.geojson'
+      ],
     };
 
     // Iterate over selected procedures and load them
@@ -606,7 +656,7 @@ export class MapComponent implements OnInit {
         this.optionsBengaluruKIARunway = [
           { value: 'RWY 09L', label: 'RWY 09L' },
           { value: 'RWY_9R', label: 'RWY 09R' },
-          { value: 'RWY 27L', label: 'RWY 27L' },
+          { value: '27L_RWY', label: 'RWY 27L' },
           { value: 'RWY 27R', label: 'RWY 27R' },
         ];
       } else {
@@ -647,7 +697,7 @@ export class MapComponent implements OnInit {
       if (selectedRunway.includes('RWY 09L') || selectedRunway.includes('RWY 27R') ||
         selectedRunway.includes('RWY_09') || selectedRunway.includes('RWY 02') ||
         selectedRunway.includes('RWY 20') || selectedRunway.includes('RWY_27') ||
-        selectedRunway.includes('RWY_9R')) {
+        selectedRunway.includes('RWY_9R') || selectedRunway.includes('27L_RWY')) {
         // Set options for SID, STAR, APCH
         this.optionsRWY_09LTypeofProcedure = [
           { value: 'SID', label: 'SID' },
@@ -856,6 +906,34 @@ export class MapComponent implements OnInit {
         if (selectedTypeofProcedure.includes('APCH')) {
           filteredOptions = filteredOptions.concat([
             { value: 'RNP_Y_RWY09R', label: 'RNP_Y_RWY09R' },
+
+          ]);
+        }
+        this.optionsProcedureName = filteredOptions;
+      }
+
+      if (this.Airform.get('selectedRunway')?.value.includes('27L_RWY')) {
+        if (selectedTypeofProcedure.includes('SID')) {
+
+          filteredOptions = filteredOptions.concat([
+            { value: 'AKTIM 7D', label: 'AKTIM 7D' },
+            { value: 'ANIRO 7D', label: 'ANIRO 7D' },
+            { value: 'GUNIM 7D', label: 'GUNIM 7D' },
+            { value: 'GUNIM 7U', label: 'GUNIM 7U' },
+            { value: 'LATID 7D', label: 'LATID 7D' },
+            { value: 'OPAMO 7D', label: 'OPAMO 7D' },
+            { value: 'PEXEG 7D', label: 'PEXEG 7D' },
+            { value: 'SAI 7D', label: 'SAI 7D' },
+            { value: 'TULNA 7D', label: 'TULNA 7D' },
+            { value: 'VAGPU 7D', label: 'VAGPU 7D' },
+            { value: 'VEMBO 7D', label: 'VEMBO 7D' },
+
+          ]);
+        }
+
+        if (selectedTypeofProcedure.includes('APCH')) {
+          filteredOptions = filteredOptions.concat([
+            { value: 'RNP_Y_RWY27L', label: 'RNP_Y_RWY27L' },
 
           ]);
         }
