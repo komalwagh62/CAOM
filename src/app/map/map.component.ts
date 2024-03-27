@@ -29,8 +29,8 @@ export class MapComponent implements OnInit {
   optionsRWY_02TypeofProcedure: { value: any; label: any; }[] = [];
   optionsRWY_20TypeofProcedure: { value: any; label: any; }[] = [];
   optionsRWY_09LTypeofProcedure: { value: any; label: any; }[] = [];
-  optionsVEPYTypeofProcedure: { value: any; label: any; }[] = [];
   optionsRWY_27RTypeofProcedure: { value: any; label: any; }[] = [];
+  optionsVEPYTypeofProcedure: { value: any; label: any; }[] = [];
   optionsProcedureName: { value: any; label: any; }[] = [];
 
   map!: L.Map;
@@ -49,12 +49,11 @@ export class MapComponent implements OnInit {
 
   initMap(): void {
     this.map = L.map('map', { zoomControl: false, attributionControl: false }).setView([19.0760, 72.8777], 13,);
+
     const streets = L.tileLayer('https://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
       subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
-    }).addTo(this.map);
-
+    });
     const satellite = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {});
-
     const Navigation = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
       attribution: 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ',
       maxZoom: 16
@@ -70,7 +69,7 @@ export class MapComponent implements OnInit {
 
     L.control.layers(baseMaps, overlayMaps).addTo(this.map);
 
-    streets.addTo(this.map);
+    Navigation.addTo(this.map);
     // Add scale Control
     L.control.scale({ position: 'bottomright' }).addTo(this.map);
     // Add Zoom Control
@@ -94,6 +93,8 @@ export class MapComponent implements OnInit {
         const stepIcon = L.icon({
           iconUrl: 'assets/AKTIM_7A/Fly-by.png',
           iconSize: [40, 40],
+          popupAnchor: [-3, -76],
+          // bgPos: [0, 0],
         });
 
         const geoJsonLayer = L.geoJSON(pointData, {
@@ -119,7 +120,9 @@ export class MapComponent implements OnInit {
               marker.bindTooltip(tooltipContent, {
                 permanent: true,
                 direction: 'bottom',
-                className: 'labelstyle'
+                className: 'labelstyle',
+
+                interactive: false
               });
             }
 
@@ -612,6 +615,12 @@ export class MapComponent implements OnInit {
 
   watchAirportChanges(): void {
     this.Airform.get('selectedAirport')?.valueChanges.subscribe((selectedAirport: string[]) => {
+      // Clear all runway and procedure options when the selected airport changes
+      this.optionsBengaluruKIARunway = [];
+      this.optionsVIJPJAIPURRunway = [];
+      this.optionsVEPYPAKYONGRunway = [];
+      this.optionsRWY_09LTypeofProcedure = [];
+      this.selectedTypeofProcedure = [];
 
       // Check if VOBL/Bengaluru (KIA) is selected
       if (selectedAirport.includes('VOBL/Bengaluru (KIA)')) {
@@ -621,7 +630,10 @@ export class MapComponent implements OnInit {
           { value: '27L_RWY', label: 'RWY 27L' },
           { value: 'RWY 27R', label: 'RWY 27R' },
         ];
+      } else {
+        this.optionsBengaluruKIARunway = [];
       }
+
       // Check if VIJP/JAIPUR is selected
       if (selectedAirport.includes('VIJP/JAIPUR')) {
         // Show options for VIJP/JAIPUR
@@ -629,6 +641,8 @@ export class MapComponent implements OnInit {
           { value: 'RWY_09', label: 'RWY_09' },
           { value: 'RWY_27', label: 'RWY_27' },
         ];
+      } else {
+        this.optionsVIJPJAIPURRunway = [];
       }
       // Check if VEPY/PAKYONG is selected
       if (selectedAirport.includes('VEPY/PAKYONG')) {
@@ -637,10 +651,18 @@ export class MapComponent implements OnInit {
           { value: 'RWY 02', label: 'RWY 02' },
           { value: 'RWY 20', label: 'RWY 20' },
         ];
+      } else {
+        this.optionsVEPYPAKYONGRunway = [];
       }
     });
 
     this.Airform.get('selectedRunway')?.valueChanges.subscribe((selectedRunway: string[]) => {
+      // Check if RWY 09L is selected
+      // Reset options for both runways
+      this.selectedTypeofProcedure = [];
+      this.optionsRWY_09LTypeofProcedure = [];
+
+
       // Check if RWY 09L or RWY 27R is selected
       if (selectedRunway.includes('RWY 09L') || selectedRunway.includes('RWY 27R') ||
         selectedRunway.includes('RWY_09') || selectedRunway.includes('RWY 02') ||
