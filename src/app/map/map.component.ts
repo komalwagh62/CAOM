@@ -8,11 +8,7 @@ import * as L from 'leaflet';
   styleUrls: ['./map.component.scss']
 })
 export class MapComponent implements OnInit {
-
-
   Airform !: FormGroup;
-
-
   selectedAirport: string[] = [];
   selectedRunway: string[] = [];
   selectedTypeofProcedure: string[] = [];
@@ -20,80 +16,28 @@ export class MapComponent implements OnInit {
 
   constructor(private formbuilder: FormBuilder,) { }
 
-
   optionsAirport: { value: any; label: any; }[] = [
     { value: 'VOBL/Bengaluru (KIA)', label: 'VOBL/Bengaluru (KIA)' },
     { value: 'VEPY/PAKYONG', label: 'VEPY/PAKYONG' },
     { value: 'VIJP/JAIPUR', label: 'VIJP/JAIPUR' },
-    // { value: 'VOBG/Bengaluru (HAL)', label: 'VOBG/Bengaluru (HAL)' },
   ];
-  optionsBengaluruKIARunway: { value: any; label: any; }[] = [
-    // { value: 'RWY 09L', label: 'RWY 09L' },
-    // { value: 'RWY 09R', label: 'RWY 09R' },
-    // { value: 'RWY 27L', label: 'RWY 27L' },
-    // { value: 'RWY 27R', label: 'RWY 27R' },
-  ];
-  optionsVIJPJAIPURRunway: { value: any; label: any; }[] = [
-    // { value: 'RWY 09L', label: 'RWY 09L' },
-    // { value: 'RWY 09R', label: 'RWY 09R' },
-    // { value: 'RWY 27L', label: 'RWY 27L' },
-    // { value: 'RWY 27R', label: 'RWY 27R' },
-  ];
-  optionsVEPYPAKYONGRunway: { value: any; label: any; }[] = [
-    // { value: 'RWY 09L', label: 'RWY 09L' },
-    // { value: 'RWY 09R', label: 'RWY 09R' },
-    // { value: 'RWY 27L', label: 'RWY 27L' },
-    // { value: 'RWY 27R', label: 'RWY 27R' },
-  ];
-  optionsRWY_09TypeofProcedure: { value: any; label: any; }[] = [
-    // { value: 'SID', label: 'SID' },
-    // { value: 'option2', label: 'Option 2' },
-  ];
-  optionsRWY_27TypeofProcedure: { value: any; label: any; }[] = [
-    // { value: 'SID', label: 'SID' },
-    // { value: 'option2', label: 'Option 2' },
-  ];
-  optionsRWY_02TypeofProcedure: { value: any; label: any; }[] = [
-    // { value: 'SID', label: 'SID' },
-    // { value: 'option2', label: 'Option 2' },
-  ];
-  optionsRWY_20TypeofProcedure: { value: any; label: any; }[] = [
-    // { value: 'SID', label: 'SID' },
-    // { value: 'option2', label: 'Option 2' },
-  ];
-  optionsRWY_09LTypeofProcedure: { value: any; label: any; }[] = [
-    // { value: 'SID', label: 'SID' },
-    // { value: 'option2', label: 'Option 2' },
-  ];
-  optionsVEPYTypeofProcedure: { value: any; label: any; }[] = [
-    // { value: 'SID', label: 'SID' },
-    // { value: 'option2', label: 'Option 2' },
-  ];
-  optionsRWY_27RTypeofProcedure: { value: any; label: any; }[] = [
-    // { value: 'SID', label: 'SID' },
-    // { value: 'option2', label: 'Option 2' },
-  ];
-  optionsProcedureName: { value: any; label: any; }[] = [
-    // { value: 'AKTIM 7A', label: 'AKTIM 7A' },
-    // { value: 'ANIRO 7A', label: 'ANIRO 7A' },
-    // { value: 'GUNIM 7A', label: 'GUNIM 7A' },
-    // { value: 'VAGPU 7A', label: 'VAGPU 7A' },
-    // { value: 'GUNIM 7L', label: 'GUNIM 7L' },
-    // { value: 'OPAMO 7A', label: 'OPAMO 7A' },
-    // { value: 'PEXEG 7A', label: 'PEXEG 7A' },
-    // { value: 'TULNA 7A', label: 'TULNA 7A' },
-    // { value: 'VEMBO 7A', label: 'VEMBO 7A' },
-    // { value: 'LATID 7A', label: 'LATID 7A' },
-    // { value: 'SAI 7A', label: 'SAI 7A' },
-  ];
-
+  optionsBengaluruKIARunway: { value: any; label: any; }[] = [];
+  optionsVIJPJAIPURRunway: { value: any; label: any; }[] = [];
+  optionsVEPYPAKYONGRunway: { value: any; label: any; }[] = [];
+  optionsRWY_09TypeofProcedure: { value: any; label: any; }[] = [];
+  optionsRWY_27TypeofProcedure: { value: any; label: any; }[] = [];
+  optionsRWY_02TypeofProcedure: { value: any; label: any; }[] = [];
+  optionsRWY_20TypeofProcedure: { value: any; label: any; }[] = [];
+  optionsRWY_09LTypeofProcedure: { value: any; label: any; }[] = [];
+  optionsVEPYTypeofProcedure: { value: any; label: any; }[] = [];
+  optionsRWY_27RTypeofProcedure: { value: any; label: any; }[] = [];
+  optionsProcedureName: { value: any; label: any; }[] = [];
 
   map!: L.Map;
   airportLayerGroup!: L.LayerGroup;
 
   ngOnInit(): void {
     this.Airform = this.formbuilder.group({
-
       selectedAirport: [[]],
       selectedRunway: [[]],
       selectedTypeofProcedure: [[]],
@@ -109,18 +53,16 @@ export class MapComponent implements OnInit {
       subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
     }).addTo(this.map);
 
-    const satellite = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+    const satellite = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {});
 
-
-    });
-    const stadiamaps = L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png', {
-
-
+    const Navigation = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
+      attribution: 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ',
+      maxZoom: 16
     });
     const baseMaps = {
       'Streets': streets,
       'Satellite': satellite,
-      'stadiamaps': stadiamaps
+      'Navigation': Navigation
     };
 
     const overlayMaps = {
@@ -150,20 +92,40 @@ export class MapComponent implements OnInit {
         const pointData = await pointResponse.json();
 
         const stepIcon = L.icon({
-          iconUrl: 'assets/AKTIM_7A/Fly-over.png',
-          iconSize: [60, 50],
+          iconUrl: 'assets/AKTIM_7A/Fly-by.png',
+          iconSize: [40, 40],
         });
 
         const geoJsonLayer = L.geoJSON(pointData, {
           pointToLayer: (feature, latlng) => {
             const marker = L.marker(latlng, { icon: stepIcon });
-            marker.bindTooltip(`<b>${feature.properties.Name}</b><br>${feature.properties.Speed}<br>${feature.properties.Altitude}`, {
-              permanent: true,
-              direction: 'center',
-              className: 'labelstyle'
-            });
+
+            let tooltipContent = '';
+            if (feature.properties.Name) {
+              tooltipContent += `<b>${feature.properties.Name}</b><br>`;
+            }
+
+            if (feature.properties.Altitude) {
+              tooltipContent += `${feature.properties.Altitude}<br>`;
+            }
+            if (feature.properties.Speed) {
+              tooltipContent += `${feature.properties.Speed}<br>`;
+            }
+            if (feature.properties.Speed1) {
+              tooltipContent += `${feature.properties.Speed1}`;
+            }
+
+            if (tooltipContent !== '') {
+              marker.bindTooltip(tooltipContent, {
+                permanent: true,
+                direction: 'bottom',
+                className: 'labelstyle'
+              });
+            }
+
             return marker;
           }
+
         });
 
         this.airportLayerGroup.addLayer(geoJsonLayer);
@@ -604,6 +566,14 @@ export class MapComponent implements OnInit {
         'assets/VOBL_RW27L/VEMBO7D/VEMBO7D_Point.geojson',
         'assets/VOBL_RW27L/VEMBO7D/VEMBO7D_Line.geojson'
       ],
+      'VEMBO 7Y': [
+        'assets/VOBL_RW27L/VEMBO7Y/VEMBO7Y_Point.geojson',
+        'assets/VOBL_RW27L/VEMBO7Y/VEMBO7Y_Line.geojson'
+      ],
+      'ANIRO 7Y': [
+        'assets/VOBL_RW27L/ANIRO7Y/ANIRO7Y_Point.geojson',
+        'assets/VOBL_RW27L/ANIRO7Y/ANIRO7Y_Line.geojson'
+      ],
       //VOBL_RWY27L APCH procedures
       'RNP_Y_RWY27L': [
         'assets/VOBL_RW27L/VOBL_APCH27L/RNP_Y_RWY27L_Point.geojson',
@@ -640,16 +610,8 @@ export class MapComponent implements OnInit {
     }
   }
 
-
   watchAirportChanges(): void {
     this.Airform.get('selectedAirport')?.valueChanges.subscribe((selectedAirport: string[]) => {
-      this.optionsBengaluruKIARunway = [];
-      this.optionsVIJPJAIPURRunway = [];
-      this.optionsVEPYPAKYONGRunway = [];
-      this.optionsRWY_09LTypeofProcedure = [];
-      this.optionsVEPYTypeofProcedure = [];
-      this.optionsRWY_27RTypeofProcedure = [];
-      this.optionsProcedureName = [];
 
       // Check if VOBL/Bengaluru (KIA) is selected
       if (selectedAirport.includes('VOBL/Bengaluru (KIA)')) {
@@ -659,10 +621,7 @@ export class MapComponent implements OnInit {
           { value: '27L_RWY', label: 'RWY 27L' },
           { value: 'RWY 27R', label: 'RWY 27R' },
         ];
-      } else {
-        this.optionsBengaluruKIARunway = [];
       }
-
       // Check if VIJP/JAIPUR is selected
       if (selectedAirport.includes('VIJP/JAIPUR')) {
         // Show options for VIJP/JAIPUR
@@ -670,9 +629,6 @@ export class MapComponent implements OnInit {
           { value: 'RWY_09', label: 'RWY_09' },
           { value: 'RWY_27', label: 'RWY_27' },
         ];
-      } else {
-        // Clear VIJP/JAIPUR options
-        this.optionsVIJPJAIPURRunway = [];
       }
       // Check if VEPY/PAKYONG is selected
       if (selectedAirport.includes('VEPY/PAKYONG')) {
@@ -681,18 +637,10 @@ export class MapComponent implements OnInit {
           { value: 'RWY 02', label: 'RWY 02' },
           { value: 'RWY 20', label: 'RWY 20' },
         ];
-      } else {
-        // Clear VEPY/PAKYONG options
-        this.optionsVEPYPAKYONGRunway = [];
       }
     });
 
     this.Airform.get('selectedRunway')?.valueChanges.subscribe((selectedRunway: string[]) => {
-      // Check if RWY 09L is selected
-      // Reset options for both runways
-      this.optionsRWY_09LTypeofProcedure = [];
-      this.optionsRWY_27RTypeofProcedure = [];
-      this.optionsVEPYTypeofProcedure = [];
       // Check if RWY 09L or RWY 27R is selected
       if (selectedRunway.includes('RWY 09L') || selectedRunway.includes('RWY 27R') ||
         selectedRunway.includes('RWY_09') || selectedRunway.includes('RWY 02') ||
@@ -710,8 +658,10 @@ export class MapComponent implements OnInit {
     });
 
     this.Airform.get('selectedTypeofProcedure')?.valueChanges.subscribe((selectedTypeofProcedure: string[]) => {
+
       // Combine procedure names based on selected types
       let filteredOptions: { value: string, label: string }[] = [];
+
       if (this.Airform.get('selectedRunway')?.value.includes('RWY 09L')) {
         if (selectedTypeofProcedure.includes('SID')) {
 
@@ -927,6 +877,9 @@ export class MapComponent implements OnInit {
             { value: 'TULNA 7D', label: 'TULNA 7D' },
             { value: 'VAGPU 7D', label: 'VAGPU 7D' },
             { value: 'VEMBO 7D', label: 'VEMBO 7D' },
+
+            { value: 'VEMBO 7Y', label: 'VEMBO 7Y' },
+            { value: 'ANIRO 7Y', label: 'ANIRO 7Y' },
 
           ]);
         }
