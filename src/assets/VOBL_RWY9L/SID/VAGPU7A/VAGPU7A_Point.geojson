@@ -56,9 +56,8 @@
         {
             "type": "Feature",
             "properties": {
-                "Name": "OPAMO",
-                "Altitude": null,
-                "Speed": null
+                "Name": "OPAMO"
+               
             },
             "geometry": {
                 "type": "Point",
@@ -68,21 +67,7 @@
                 ]
             }
         },
-        {
-            "type": "Feature",
-            "properties": {
-                "Name": "SAI",
-                "Altitude": null,
-                "Speed": null
-            },
-            "geometry": {
-                "type": "Point",
-                "coordinates": [
-                    77.0905278,
-                    14.5929444
-                ]
-            }
-        },
+      
         {
             "type": "Feature",
             "properties": {

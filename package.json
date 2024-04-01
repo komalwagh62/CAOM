@@ -23,6 +23,7 @@
     "leaflet": "^1.9.4",
     "leaflet-rotatedmarker": "^0.2.0",
     "leaflet-routing-machine": "^3.2.12",
+    "leaflet-textpath": "^1.2.3",
     "leaflet.icon.glyph": "^0.3.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",

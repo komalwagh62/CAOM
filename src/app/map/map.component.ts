@@ -1,7 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import * as L from 'leaflet';
-
+import 'leaflet-rotatedmarker';
+declare module 'leaflet' {
+  interface MarkerOptions {
+    rotationAngle?: number;
+    transform?: number;
+  }
+}
 @Component({
   selector: 'app-map',
   templateUrl: './map.component.html',
@@ -137,34 +143,89 @@ export class MapComponent implements OnInit {
         // Load Line_SID GeoJSON data
         const lineResponse = await fetch(lineFileName);
         const lineData = await lineResponse.json();
-
+ 
+        const lineFeatures = lineData.features; // Assuming lineData is your GeoJSON data
+ 
         const lineGeoJsonLayer = L.geoJSON(lineData, {
           style: {
             color: 'blue', // Set line color
             weight: 2 // Set line weight
           },
           onEachFeature: (feature, layer) => {
+            const currentIndex = lineFeatures.indexOf(feature); // Get the index of the current feature
+ 
             if (feature.properties && feature.properties.Distance) {
-
               // Get the coordinates of the line
               let coordinates: number[][] = [];
               if (feature.geometry.type === 'MultiLineString') {
-                coordinates = feature.geometry.coordinates[0]; // For MultiLineString, we choose the first line
+                coordinates = feature.geometry.coordinates[0]; // For MultiLineString, choose the first line
               } else if (feature.geometry.type === 'LineString') {
                 coordinates = feature.geometry.coordinates;
               }
-
-              // Calculate the center point of the line
-              const center = coordinates.reduce((acc, curr) => [acc[0] + curr[0], acc[1] + curr[1]], [0, 0]);
-              center[0] /= coordinates.length;
-              center[1] /= coordinates.length;
-
-              // Create a marker with custom icon at the center point
-              const marker = L.marker(L.latLng(center[1], center[0])).addTo(this.airportLayerGroup);
-              // Bind popup with distance to the marker
-              const distancePopup = `<b>Distance:</b> ${feature.properties.Distance} <br><b>Bearing:</b> ${feature.properties.Bearing}`;
-              marker.bindPopup(distancePopup, {
-                className: 'labelstyle'
+ 
+              const start = coordinates[0];
+              const end = coordinates[1];
+ 
+              // Calculate the angle between start and end points in radians
+              let angle = Math.atan2(end[1] - start[1], end[0] - start[0]);
+ 
+              // Ensure angle is positive
+              if (angle < 0) {
+                angle += 2 * Math.PI;
+              }
+ 
+              // Calculate the center point of the line segment
+              const center = [(start[0] + end[0]) / 2, (start[1] + end[1]) / 2];
+ 
+              // Create a custom icon
+              const customIcon = L.icon({
+                iconUrl: 'assets/AKTIM_7A/penta.png',
+                iconSize: [66, 55],
+                iconAnchor: [31, 37]
+              });
+ 
+              // Calculate the rotation angle in degrees for the icon
+              let iconRotationAngle = parseFloat(feature.properties.Bearing);
+ 
+              // If current bearing is null, use the next bearing value
+              if (isNaN(iconRotationAngle)) {
+                const nextIndex = currentIndex + 1;
+                if (nextIndex < lineFeatures.length) {
+                  const nextFeature = lineFeatures[nextIndex];
+                  if (nextFeature.properties && nextFeature.properties.Bearing) {
+                    iconRotationAngle = parseFloat(nextFeature.properties.Bearing);
+                  }
+                }
+              }
+ 
+              // Create a marker with a custom icon at the center point and rotation
+              const marker = L.marker(L.latLng(center[1], center[0]), {
+                icon: customIcon,
+                rotationAngle: iconRotationAngle // Set rotation angle based on line direction or bearing
+              }).addTo(this.airportLayerGroup);
+ 
+              // Calculate the rotation angle for the distance text relative to the line direction
+              let rotationAngle;
+              if (iconRotationAngle !== null) {
+                if (iconRotationAngle >= 0 && iconRotationAngle < 180) {
+                  // Angle between 0 and 180 degrees
+                  rotationAngle = iconRotationAngle - 90;
+                } else {
+                  // Angle between 180 and 360 degrees
+                  rotationAngle = iconRotationAngle + 90;
+                }
+              } else {
+                // Default rotation angle if iconRotationAngle is null
+                rotationAngle = angle * (180 / Math.PI) - 90;
+              }
+ 
+              // Bind tooltip with distance text to the marker, rotate dynamically based on the line direction
+              const distanceTooltip = `<div style="transform: rotate(${rotationAngle}deg);">${feature.properties.Distance}</div>`;
+              marker.bindTooltip(distanceTooltip, {
+                permanent: true,
+                direction: 'center',
+                className: 'labelstyle',
+                opacity: 1
               });
             }
           }
@@ -183,7 +244,7 @@ export class MapComponent implements OnInit {
       'ANIRO 7A': ['assets/VOBL_RWY9L/SID/ANIRO7A/ANIRO7A_Point.geojson', 'assets/VOBL_RWY9L/SID/ANIRO7A/ANIRO7A_line.geojson'],
       'GUNIM 7A': ['assets/VOBL_RWY9L/SID/GUNIM7A/GUNIM7A_Point.geojson', 'assets/VOBL_RWY9L/SID/GUNIM7A/GUNIM7A_Line.geojson'],
       'VAGPU 7A': ['assets/VOBL_RWY9L/SID/VAGPU7A/VAGPU7A_Point.geojson', 'assets/VOBL_RWY9L/SID/VAGPU7A/VAGPU7A_Line.geojson'],
-      'GUNIM 7L': ['assets/VOBL_RWY9L/SID/GUNIM7A/GUNIM7A_Point.geojson', 'assets/VOBL_RWY9L/SID/GUNIM7A/GUNIM7A_Line.geojson'],
+      'GUNIM 7L': ['assets/VOBL_RWY9L/SID/GUNIM7L/GUNIM7L_Point.geojson', 'assets/VOBL_RWY9L/SID/GUNIM7L/GUNIM7L_Line.geojson'],
       'OPAMO 7A': ['assets/VOBL_RWY9L/SID/OPAMO7A/OPAMO7A_Point.geojson', 'assets/VOBL_RWY9L/SID/OPAMO7A/OPAMO7A_Line.geojson'],
       'PEXEG 7A': ['assets/VOBL_RWY9L/SID/PEXEG7A/PEXEG7A_Point.geojson', 'assets/VOBL_RWY9L/SID/PEXEG7A/PEXEG7A_Line.geojson'],
       'TULNA 7A': ['assets/VOBL_RWY9L/SID/TULNA7A/TULNA7A_Point.geojson', 'assets/VOBL_RWY9L/SID/TULNA7A/TULNA7A_Line.geojson'],
@@ -621,6 +682,7 @@ export class MapComponent implements OnInit {
       this.optionsVEPYPAKYONGRunway = [];
       this.optionsRWY_09LTypeofProcedure = [];
       this.selectedTypeofProcedure = [];
+
 
       // Check if VOBL/Bengaluru (KIA) is selected
       if (selectedAirport.includes('VOBL/Bengaluru (KIA)')) {
