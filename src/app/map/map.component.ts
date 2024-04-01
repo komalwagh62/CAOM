@@ -143,18 +143,18 @@ export class MapComponent implements OnInit {
         // Load Line_SID GeoJSON data
         const lineResponse = await fetch(lineFileName);
         const lineData = await lineResponse.json();
- 
+
         const lineFeatures = lineData.features; // Assuming lineData is your GeoJSON data
- 
+
         const lineGeoJsonLayer = L.geoJSON(lineData, {
           style: {
-            color: 'blue', // Set line color
+            color: 'black', // Set line color
             weight: 2 // Set line weight
           },
           onEachFeature: (feature, layer) => {
             const currentIndex = lineFeatures.indexOf(feature); // Get the index of the current feature
- 
-            if (feature.properties && feature.properties.Distance) {
+
+            if (feature.properties && feature.properties.Distance && feature.properties.Bearing) {
               // Get the coordinates of the line
               let coordinates: number[][] = [];
               if (feature.geometry.type === 'MultiLineString') {
@@ -162,31 +162,31 @@ export class MapComponent implements OnInit {
               } else if (feature.geometry.type === 'LineString') {
                 coordinates = feature.geometry.coordinates;
               }
- 
+
               const start = coordinates[0];
               const end = coordinates[1];
- 
+
               // Calculate the angle between start and end points in radians
               let angle = Math.atan2(end[1] - start[1], end[0] - start[0]);
- 
+
               // Ensure angle is positive
               if (angle < 0) {
                 angle += 2 * Math.PI;
               }
- 
+
               // Calculate the center point of the line segment
               const center = [(start[0] + end[0]) / 2, (start[1] + end[1]) / 2];
- 
+
               // Create a custom icon
               const customIcon = L.icon({
-                iconUrl: 'assets/AKTIM_7A/penta.png',
-                iconSize: [66, 55],
-                iconAnchor: [31, 37]
+                iconUrl: 'assets/AKTIM_7A/penta1.png',
+                iconSize: [20, 20],
+                iconAnchor: [10, 0]
               });
- 
+
               // Calculate the rotation angle in degrees for the icon
               let iconRotationAngle = parseFloat(feature.properties.Bearing);
- 
+
               // If current bearing is null, use the next bearing value
               if (isNaN(iconRotationAngle)) {
                 const nextIndex = currentIndex + 1;
@@ -197,13 +197,13 @@ export class MapComponent implements OnInit {
                   }
                 }
               }
- 
+
               // Create a marker with a custom icon at the center point and rotation
               const marker = L.marker(L.latLng(center[1], center[0]), {
                 icon: customIcon,
                 rotationAngle: iconRotationAngle // Set rotation angle based on line direction or bearing
               }).addTo(this.airportLayerGroup);
- 
+
               // Calculate the rotation angle for the distance text relative to the line direction
               let rotationAngle;
               if (iconRotationAngle !== null) {
@@ -218,15 +218,22 @@ export class MapComponent implements OnInit {
                 // Default rotation angle if iconRotationAngle is null
                 rotationAngle = angle * (180 / Math.PI) - 90;
               }
- 
-              // Bind tooltip with distance text to the marker, rotate dynamically based on the line direction
-              const distanceTooltip = `<div style="transform: rotate(${rotationAngle}deg);">${feature.properties.Distance}</div>`;
-              marker.bindTooltip(distanceTooltip, {
+
+              // Bind tooltip with direction information to the marker
+              const tooltipContent = `<div style="transform: rotate(${rotationAngle}deg);">
+              ${feature.properties.Distance}<br>
+              ${feature.properties.Bearing}
+             </div>`;
+              marker.bindTooltip(tooltipContent, {
                 permanent: true,
                 direction: 'center',
+                // offset: L.point(4.5, 5),
                 className: 'labelstyle',
                 opacity: 1
-              });
+              })
+
+
+
             }
           }
         });
