@@ -90,8 +90,33 @@ export class MapComponent implements OnInit {
     // Clear existing layers
     this.airportLayerGroup.clearLayers();
 
-    const loadSIDProcedure = async (procedureName: string, pointFileName: string, lineFileName: string) => {
+    const loadSIDProcedure = async (procedureName: string, pointFileName: string, lineFileName: string, iconFileName: string) => {
       try {
+
+        // Load runway GeoJSON data
+        const runwayResponse = await fetch(iconFileName);
+        const runwayData = await runwayResponse.json();
+
+        const runwayIcon = L.icon({
+          iconUrl: 'assets/AKTIM_7A/RWY.png',
+          iconSize: [10, 20],
+        });
+
+        const geoLayer = L.geoJSON(runwayData, {
+          pointToLayer: (feature, latlng) => {
+            const trueB = feature.properties.True_B;
+            const marker = L.marker(latlng, { icon: runwayIcon, rotationAngle: trueB });
+            return marker;
+          }
+        });
+        this.airportLayerGroup.addLayer(geoLayer);
+        this.map.fitBounds(geoLayer.getBounds());
+
+
+
+
+
+
         // Load Point_SID GeoJSON data
         const pointResponse = await fetch(pointFileName);
         const pointData = await pointResponse.json();
@@ -127,8 +152,7 @@ export class MapComponent implements OnInit {
                 permanent: true,
                 direction: 'bottom',
                 className: 'labelstyle',
-
-                interactive: false
+                offset: L.point(25, 0),
               });
             }
 
@@ -231,9 +255,6 @@ export class MapComponent implements OnInit {
                 className: 'labelstyle',
                 opacity: 1
               })
-
-
-
             }
           }
         });
@@ -245,418 +266,385 @@ export class MapComponent implements OnInit {
     };
 
     // Mapping of procedure names to their respective file paths
-    const proceduresMap: { [key: string]: [string, string] } = {
+    const proceduresMap: { [key: string]: [string, string, string] } = {
       //VOBL_RWY9L SID procedure
-      'AKTIM 7A': ['assets/VOBL_RWY9L/SID/AKTIM7A/AKTIM7A_Point.geojson', 'assets/VOBL_RWY9L/SID/AKTIM7A/AKTIM7A_line.geojson'],
-      'ANIRO 7A': ['assets/VOBL_RWY9L/SID/ANIRO7A/ANIRO7A_Point.geojson', 'assets/VOBL_RWY9L/SID/ANIRO7A/ANIRO7A_line.geojson'],
-      'GUNIM 7A': ['assets/VOBL_RWY9L/SID/GUNIM7A/GUNIM7A_Point.geojson', 'assets/VOBL_RWY9L/SID/GUNIM7A/GUNIM7A_Line.geojson'],
-      'VAGPU 7A': ['assets/VOBL_RWY9L/SID/VAGPU7A/VAGPU7A_Point.geojson', 'assets/VOBL_RWY9L/SID/VAGPU7A/VAGPU7A_Line.geojson'],
-      'GUNIM 7L': ['assets/VOBL_RWY9L/SID/GUNIM7L/GUNIM7L_Point.geojson', 'assets/VOBL_RWY9L/SID/GUNIM7L/GUNIM7L_Line.geojson'],
-      'OPAMO 7A': ['assets/VOBL_RWY9L/SID/OPAMO7A/OPAMO7A_Point.geojson', 'assets/VOBL_RWY9L/SID/OPAMO7A/OPAMO7A_Line.geojson'],
-      'PEXEG 7A': ['assets/VOBL_RWY9L/SID/PEXEG7A/PEXEG7A_Point.geojson', 'assets/VOBL_RWY9L/SID/PEXEG7A/PEXEG7A_Line.geojson'],
-      'TULNA 7A': ['assets/VOBL_RWY9L/SID/TULNA7A/TULNA7A_Point.geojson', 'assets/VOBL_RWY9L/SID/TULNA7A/TULNA7A_Line.geojson'],
-      'VEMBO 7A': ['assets/VOBL_RWY9L/SID/VEMBO7A/VEMBO7A_Point.geojson', 'assets/VOBL_RWY9L/SID/VEMBO7A/VEMBO7A_Line.geojson'],
-      'LATID 7A': ['assets/VOBL_RWY9L/SID/LATID7A/LATID7A_Point.geojson', 'assets/VOBL_RWY9L/SID/LATID7A/LATID7A_Line.geojson'],
-      'SAI 7A': ['assets/VOBL_RWY9L/SID/SAI7A/SAI7A_Point.geojson', 'assets/VOBL_RWY9L/SID/SAI7A/SAI7A_Line.geojson'],
+      'AKTIM 7A': ['assets/VOBL_RWY9L/SID/AKTIM7A/AKTIM7A_Point.geojson', 'assets/VOBL_RWY9L/SID/AKTIM7A/AKTIM7A_line.geojson', 'assets/RWY/VOBL_RWY09L.geojson'],
+      'ANIRO 7A': ['assets/VOBL_RWY9L/SID/ANIRO7A/ANIRO7A_Point.geojson', 'assets/VOBL_RWY9L/SID/ANIRO7A/ANIRO7A_line.geojson', 'assets/RWY/VOBL_RWY09L.geojson'],
+      'GUNIM 7A': ['assets/VOBL_RWY9L/SID/GUNIM7A/GUNIM7A_Point.geojson', 'assets/VOBL_RWY9L/SID/GUNIM7A/GUNIM7A_Line.geojson', 'assets/RWY/VOBL_RWY09L.geojson'],
+      'VAGPU 7A': ['assets/VOBL_RWY9L/SID/VAGPU7A/VAGPU7A_Point.geojson', 'assets/VOBL_RWY9L/SID/VAGPU7A/VAGPU7A_Line.geojson', 'assets/RWY/VOBL_RWY09L.geojson'],
+      'GUNIM 7L': ['assets/VOBL_RWY9L/SID/GUNIM7L/GUNIM7L_Point.geojson', 'assets/VOBL_RWY9L/SID/GUNIM7L/GUNIM7L_Line.geojson', 'assets/RWY/VOBL_RWY09L.geojson'],
+      'OPAMO 7A': ['assets/VOBL_RWY9L/SID/OPAMO7A/OPAMO7A_Point.geojson', 'assets/VOBL_RWY9L/SID/OPAMO7A/OPAMO7A_Line.geojson', 'assets/RWY/VOBL_RWY09L.geojson'],
+      'PEXEG 7A': ['assets/VOBL_RWY9L/SID/PEXEG7A/PEXEG7A_Point.geojson', 'assets/VOBL_RWY9L/SID/PEXEG7A/PEXEG7A_Line.geojson', 'assets/RWY/VOBL_RWY09L.geojson'],
+      'TULNA 7A': ['assets/VOBL_RWY9L/SID/TULNA7A/TULNA7A_Point.geojson', 'assets/VOBL_RWY9L/SID/TULNA7A/TULNA7A_Line.geojson', 'assets/RWY/VOBL_RWY09L.geojson'],
+      'VEMBO 7A': ['assets/VOBL_RWY9L/SID/VEMBO7A/VEMBO7A_Point.geojson', 'assets/VOBL_RWY9L/SID/VEMBO7A/VEMBO7A_Line.geojson', 'assets/RWY/VOBL_RWY09L.geojson'],
+      'LATID 7A': ['assets/VOBL_RWY9L/SID/LATID7A/LATID7A_Point.geojson', 'assets/VOBL_RWY9L/SID/LATID7A/LATID7A_Line.geojson', 'assets/RWY/VOBL_RWY09L.geojson'],
+      'SAI 7A': ['assets/VOBL_RWY9L/SID/SAI7A/SAI7A_Point.geojson', 'assets/VOBL_RWY9L/SID/SAI7A/SAI7A_Line.geojson', ''],
       //VOBL_RWY9L STAR procedure
-      'GUNIM 7E': [
-        'assets/VOBL_RWY9L/STAR/GUNIM7E/GUNIM7E_Point.geojson',
-        'assets/VOBL_RWY9L/STAR/GUNIM7E/GUNIM7E_Line.geojson'
-      ],
-      'ADKAL 7E': [
-        'assets/VOBL_RWY9L/STAR/ADKAL7E/ADKAL7E_Point.geojson',
-        'assets/VOBL_RWY9L/STAR/ADKAL7E/ADKAL7E_Line.geojson'
-      ],
-      'LEKAP 7E': [
-        'assets/VOBL_RWY9L/STAR/LEKAP7E/LEKAP7E_Point.geojson',
-        'assets/VOBL_RWY9L/STAR/LEKAP7E/LEKAP7E_Line.geojson'
-      ],
-      'PEXEG 7E': [
-        'assets/VOBL_RWY9L/STAR/PEXEG7E/PEXEG7E_Point.geojson',
-        'assets/VOBL_RWY9L/STAR/PEXEG7E/PEXEG7E_Line.geojson'
-      ],
-      'RIKBU 7E': [
-        'assets/VOBL_RWY9L/STAR/RIKBU7E/RIKBU7E_Point.geojson',
-        'assets/VOBL_RWY9L/STAR/RIKBU7E/RIKBU7E_Line.geojson'
-      ],
-      'SUSIK 7E': [
-        'assets/VOBL_RWY9L/STAR/SUSIK7E/SUSIK7E_Point.geojson',
-        'assets/VOBL_RWY9L/STAR/SUSIK7E/SUSIK7E_Line.geojson'
-      ],
-      'SUSIK 7J': [
-        'assets/VOBL_RWY9L/STAR/SUSIK7J/SUSIK7J_Point.geojson',
-        'assets/VOBL_RWY9L/STAR/SUSIK7J/SUSIK7J_Line.geojson'
-      ],
-      'TELUV 7E': [
-        'assets/VOBL_RWY9L/STAR/TELUV7E/TELUV7E_Point.geojson',
-        'assets/VOBL_RWY9L/STAR/TELUV7E/TELUV7E_Line.geojson'
-      ],
-      'UGABA 7E': [
-        'assets/VOBL_RWY9L/STAR/UGABA7E/UGABA7E_Point.geojson',
-        'assets/VOBL_RWY9L/STAR/UGABA7E/UGABA7E_Line.geojson'
-      ],
-      'XIVIL 7E': [
-        'assets/VOBL_RWY9L/STAR/XIVIL7E/XIVIL7E_Point.geojson',
-        'assets/VOBL_RWY9L/STAR/XIVIL7E/XIVIL7E_Line.geojson'
-      ],
+      'GUNIM 7E': ['assets/VOBL_RWY9L/STAR/GUNIM7E/GUNIM7E_Point.geojson', 'assets/VOBL_RWY9L/STAR/GUNIM7E/GUNIM7E_Line.geojson', 'assets/RWY/VOBL_RWY09L.geojson'],
+      'ADKAL 7E': ['assets/VOBL_RWY9L/STAR/ADKAL7E/ADKAL7E_Point.geojson', 'assets/VOBL_RWY9L/STAR/ADKAL7E/ADKAL7E_Line.geojson', 'assets/RWY/VOBL_RWY09L.geojson'],
+      'LEKAP 7E': ['assets/VOBL_RWY9L/STAR/LEKAP7E/LEKAP7E_Point.geojson', 'assets/VOBL_RWY9L/STAR/LEKAP7E/LEKAP7E_Line.geojson', 'assets/RWY/VOBL_RWY09L.geojson'],
+      'PEXEG 7E': ['assets/VOBL_RWY9L/STAR/PEXEG7E/PEXEG7E_Point.geojson', 'assets/VOBL_RWY9L/STAR/PEXEG7E/PEXEG7E_Line.geojson', 'assets/RWY/VOBL_RWY09L.geojson'],
+      'RIKBU 7E': ['assets/VOBL_RWY9L/STAR/RIKBU7E/RIKBU7E_Point.geojson', 'assets/VOBL_RWY9L/STAR/RIKBU7E/RIKBU7E_Line.geojson', 'assets/RWY/VOBL_RWY09L.geojson'],
+      'SUSIK 7E': ['assets/VOBL_RWY9L/STAR/SUSIK7E/SUSIK7E_Point.geojson', 'assets/VOBL_RWY9L/STAR/SUSIK7E/SUSIK7E_Line.geojson', 'assets/RWY/VOBL_RWY09L.geojson'],
+      'SUSIK 7J': ['assets/VOBL_RWY9L/STAR/SUSIK7J/SUSIK7J_Point.geojson', 'assets/VOBL_RWY9L/STAR/SUSIK7J/SUSIK7J_Line.geojson', 'assets/RWY/VOBL_RWY09L.geojson'],
+      'TELUV 7E': ['assets/VOBL_RWY9L/STAR/TELUV7E/TELUV7E_Point.geojson', 'assets/VOBL_RWY9L/STAR/TELUV7E/TELUV7E_Line.geojson', 'assets/RWY/VOBL_RWY09L.geojson'],
+      'UGABA 7E': ['assets/VOBL_RWY9L/STAR/UGABA7E/UGABA7E_Point.geojson', 'assets/VOBL_RWY9L/STAR/UGABA7E/UGABA7E_Line.geojson', 'assets/RWY/VOBL_RWY09L.geojson'],
+      'XIVIL 7E': ['assets/VOBL_RWY9L/STAR/XIVIL7E/XIVIL7E_Point.geojson', 'assets/VOBL_RWY9L/STAR/XIVIL7E/XIVIL7E_Line.geojson', 'assets/RWY/VOBL_RWY09L.geojson'],
       // VOBL_RWY9L APCH procedure
-      'RNP': [
-        'assets/VOBL_RWY9L/APCH/RNP/RNp_RWY_09L_Point.geojson',
-        'assets/VOBL_RWY9L/APCH/RNP/RNp_RWY_09L_Line.geojson'
-      ],
+      'RNP': ['assets/VOBL_RWY9L/APCH/RNP/RNp_RWY_09L_Point.geojson', 'assets/VOBL_RWY9L/APCH/RNP/RNp_RWY_09L_Line.geojson', 'assets/RWY/VOBL_RWY09L.geojson'],
 
-      // VOBL_RWY27R sid procedure
-      'AKTIM 7B': [
-        'assets/VOBL_RWY27R/SID27R_VOBL/AKTIM7B/AKTIM7B_Point.geojson',
-        'assets/VOBL_RWY27R/SID27R_VOBL/AKTIM7B/AKTIM7B_Line.geojson'
-      ],
-      'ANIRO 7B': [
-        'assets/VOBL_RWY27R/SID27R_VOBL/ANIRO7B/ANIRO7B_Point.geojson',
-        'assets/VOBL_RWY27R/SID27R_VOBL/ANIRO7B/ANIRO7B_Line.geojson'
-      ],
-      'GUNIM 7B': [
-        'assets/VOBL_RWY27R/SID27R_VOBL/GUNIM7B/GUNIM7B_Point.geojson',
-        'assets/VOBL_RWY27R/SID27R_VOBL/GUNIM7B/GUNIM7B_Line.geojson'
-      ],
-      'GUNIM 7J': [
-        'assets/VOBL_RWY27R/SID27R_VOBL/GUNIM7J/GUNIM7J_Point.geojson',
-        'assets/VOBL_RWY27R/SID27R_VOBL/GUNIM7J/GUNIM7J_Line.geojson'
-      ],
-      'OPAMO 7B': [
-        'assets/VOBL_RWY27R/SID27R_VOBL/OPAMO7B/OPAMO7B_Point.geojson',
-        'assets/VOBL_RWY27R/SID27R_VOBL/OPAMO7B/OPAMO7B_Line.geojson'
-      ],
-      'SAI 7B': [
-        'assets/VOBL_RWY27R/SID27R_VOBL/SAI7B/SAI7B_Point.geojson',
-        'assets/VOBL_RWY27R/SID27R_VOBL/SAI7B/SAI7B_Line.geojson'
-      ],
-      'PEXEG 7B': [
-        'assets/VOBL_RWY27R/SID27R_VOBL/PEXEG7B/PEXEG7B_Point.geojson',
-        'assets/VOBL_RWY27R/SID27R_VOBL/PEXEG7B/PEXEG7B_Line.geojson'
-      ],
-      'TULNA 7B': [
-        'assets/VOBL_RWY27R/SID27R_VOBL/TULNA7B/TULNA7B_Point.geojson',
-        'assets/VOBL_RWY27R/SID27R_VOBL/TULNA7B/TULNA7B_Line.geojson'
-      ],
-      'VEMBO 7B': [
-        'assets/VOBL_RWY27R/SID27R_VOBL/VEMBO7B/VEMBO7B_Point.geojson',
-        'assets/VOBL_RWY27R/SID27R_VOBL/VEMBO7B/VEMBO7B_Line.geojson'
-      ],
-      'LATID 7B': [
-        'assets/VOBL_RWY27R/SID27R_VOBL/LATID7B/LATID7B_Point.geojson',
-        'assets/VOBL_RWY27R/SID27R_VOBL/LATID7B/LATID72_Line.geojson'
-      ],
-      'VEMBO 7S': [
-        'assets/VOBL_RWY27R/SID27R_VOBL/VEMBO7S/VEMBO7S_Point.geojson',
-        'assets/VOBL_RWY27R/SID27R_VOBL/VEMBO7S/VEMBO7S_Line.geojson'
-      ],
-      'ANIRO 7S': [
-        'assets/VOBL_RWY27R/SID27R_VOBL/ANIRO7S/ANIRO7S_Point.geojson',
-        'assets/VOBL_RWY27R/SID27R_VOBL/ANIRO7S/ANIRO7S_Line.geojson'
-      ],
-      'VAGPU 7B': [
-        'assets/VOBL_RWY27R/SID27R_VOBL/VAGPU7B/VAGPU7B_Point.geojson',
-        'assets/VOBL_RWY27R/SID27R_VOBL/VAGPU7B/VAGPU7B_Line.geojson'
-      ],
+      // // VOBL_RWY27R sid procedure
+      // 'AKTIM 7B': [
+      //   'assets/VOBL_RWY27R/SID27R_VOBL/AKTIM7B/AKTIM7B_Point.geojson',
+      //   'assets/VOBL_RWY27R/SID27R_VOBL/AKTIM7B/AKTIM7B_Line.geojson'
+      // ],
+      // 'ANIRO 7B': [
+      //   'assets/VOBL_RWY27R/SID27R_VOBL/ANIRO7B/ANIRO7B_Point.geojson',
+      //   'assets/VOBL_RWY27R/SID27R_VOBL/ANIRO7B/ANIRO7B_Line.geojson'
+      // ],
+      // 'GUNIM 7B': [
+      //   'assets/VOBL_RWY27R/SID27R_VOBL/GUNIM7B/GUNIM7B_Point.geojson',
+      //   'assets/VOBL_RWY27R/SID27R_VOBL/GUNIM7B/GUNIM7B_Line.geojson'
+      // ],
+      // 'GUNIM 7J': [
+      //   'assets/VOBL_RWY27R/SID27R_VOBL/GUNIM7J/GUNIM7J_Point.geojson',
+      //   'assets/VOBL_RWY27R/SID27R_VOBL/GUNIM7J/GUNIM7J_Line.geojson'
+      // ],
+      // 'OPAMO 7B': [
+      //   'assets/VOBL_RWY27R/SID27R_VOBL/OPAMO7B/OPAMO7B_Point.geojson',
+      //   'assets/VOBL_RWY27R/SID27R_VOBL/OPAMO7B/OPAMO7B_Line.geojson'
+      // ],
+      // 'SAI 7B': [
+      //   'assets/VOBL_RWY27R/SID27R_VOBL/SAI7B/SAI7B_Point.geojson',
+      //   'assets/VOBL_RWY27R/SID27R_VOBL/SAI7B/SAI7B_Line.geojson'
+      // ],
+      // 'PEXEG 7B': [
+      //   'assets/VOBL_RWY27R/SID27R_VOBL/PEXEG7B/PEXEG7B_Point.geojson',
+      //   'assets/VOBL_RWY27R/SID27R_VOBL/PEXEG7B/PEXEG7B_Line.geojson'
+      // ],
+      // 'TULNA 7B': [
+      //   'assets/VOBL_RWY27R/SID27R_VOBL/TULNA7B/TULNA7B_Point.geojson',
+      //   'assets/VOBL_RWY27R/SID27R_VOBL/TULNA7B/TULNA7B_Line.geojson'
+      // ],
+      // 'VEMBO 7B': [
+      //   'assets/VOBL_RWY27R/SID27R_VOBL/VEMBO7B/VEMBO7B_Point.geojson',
+      //   'assets/VOBL_RWY27R/SID27R_VOBL/VEMBO7B/VEMBO7B_Line.geojson'
+      // ],
+      // 'LATID 7B': [
+      //   'assets/VOBL_RWY27R/SID27R_VOBL/LATID7B/LATID7B_Point.geojson',
+      //   'assets/VOBL_RWY27R/SID27R_VOBL/LATID7B/LATID72_Line.geojson'
+      // ],
+      // 'VEMBO 7S': [
+      //   'assets/VOBL_RWY27R/SID27R_VOBL/VEMBO7S/VEMBO7S_Point.geojson',
+      //   'assets/VOBL_RWY27R/SID27R_VOBL/VEMBO7S/VEMBO7S_Line.geojson'
+      // ],
+      // 'ANIRO 7S': [
+      //   'assets/VOBL_RWY27R/SID27R_VOBL/ANIRO7S/ANIRO7S_Point.geojson',
+      //   'assets/VOBL_RWY27R/SID27R_VOBL/ANIRO7S/ANIRO7S_Line.geojson'
+      // ],
+      // 'VAGPU 7B': [
+      //   'assets/VOBL_RWY27R/SID27R_VOBL/VAGPU7B/VAGPU7B_Point.geojson',
+      //   'assets/VOBL_RWY27R/SID27R_VOBL/VAGPU7B/VAGPU7B_Line.geojson'
+      // ],
 
-      //VOBL_RWY27R star procedure
-      'ADKAL 7F': [
-        'assets/VOBL_RWY27R/STAR27R_VOBL/ADKAL7F/ADKAL7F_Point.geojson',
-        'assets/VOBL_RWY27R/STAR27R_VOBL/ADKAL7F/ADKAL7F_Line.geojson'
-      ],
-      'GUNIM 7F': [
-        'assets/VOBL_RWY27R/STAR27R_VOBL/GUNIM7F/GUNIM7F_Point.geojson',
-        'assets/VOBL_RWY27R/STAR27R_VOBL/GUNIM7F/GUNIM7F_Line.geojson'
-      ],
-      'GUNIM 7N': [
-        'assets/VOBL_RWY27R/STAR27R_VOBL/GUNIM7N/GUNIM7N_Point.geojson',
-        'assets/VOBL_RWY27R/STAR27R_VOBL/GUNIM7N/GUNIM7N_Line.geojson'
-      ],
-      'LEKAP 7F': [
-        'assets/VOBL_RWY27R/STAR27R_VOBL/LEKAP7F/LEKAP7F_Point.geojson',
-        'assets/VOBL_RWY27R/STAR27R_VOBL/LEKAP7F/LEKAP7F_Line.geojson'
-      ],
-      'PEXEG 7F': [
-        'assets/VOBL_RWY27R/STAR27R_VOBL/PEXEG7F/PEXEG7F_Point.geojson',
-        'assets/VOBL_RWY27R/STAR27R_VOBL/PEXEG7F/PEXEG7F_Line.geojson'
-      ],
-      'PEXEG 7N': [
-        'assets/VOBL_RWY27R/STAR27R_VOBL/PEXEG7N/PEXEG7N_Point.geojson',
-        'assets/VOBL_RWY27R/STAR27R_VOBL/PEXEG7N/PEXEG7N_Line.geojson'
-      ],
-      'RIKBU 7F': [
-        'assets/VOBL_RWY27R/STAR27R_VOBL/RIKBU7F/RIKBU7F_Point.geojson',
-        'assets/VOBL_RWY27R/STAR27R_VOBL/RIKBU7F/RIKBU7F_Line.geojson'
-      ],
-      'SUSIK 7F': [
-        'assets/VOBL_RWY27R/STAR27R_VOBL/SUSIK7F/SUSIK7F_Point.geojson',
-        'assets/VOBL_RWY27R/STAR27R_VOBL/SUSIK7F/SUSIK7F_Line.geojson'
-      ],
-      'SUSIK 7L': [
-        'assets/VOBL_RWY27R/STAR27R_VOBL/SUSIK7L/SUSIK7L_Point.geojson',
-        'assets/VOBL_RWY27R/STAR27R_VOBL/SUSIK7L/SUSIK7L_Line.geojson'
-      ],
-      'TELUV 7F': [
-        'assets/VOBL_RWY27R/STAR27R_VOBL/TELUV7F/TELUV7F_Point.geojson',
-        'assets/VOBL_RWY27R/STAR27R_VOBL/TELUV7F/TELUV7F_Line.geojson'
-      ],
-      'UGABA 7F': [
-        'assets/VOBL_RWY27R/STAR27R_VOBL/UGABA7F/UGABA7F_Point.geojson',
-        'assets/VOBL_RWY27R/STAR27R_VOBL/UGABA7F/UGABA7F_Line.geojson'
-      ],
-      'XIVIL 7F': [
-        'assets/VOBL_RWY27R/STAR27R_VOBL/XIVIL7F/XIVIL7F_Point.geojson',
-        'assets/VOBL_RWY27R/STAR27R_VOBL/XIVIL7F/XIVIL7F_Line.geojson'
-      ],
-      //VOBL_RWY27R APCh procedure
-      'RNP_Y': [
-        'assets/VOBL_RWY27R/APCH27R_VOBL/RNP_Y_RWY_27R_Point.geojson',
-        'assets/VOBL_RWY27R/APCH27R_VOBL/RNP_Y_RWY_27R_Line.geojson'
-      ],
-      //VIJP_RWY09 sid procedures
-      'UKASO 1D': [
-        'assets/VIJP_RWY09/SID_RWY09/UKASO1D/UKASO1D_Point.geojson',
-        'assets/VIJP_RWY09/SID_RWY09/UKASO1D/UKASO1D_Line.geojson'
-      ],
-      'UXENI 1D': [
-        'assets/VIJP_RWY09/SID_RWY09/UXENI1D/UXENI1D_Point.geojson',
-        'assets/VIJP_RWY09/SID_RWY09/UXENI1D/UXENI1D_Line.geojson'
-      ],
-      'GUDUM 1D': [
-        'assets/VIJP_RWY09/SID_RWY09/GUDUM1D/GUDUM1D_1_Point.geojson',
-        'assets/VIJP_RWY09/SID_RWY09/GUDUM1D/GUDUM1D_1_Line.geojson'
-      ],
-      'NIKOT 1D': [
-        'assets/VIJP_RWY09/SID_RWY09/NIKOT1D/NIKOT1D_Point.geojson',
-        'assets/VIJP_RWY09/SID_RWY09/NIKOT1D/NIKOT1D_Line.geojson'
-      ],
-      'IKAVA 1D': [
-        'assets/VIJP_RWY09/SID_RWY09/IKAVA1D/IKAVA1D_Point.geojson',
-        'assets/VIJP_RWY09/SID_RWY09/IKAVA1D/IKAVA1D_Line.geojson'
-      ],
-      'INTIL 1D': [
-        'assets/VIJP_RWY09/SID_RWY09/INTIL1D/INTIL1D_Point.geojson',
-        'assets/VIJP_RWY09/SID_RWY09/INTIL1D/INTIL1D_Line.geojson'
-      ],
-      'LOVGA 1D': [
-        'assets/VIJP_RWY09/SID_RWY09/LOVGA1D/LOVGA1D_Point.geojson',
-        'assets/VIJP_RWY09/SID_RWY09/LOVGA1D/LOVGA1D_Line.geojson'
-      ],
-      //VIJP_RWY09 Star procedures
-      'IGOLU 1C': [
-        'assets/VIJP_RWY09/STAR_RWO9/IGOLU1C/IGOLU1C_Point.geojson',
-        'assets/VIJP_RWY09/STAR_RWO9/IGOLU1C/IGOLU1C_Line.geojson'
-      ],
-      'LOVGA 1C': [
-        'assets/VIJP_RWY09/STAR_RWO9/LOVGA1C/LOVGA1C_Point.geojson',
-        'assets/VIJP_RWY09/STAR_RWO9/LOVGA1C/LOVGA1C_Line.geojson'
-      ],
-      'BUBNU 1C': [
-        'assets/VIJP_RWY09/STAR_RWO9/BUBNU1C/BUBNU1C_Point.geojson',
-        'assets/VIJP_RWY09/STAR_RWO9/BUBNU1C/BUBNU1C_Line.geojson'
-      ],
-      'RIDRA 1C': [
-        'assets/VIJP_RWY09/STAR_RWO9/RIDRA1C/RIDRA1C_Point.geojson',
-        'assets/VIJP_RWY09/STAR_RWO9/RIDRA1C/RIDRA1C_Line.geojson'
-      ],
-      'INTIL 1C': [
-        'assets/VIJP_RWY09/STAR_RWO9/INTILC/INTIL1C_Point.geojson',
-        'assets/VIJP_RWY09/STAR_RWO9/INTILC/INTIL1C_Line.geojson'
-      ],
-      'UXENI 1C': [
-        'assets/VIJP_RWY09/STAR_RWO9/UXENI1C/UXENI1C_Point.geojson',
-        'assets/VIJP_RWY09/STAR_RWO9/UXENI1C/UXENI1C_Line.geojson'
-      ],
-      //VIJP_RWY09 APCH procedures
-      'RNP_Y_RWY_09': [
-        'assets/VIJP_RWY09/APCH_RW09/RNP_Y_RWY_09_Point.geojson',
-        'assets/VIJP_RWY09/APCH_RW09/RNP_Y_RWY_09_Line.geojson'
-      ],
-      //VIJP_RWY27 SID procedures
-      'GUDUM 1B': [
-        'assets/VIJP_RWY27/SID_RWY27/GUDUM1B/GUDUM1B_Point.geojson',
-        'assets/VIJP_RWY27/SID_RWY27/GUDUM1B/GUDUM1B_Line.geojson'
-      ],
-      'UXENI 1B': [
-        'assets/VIJP_RWY27/SID_RWY27/UXENI1B/UXENI1B_Point.geojson',
-        'assets/VIJP_RWY27/SID_RWY27/UXENI1B/UXENI1B_Line.geojson'
-      ],
-      'IKAVA 1B': [
-        'assets/VIJP_RWY27/SID_RWY27/IKAVA1B/IKAVA1B_Point.geojson',
-        'assets/VIJP_RWY27/SID_RWY27/IKAVA1B/IKAVA1B_Line.geojson'
-      ],
-      'INTIL 1B': [
-        'assets/VIJP_RWY27/SID_RWY27/INTIL1B/INTIL1B_Point.geojson',
-        'assets/VIJP_RWY27/SID_RWY27/INTIL1B/INTIL1B_Line.geojson'
-      ],
-      'UKASO 1B': [
-        'assets/VIJP_RWY27/SID_RWY27/UKASO1B/UKASO1B_Point.geojson',
-        'assets/VIJP_RWY27/SID_RWY27/UKASO1B/UKASO1B_Line.geojson'
-      ],
-      'LOVGA 1B': [
-        'assets/VIJP_RWY27/SID_RWY27/LOVGA1B/LOVGA1B_Point.geojson',
-        'assets/VIJP_RWY27/SID_RWY27/LOVGA1B/LOVGA1B_Line.geojson'
-      ],
-      'NIKOT 1B': [
-        'assets/VIJP_RWY27/SID_RWY27/NIKOT1B/NIKOT1B_Point.geojson',
-        'assets/VIJP_RWY27/SID_RWY27/NIKOT1B/NIKOT1B_Line.geojson'
-      ],
+      // //VOBL_RWY27R star procedure
+      // 'ADKAL 7F': [
+      //   'assets/VOBL_RWY27R/STAR27R_VOBL/ADKAL7F/ADKAL7F_Point.geojson',
+      //   'assets/VOBL_RWY27R/STAR27R_VOBL/ADKAL7F/ADKAL7F_Line.geojson'
+      // ],
+      // 'GUNIM 7F': [
+      //   'assets/VOBL_RWY27R/STAR27R_VOBL/GUNIM7F/GUNIM7F_Point.geojson',
+      //   'assets/VOBL_RWY27R/STAR27R_VOBL/GUNIM7F/GUNIM7F_Line.geojson'
+      // ],
+      // 'GUNIM 7N': [
+      //   'assets/VOBL_RWY27R/STAR27R_VOBL/GUNIM7N/GUNIM7N_Point.geojson',
+      //   'assets/VOBL_RWY27R/STAR27R_VOBL/GUNIM7N/GUNIM7N_Line.geojson'
+      // ],
+      // 'LEKAP 7F': [
+      //   'assets/VOBL_RWY27R/STAR27R_VOBL/LEKAP7F/LEKAP7F_Point.geojson',
+      //   'assets/VOBL_RWY27R/STAR27R_VOBL/LEKAP7F/LEKAP7F_Line.geojson'
+      // ],
+      // 'PEXEG 7F': [
+      //   'assets/VOBL_RWY27R/STAR27R_VOBL/PEXEG7F/PEXEG7F_Point.geojson',
+      //   'assets/VOBL_RWY27R/STAR27R_VOBL/PEXEG7F/PEXEG7F_Line.geojson'
+      // ],
+      // 'PEXEG 7N': [
+      //   'assets/VOBL_RWY27R/STAR27R_VOBL/PEXEG7N/PEXEG7N_Point.geojson',
+      //   'assets/VOBL_RWY27R/STAR27R_VOBL/PEXEG7N/PEXEG7N_Line.geojson'
+      // ],
+      // 'RIKBU 7F': [
+      //   'assets/VOBL_RWY27R/STAR27R_VOBL/RIKBU7F/RIKBU7F_Point.geojson',
+      //   'assets/VOBL_RWY27R/STAR27R_VOBL/RIKBU7F/RIKBU7F_Line.geojson'
+      // ],
+      // 'SUSIK 7F': [
+      //   'assets/VOBL_RWY27R/STAR27R_VOBL/SUSIK7F/SUSIK7F_Point.geojson',
+      //   'assets/VOBL_RWY27R/STAR27R_VOBL/SUSIK7F/SUSIK7F_Line.geojson'
+      // ],
+      // 'SUSIK 7L': [
+      //   'assets/VOBL_RWY27R/STAR27R_VOBL/SUSIK7L/SUSIK7L_Point.geojson',
+      //   'assets/VOBL_RWY27R/STAR27R_VOBL/SUSIK7L/SUSIK7L_Line.geojson'
+      // ],
+      // 'TELUV 7F': [
+      //   'assets/VOBL_RWY27R/STAR27R_VOBL/TELUV7F/TELUV7F_Point.geojson',
+      //   'assets/VOBL_RWY27R/STAR27R_VOBL/TELUV7F/TELUV7F_Line.geojson'
+      // ],
+      // 'UGABA 7F': [
+      //   'assets/VOBL_RWY27R/STAR27R_VOBL/UGABA7F/UGABA7F_Point.geojson',
+      //   'assets/VOBL_RWY27R/STAR27R_VOBL/UGABA7F/UGABA7F_Line.geojson'
+      // ],
+      // 'XIVIL 7F': [
+      //   'assets/VOBL_RWY27R/STAR27R_VOBL/XIVIL7F/XIVIL7F_Point.geojson',
+      //   'assets/VOBL_RWY27R/STAR27R_VOBL/XIVIL7F/XIVIL7F_Line.geojson'
+      // ],
+      // //VOBL_RWY27R APCh procedure
+      // 'RNP_Y': [
+      //   'assets/VOBL_RWY27R/APCH27R_VOBL/RNP_Y_RWY_27R_Point.geojson',
+      //   'assets/VOBL_RWY27R/APCH27R_VOBL/RNP_Y_RWY_27R_Line.geojson'
+      // ],
+      // //VIJP_RWY09 sid procedures
+      // 'UKASO 1D': [
+      //   'assets/VIJP_RWY09/SID_RWY09/UKASO1D/UKASO1D_Point.geojson',
+      //   'assets/VIJP_RWY09/SID_RWY09/UKASO1D/UKASO1D_Line.geojson'
+      // ],
+      // 'UXENI 1D': [
+      //   'assets/VIJP_RWY09/SID_RWY09/UXENI1D/UXENI1D_Point.geojson',
+      //   'assets/VIJP_RWY09/SID_RWY09/UXENI1D/UXENI1D_Line.geojson'
+      // ],
+      // 'GUDUM 1D': [
+      //   'assets/VIJP_RWY09/SID_RWY09/GUDUM1D/GUDUM1D_1_Point.geojson',
+      //   'assets/VIJP_RWY09/SID_RWY09/GUDUM1D/GUDUM1D_1_Line.geojson'
+      // ],
+      // 'NIKOT 1D': [
+      //   'assets/VIJP_RWY09/SID_RWY09/NIKOT1D/NIKOT1D_Point.geojson',
+      //   'assets/VIJP_RWY09/SID_RWY09/NIKOT1D/NIKOT1D_Line.geojson'
+      // ],
+      // 'IKAVA 1D': [
+      //   'assets/VIJP_RWY09/SID_RWY09/IKAVA1D/IKAVA1D_Point.geojson',
+      //   'assets/VIJP_RWY09/SID_RWY09/IKAVA1D/IKAVA1D_Line.geojson'
+      // ],
+      // 'INTIL 1D': [
+      //   'assets/VIJP_RWY09/SID_RWY09/INTIL1D/INTIL1D_Point.geojson',
+      //   'assets/VIJP_RWY09/SID_RWY09/INTIL1D/INTIL1D_Line.geojson'
+      // ],
+      // 'LOVGA 1D': [
+      //   'assets/VIJP_RWY09/SID_RWY09/LOVGA1D/LOVGA1D_Point.geojson',
+      //   'assets/VIJP_RWY09/SID_RWY09/LOVGA1D/LOVGA1D_Line.geojson'
+      // ],
+      // //VIJP_RWY09 Star procedures
+      // 'IGOLU 1C': [
+      //   'assets/VIJP_RWY09/STAR_RWO9/IGOLU1C/IGOLU1C_Point.geojson',
+      //   'assets/VIJP_RWY09/STAR_RWO9/IGOLU1C/IGOLU1C_Line.geojson'
+      // ],
+      // 'LOVGA 1C': [
+      //   'assets/VIJP_RWY09/STAR_RWO9/LOVGA1C/LOVGA1C_Point.geojson',
+      //   'assets/VIJP_RWY09/STAR_RWO9/LOVGA1C/LOVGA1C_Line.geojson'
+      // ],
+      // 'BUBNU 1C': [
+      //   'assets/VIJP_RWY09/STAR_RWO9/BUBNU1C/BUBNU1C_Point.geojson',
+      //   'assets/VIJP_RWY09/STAR_RWO9/BUBNU1C/BUBNU1C_Line.geojson'
+      // ],
+      // 'RIDRA 1C': [
+      //   'assets/VIJP_RWY09/STAR_RWO9/RIDRA1C/RIDRA1C_Point.geojson',
+      //   'assets/VIJP_RWY09/STAR_RWO9/RIDRA1C/RIDRA1C_Line.geojson'
+      // ],
+      // 'INTIL 1C': [
+      //   'assets/VIJP_RWY09/STAR_RWO9/INTILC/INTIL1C_Point.geojson',
+      //   'assets/VIJP_RWY09/STAR_RWO9/INTILC/INTIL1C_Line.geojson'
+      // ],
+      // 'UXENI 1C': [
+      //   'assets/VIJP_RWY09/STAR_RWO9/UXENI1C/UXENI1C_Point.geojson',
+      //   'assets/VIJP_RWY09/STAR_RWO9/UXENI1C/UXENI1C_Line.geojson'
+      // ],
+      // //VIJP_RWY09 APCH procedures
+      // 'RNP_Y_RWY_09': [
+      //   'assets/VIJP_RWY09/APCH_RW09/RNP_Y_RWY_09_Point.geojson',
+      //   'assets/VIJP_RWY09/APCH_RW09/RNP_Y_RWY_09_Line.geojson'
+      // ],
+      // //VIJP_RWY27 SID procedures
+      // 'GUDUM 1B': [
+      //   'assets/VIJP_RWY27/SID_RWY27/GUDUM1B/GUDUM1B_Point.geojson',
+      //   'assets/VIJP_RWY27/SID_RWY27/GUDUM1B/GUDUM1B_Line.geojson'
+      // ],
+      // 'UXENI 1B': [
+      //   'assets/VIJP_RWY27/SID_RWY27/UXENI1B/UXENI1B_Point.geojson',
+      //   'assets/VIJP_RWY27/SID_RWY27/UXENI1B/UXENI1B_Line.geojson'
+      // ],
+      // 'IKAVA 1B': [
+      //   'assets/VIJP_RWY27/SID_RWY27/IKAVA1B/IKAVA1B_Point.geojson',
+      //   'assets/VIJP_RWY27/SID_RWY27/IKAVA1B/IKAVA1B_Line.geojson'
+      // ],
+      // 'INTIL 1B': [
+      //   'assets/VIJP_RWY27/SID_RWY27/INTIL1B/INTIL1B_Point.geojson',
+      //   'assets/VIJP_RWY27/SID_RWY27/INTIL1B/INTIL1B_Line.geojson'
+      // ],
+      // 'UKASO 1B': [
+      //   'assets/VIJP_RWY27/SID_RWY27/UKASO1B/UKASO1B_Point.geojson',
+      //   'assets/VIJP_RWY27/SID_RWY27/UKASO1B/UKASO1B_Line.geojson'
+      // ],
+      // 'LOVGA 1B': [
+      //   'assets/VIJP_RWY27/SID_RWY27/LOVGA1B/LOVGA1B_Point.geojson',
+      //   'assets/VIJP_RWY27/SID_RWY27/LOVGA1B/LOVGA1B_Line.geojson'
+      // ],
+      // 'NIKOT 1B': [
+      //   'assets/VIJP_RWY27/SID_RWY27/NIKOT1B/NIKOT1B_Point.geojson',
+      //   'assets/VIJP_RWY27/SID_RWY27/NIKOT1B/NIKOT1B_Line.geojson'
+      // ],
 
-      //VIJP_RWY27 STAR procedures
-      'IGOLU 1A': [
-        'assets/VIJP_RWY27/STAR_RWY27/IGOLU1A/IGOLU1A_Point.geojson',
-        'assets/VIJP_RWY27/STAR_RWY27/IGOLU1A/IGOLU1A_Line.geojson'
-      ],
-      'LOVGA 1A': [
-        'assets/VIJP_RWY27/STAR_RWY27/LOVGA1A/LOVGA1A_Point.geojson',
-        'assets/VIJP_RWY27/STAR_RWY27/LOVGA1A/LOVGA1A_Line.geojson'
-      ],
-      'INTIL 1A': [
-        'assets/VIJP_RWY27/STAR_RWY27/INTIL1A/INTIL1A_Point.geojson',
-        'assets/VIJP_RWY27/STAR_RWY27/INTIL1A/INTIL1A_Line.geojson'
-      ],
-      'RIDRA 1A': [
-        'assets/VIJP_RWY27/STAR_RWY27/RIDRA1A/RIDRA1A_Point.geojson',
-        'assets/VIJP_RWY27/STAR_RWY27/RIDRA1A/RIDRA1A_Line.geojson'
-      ],
-      'BUBNU 1A': [
-        'assets/VIJP_RWY27/STAR_RWY27/BUBNU1A/BUBNU1A_Point.geojson',
-        'assets/VIJP_RWY27/STAR_RWY27/BUBNU1A/BUBNU1A_Line.geojson'
-      ],
-      'UXENI 1A': [
-        'assets/VIJP_RWY27/STAR_RWY27/UXENI1A/UXENI1A_Point.geojson',
-        'assets/VIJP_RWY27/STAR_RWY27/UXENI1A/UXENI1A_Line.geojson'
-      ],
-      //VIJP_RWY27 APCH procedures
-      'RNP_Y_RWY27': [
-        'assets/VIJP_RWY27/APCH_RW27/RNP_Y_RWY27_Point.geojson',
-        'assets/VIJP_RWY27/APCH_RW27/RNP_Y_RWY27_Line.geojson'
-      ],
-      //VEPY_RWY02 APCH procedures
-      'RNP_Y_RWY02': [
-        'assets/VEPY/APCH_RWY02/RNP_Y_RWY02_Point.geojson',
-        'assets/VEPY/APCH_RWY02/RNP_Y_RWY02_Line.geojson'
-      ],
-      //VEPY_RWY20 SID procedures
-      'BGD1': [
-        'assets/VEPY/SID_RWY20/BGD1_Departure/BGD1_Point.geojson',
-        'assets/VEPY/SID_RWY20/BGD1_Departure/BGD1_Line.geojson'
-      ],
-      //VOBL_RWY09R SID procedures
-      'AKTIM 7C': [
-        'assets/VOBL_RWY09R/AKTIM7C/AKTIM7C_Point.geojson',
-        'assets/VOBL_RWY09R/AKTIM7C/AKTIM7C_Line.geojson'
-      ],
-      'ANIRO 7C': [
-        'assets/VOBL_RWY09R/ANIRO7C/ANIRO7C_Point.geojson',
-        'assets/VOBL_RWY09R/ANIRO7C/ANIRO7C_Line.geojson'
-      ],
-      'GUNIM 7C': [
-        'assets/VOBL_RWY09R/GUNIM7C/GUNIM7C_Point.geojson',
-        'assets/VOBL_RWY09R/GUNIM7C/GUNIM7C_Line.geojson'
-      ],
-      'GUNIM 7M': [
-        'assets/VOBL_RWY09R/GUNIM7M/GUNIM7M_Point.geojson',
-        'assets/VOBL_RWY09R/GUNIM7M/GUNIM7M_Line.geojson'
-      ],
-      'LATID 7C': [
-        'assets/VOBL_RWY09R/LATID7C/LATID7C_Point.geojson',
-        'assets/VOBL_RWY09R/LATID7C/LATID7C_Line.geojson'
-      ],
-      'OPAMO 7C': [
-        'assets/VOBL_RWY09R/OPAMO7C/OPAMO7C_Point.geojson',
-        'assets/VOBL_RWY09R/OPAMO7C/OPAMO7C_Line.geojson'
-      ],
-      'PEXEG 7C': [
-        'assets/VOBL_RWY09R/PEXEG7C/PEXEG7C_Point.geojson',
-        'assets/VOBL_RWY09R/PEXEG7C/PEXEG7C_Line.geojson'
-      ],
-      'SAI 7C': [
-        'assets/VOBL_RWY09R/SAI7C/SAI7C_Point.geojson',
-        'assets/VOBL_RWY09R/SAI7C/SAI7C_Line.geojson'
-      ],
-      'TULNA 7C': [
-        'assets/VOBL_RWY09R/TULNA7C/TULNA7C_Point.geojson',
-        'assets/VOBL_RWY09R/TULNA7C/TULNA7C_Line.geojson'
-      ],
-      'VAGPU 7C': [
-        'assets/VOBL_RWY09R/VAGPU7C/VAGPU7C_Point.geojson',
-        'assets/VOBL_RWY09R/VAGPU7C/VAGPU7C_Line.geojson'
-      ],
-      'VEMBO 7C': [
-        'assets/VOBL_RWY09R/VEMBO7C/VEMBO7C_Point.geojson',
-        'assets/VOBL_RWY09R/VEMBO7C/VEMBO7C_Line.geojson'
-      ],
-      //VOBL_RWY09R APCH procedures
-      'RNP_Y_RWY09R': [
-        'assets/VOBL_RWY09R/VOBL_APCH09R/RNP_Y_RWY09R_Point.geojson',
-        'assets/VOBL_RWY09R/VOBL_APCH09R/RNP_Y_RWY09R_Line.geojson'
-      ],
-      //VOBL_RWY27L SID procedures
-      'AKTIM 7D': [
-        'assets/VOBL_RW27L/AKTIM7D/AKTIM7D_Point.geojson',
-        'assets/VOBL_RW27L/AKTIM7D/AKTIM7D_Line.geojson'
-      ],
-      'ANIRO 7D': [
-        'assets/VOBL_RW27L/ANIRO7D/ANIRO7D_Point.geojson',
-        'assets/VOBL_RW27L/ANIRO7D/ANIRO7D_Line.geojson'
-      ],
-      'GUNIM 7D': [
-        'assets/VOBL_RW27L/GUNIM7D/GUNIM7D_Point.geojson',
-        'assets/VOBL_RW27L/GUNIM7D/GUNIM7D_Line.geojson'
-      ],
-      'GUNIM 7U': [
-        'assets/VOBL_RW27L/GUNIM7U/GUNIM7U_Point.geojson',
-        'assets/VOBL_RW27L/GUNIM7U/GUNIM7U_Line.geojson'
-      ],
-      'LATID 7D': [
-        'assets/VOBL_RW27L/LATID7D/LATID7D_Point.geojson',
-        'assets/VOBL_RW27L/LATID7D/LATID7D_Line.geojson'
-      ],
-      'OPAMO 7D': [
-        'assets/VOBL_RW27L/OPAMO7D/OPAMO7D_Point.geojson',
-        'assets/VOBL_RW27L/OPAMO7D/OPAMO7D_Line.geojson'
-      ],
-      'PEXEG 7D': [
-        'assets/VOBL_RW27L/PEXEG7D/PEXEG7D_Point.geojson',
-        'assets/VOBL_RW27L/PEXEG7D/PEXEG7D_Line.geojson'
-      ],
-      'SAI 7D': [
-        'assets/VOBL_RW27L/SAI7D/SAI7D_Point.geojson',
-        'assets/VOBL_RW27L/SAI7D/SAI7D_Line.geojson'
-      ],
-      'TULNA 7D': [
-        'assets/VOBL_RW27L/TULNA7D/TULNA7D_Point.geojson',
-        'assets/VOBL_RW27L/TULNA7D/TULNA7D_Line.geojson'
-      ],
-      'VAGPU 7D': [
-        'assets/VOBL_RW27L/VAGPU7D/VAGPU7D_Point.geojson',
-        'assets/VOBL_RW27L/VAGPU7D/VAGPU7D_Line.geojson'
-      ],
-      'VEMBO 7D': [
-        'assets/VOBL_RW27L/VEMBO7D/VEMBO7D_Point.geojson',
-        'assets/VOBL_RW27L/VEMBO7D/VEMBO7D_Line.geojson'
-      ],
-      'VEMBO 7Y': [
-        'assets/VOBL_RW27L/VEMBO7Y/VEMBO7Y_Point.geojson',
-        'assets/VOBL_RW27L/VEMBO7Y/VEMBO7Y_Line.geojson'
-      ],
-      'ANIRO 7Y': [
-        'assets/VOBL_RW27L/ANIRO7Y/ANIRO7Y_Point.geojson',
-        'assets/VOBL_RW27L/ANIRO7Y/ANIRO7Y_Line.geojson'
-      ],
-      //VOBL_RWY27L APCH procedures
-      'RNP_Y_RWY27L': [
-        'assets/VOBL_RW27L/VOBL_APCH27L/RNP_Y_RWY27L_Point.geojson',
-        'assets/VOBL_RW27L/VOBL_APCH27L/RNP_Y_RWY27L_Line.geojson'
-      ],
+      // //VIJP_RWY27 STAR procedures
+      // 'IGOLU 1A': [
+      //   'assets/VIJP_RWY27/STAR_RWY27/IGOLU1A/IGOLU1A_Point.geojson',
+      //   'assets/VIJP_RWY27/STAR_RWY27/IGOLU1A/IGOLU1A_Line.geojson'
+      // ],
+      // 'LOVGA 1A': [
+      //   'assets/VIJP_RWY27/STAR_RWY27/LOVGA1A/LOVGA1A_Point.geojson',
+      //   'assets/VIJP_RWY27/STAR_RWY27/LOVGA1A/LOVGA1A_Line.geojson'
+      // ],
+      // 'INTIL 1A': [
+      //   'assets/VIJP_RWY27/STAR_RWY27/INTIL1A/INTIL1A_Point.geojson',
+      //   'assets/VIJP_RWY27/STAR_RWY27/INTIL1A/INTIL1A_Line.geojson'
+      // ],
+      // 'RIDRA 1A': [
+      //   'assets/VIJP_RWY27/STAR_RWY27/RIDRA1A/RIDRA1A_Point.geojson',
+      //   'assets/VIJP_RWY27/STAR_RWY27/RIDRA1A/RIDRA1A_Line.geojson'
+      // ],
+      // 'BUBNU 1A': [
+      //   'assets/VIJP_RWY27/STAR_RWY27/BUBNU1A/BUBNU1A_Point.geojson',
+      //   'assets/VIJP_RWY27/STAR_RWY27/BUBNU1A/BUBNU1A_Line.geojson'
+      // ],
+      // 'UXENI 1A': [
+      //   'assets/VIJP_RWY27/STAR_RWY27/UXENI1A/UXENI1A_Point.geojson',
+      //   'assets/VIJP_RWY27/STAR_RWY27/UXENI1A/UXENI1A_Line.geojson'
+      // ],
+      // //VIJP_RWY27 APCH procedures
+      // 'RNP_Y_RWY27': [
+      //   'assets/VIJP_RWY27/APCH_RW27/RNP_Y_RWY27_Point.geojson',
+      //   'assets/VIJP_RWY27/APCH_RW27/RNP_Y_RWY27_Line.geojson'
+      // ],
+      // //VEPY_RWY02 APCH procedures
+      // 'RNP_Y_RWY02': [
+      //   'assets/VEPY/APCH_RWY02/RNP_Y_RWY02_Point.geojson',
+      //   'assets/VEPY/APCH_RWY02/RNP_Y_RWY02_Line.geojson'
+      // ],
+      // //VEPY_RWY20 SID procedures
+      // 'BGD1': [
+      //   'assets/VEPY/SID_RWY20/BGD1_Departure/BGD1_Point.geojson',
+      //   'assets/VEPY/SID_RWY20/BGD1_Departure/BGD1_Line.geojson'
+      // ],
+      // //VOBL_RWY09R SID procedures
+      // 'AKTIM 7C': [
+      //   'assets/VOBL_RWY09R/AKTIM7C/AKTIM7C_Point.geojson',
+      //   'assets/VOBL_RWY09R/AKTIM7C/AKTIM7C_Line.geojson'
+      // ],
+      // 'ANIRO 7C': [
+      //   'assets/VOBL_RWY09R/ANIRO7C/ANIRO7C_Point.geojson',
+      //   'assets/VOBL_RWY09R/ANIRO7C/ANIRO7C_Line.geojson'
+      // ],
+      // 'GUNIM 7C': [
+      //   'assets/VOBL_RWY09R/GUNIM7C/GUNIM7C_Point.geojson',
+      //   'assets/VOBL_RWY09R/GUNIM7C/GUNIM7C_Line.geojson'
+      // ],
+      // 'GUNIM 7M': [
+      //   'assets/VOBL_RWY09R/GUNIM7M/GUNIM7M_Point.geojson',
+      //   'assets/VOBL_RWY09R/GUNIM7M/GUNIM7M_Line.geojson'
+      // ],
+      // 'LATID 7C': [
+      //   'assets/VOBL_RWY09R/LATID7C/LATID7C_Point.geojson',
+      //   'assets/VOBL_RWY09R/LATID7C/LATID7C_Line.geojson'
+      // ],
+      // 'OPAMO 7C': [
+      //   'assets/VOBL_RWY09R/OPAMO7C/OPAMO7C_Point.geojson',
+      //   'assets/VOBL_RWY09R/OPAMO7C/OPAMO7C_Line.geojson'
+      // ],
+      // 'PEXEG 7C': [
+      //   'assets/VOBL_RWY09R/PEXEG7C/PEXEG7C_Point.geojson',
+      //   'assets/VOBL_RWY09R/PEXEG7C/PEXEG7C_Line.geojson'
+      // ],
+      // 'SAI 7C': [
+      //   'assets/VOBL_RWY09R/SAI7C/SAI7C_Point.geojson',
+      //   'assets/VOBL_RWY09R/SAI7C/SAI7C_Line.geojson'
+      // ],
+      // 'TULNA 7C': [
+      //   'assets/VOBL_RWY09R/TULNA7C/TULNA7C_Point.geojson',
+      //   'assets/VOBL_RWY09R/TULNA7C/TULNA7C_Line.geojson'
+      // ],
+      // 'VAGPU 7C': [
+      //   'assets/VOBL_RWY09R/VAGPU7C/VAGPU7C_Point.geojson',
+      //   'assets/VOBL_RWY09R/VAGPU7C/VAGPU7C_Line.geojson'
+      // ],
+      // 'VEMBO 7C': [
+      //   'assets/VOBL_RWY09R/VEMBO7C/VEMBO7C_Point.geojson',
+      //   'assets/VOBL_RWY09R/VEMBO7C/VEMBO7C_Line.geojson'
+      // ],
+      // //VOBL_RWY09R APCH procedures
+      // 'RNP_Y_RWY09R': [
+      //   'assets/VOBL_RWY09R/VOBL_APCH09R/RNP_Y_RWY09R_Point.geojson',
+      //   'assets/VOBL_RWY09R/VOBL_APCH09R/RNP_Y_RWY09R_Line.geojson'
+      // ],
+      // //VOBL_RWY27L SID procedures
+      // 'AKTIM 7D': [
+      //   'assets/VOBL_RW27L/AKTIM7D/AKTIM7D_Point.geojson',
+      //   'assets/VOBL_RW27L/AKTIM7D/AKTIM7D_Line.geojson'
+      // ],
+      // 'ANIRO 7D': [
+      //   'assets/VOBL_RW27L/ANIRO7D/ANIRO7D_Point.geojson',
+      //   'assets/VOBL_RW27L/ANIRO7D/ANIRO7D_Line.geojson'
+      // ],
+      // 'GUNIM 7D': [
+      //   'assets/VOBL_RW27L/GUNIM7D/GUNIM7D_Point.geojson',
+      //   'assets/VOBL_RW27L/GUNIM7D/GUNIM7D_Line.geojson'
+      // ],
+      // 'GUNIM 7U': [
+      //   'assets/VOBL_RW27L/GUNIM7U/GUNIM7U_Point.geojson',
+      //   'assets/VOBL_RW27L/GUNIM7U/GUNIM7U_Line.geojson'
+      // ],
+      // 'LATID 7D': [
+      //   'assets/VOBL_RW27L/LATID7D/LATID7D_Point.geojson',
+      //   'assets/VOBL_RW27L/LATID7D/LATID7D_Line.geojson'
+      // ],
+      // 'OPAMO 7D': [
+      //   'assets/VOBL_RW27L/OPAMO7D/OPAMO7D_Point.geojson',
+      //   'assets/VOBL_RW27L/OPAMO7D/OPAMO7D_Line.geojson'
+      // ],
+      // 'PEXEG 7D': [
+      //   'assets/VOBL_RW27L/PEXEG7D/PEXEG7D_Point.geojson',
+      //   'assets/VOBL_RW27L/PEXEG7D/PEXEG7D_Line.geojson'
+      // ],
+      // 'SAI 7D': [
+      //   'assets/VOBL_RW27L/SAI7D/SAI7D_Point.geojson',
+      //   'assets/VOBL_RW27L/SAI7D/SAI7D_Line.geojson'
+      // ],
+      // 'TULNA 7D': [
+      //   'assets/VOBL_RW27L/TULNA7D/TULNA7D_Point.geojson',
+      //   'assets/VOBL_RW27L/TULNA7D/TULNA7D_Line.geojson'
+      // ],
+      // 'VAGPU 7D': [
+      //   'assets/VOBL_RW27L/VAGPU7D/VAGPU7D_Point.geojson',
+      //   'assets/VOBL_RW27L/VAGPU7D/VAGPU7D_Line.geojson'
+      // ],
+      // 'VEMBO 7D': [
+      //   'assets/VOBL_RW27L/VEMBO7D/VEMBO7D_Point.geojson',
+      //   'assets/VOBL_RW27L/VEMBO7D/VEMBO7D_Line.geojson'
+      // ],
+      // 'VEMBO 7Y': [
+      //   'assets/VOBL_RW27L/VEMBO7Y/VEMBO7Y_Point.geojson',
+      //   'assets/VOBL_RW27L/VEMBO7Y/VEMBO7Y_Line.geojson'
+      // ],
+      // 'ANIRO 7Y': [
+      //   'assets/VOBL_RW27L/ANIRO7Y/ANIRO7Y_Point.geojson',
+      //   'assets/VOBL_RW27L/ANIRO7Y/ANIRO7Y_Line.geojson'
+      // ],
+      // //VOBL_RWY27L APCH procedures
+      // 'RNP_Y_RWY27L': [
+      //   'assets/VOBL_RW27L/VOBL_APCH27L/RNP_Y_RWY27L_Point.geojson',
+      //   'assets/VOBL_RW27L/VOBL_APCH27L/RNP_Y_RWY27L_Line.geojson'
+      // ],
     };
 
     // Iterate over selected procedures and load them
     for (const procedureName in proceduresMap) {
       if (this.selectedProcedureName.includes(procedureName)) {
-        const [pointFileName, lineFileName] = proceduresMap[procedureName];
-        loadSIDProcedure(procedureName, pointFileName, lineFileName);
+        const [pointFileName, lineFileName, iconFileName] = proceduresMap[procedureName];
+        loadSIDProcedure(procedureName, pointFileName, lineFileName, iconFileName);
       }
     }
   }
