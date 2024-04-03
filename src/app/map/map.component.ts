@@ -22,10 +22,10 @@ export class MapComponent implements OnInit {
 
   constructor(private formbuilder: FormBuilder,) { }
 
-  optionsAirport: { value: any; label: any; coords: any;}[] = [
-    { value: 'VOBL/Bengaluru (KIA)', label: 'VOBL/Bengaluru (KIA)' ,  coords: [12.9716, 77.5946]},
-    { value: 'VEPY/PAKYONG', label: 'VEPY/PAKYONG' ,coords: [26.9124, 75.7873]},
-    { value: 'VIJP/JAIPUR', label: 'VIJP/JAIPUR',coords: [27.3314, 88.6156] },
+  optionsAirport: { value: any; label: any; }[] = [
+    { value: 'VOBL/Bengaluru (KIA)', label: 'VOBL/Bengaluru (KIA)' },
+    { value: 'VEPY/PAKYONG', label: 'VEPY/PAKYONG' },
+    { value: 'VIJP/JAIPUR', label: 'VIJP/JAIPUR'},
   ];
   optionsBengaluruKIARunway: { value: any; label: any; }[] = [];
   optionsVIJPJAIPURRunway: { value: any; label: any; }[] = [];
@@ -95,7 +95,8 @@ export class MapComponent implements OnInit {
         // Load runway GeoJSON data
         const runwayIcon = L.icon({
           iconUrl: 'assets/AKTIM_7A/RWY.png',
-          iconSize: [20, 30]
+          iconSize: [20, 30],
+          iconAnchor: [10, 30]
         });
 
         const runwayResponse = await fetch(iconFileName);
@@ -121,7 +122,7 @@ export class MapComponent implements OnInit {
         });
 
         this.airportLayerGroup.addLayer(geoLayer);
-        this.map.fitBounds(geoLayer.getBounds());
+        // this.map.fitBounds(geoLayer.getBounds());
 
         // Load Point_SID GeoJSON data
         const pointResponse = await fetch(pointFileName);
@@ -298,7 +299,6 @@ export class MapComponent implements OnInit {
       'XIVIL 7E': ['assets/VOBL_RWY9L/STAR/XIVIL7E/XIVIL7E_Point.geojson', 'assets/VOBL_RWY9L/STAR/XIVIL7E/XIVIL7E_Line.geojson', 'assets/RWY/VOBL_RWY09L.geojson'],
       // VOBL_RWY9L APCH procedure
       'RNP': ['assets/VOBL_RWY9L/APCH/RNP/RNp_RWY_09L_Point.geojson', 'assets/VOBL_RWY9L/APCH/RNP/RNp_RWY_09L_Line.geojson', 'assets/RWY/VOBL_RWY09L.geojson'],
-
       // VOBL_RWY27R sid procedure
       'AKTIM 7B': ['assets/VOBL_RWY27R/SID27R_VOBL/AKTIM7B/AKTIM7B_Point.geojson', 'assets/VOBL_RWY27R/SID27R_VOBL/AKTIM7B/AKTIM7B_Line.geojson', 'assets/RWY/VOBL_RWY27R.geojson'],
       'ANIRO 7B': ['assets/VOBL_RWY27R/SID27R_VOBL/ANIRO7B/ANIRO7B_Point.geojson', 'assets/VOBL_RWY27R/SID27R_VOBL/ANIRO7B/ANIRO7B_Line.geojson', 'assets/RWY/VOBL_RWY27R.geojson'],
@@ -313,7 +313,6 @@ export class MapComponent implements OnInit {
       'VEMBO 7S': ['assets/VOBL_RWY27R/SID27R_VOBL/VEMBO7S/VEMBO7S_Point.geojson', 'assets/VOBL_RWY27R/SID27R_VOBL/VEMBO7S/VEMBO7S_Line.geojson', 'assets/RWY/VOBL_RWY27R.geojson'],
       'ANIRO 7S': ['assets/VOBL_RWY27R/SID27R_VOBL/ANIRO7S/ANIRO7S_Point.geojson', 'assets/VOBL_RWY27R/SID27R_VOBL/ANIRO7S/ANIRO7S_Line.geojson', 'assets/RWY/VOBL_RWY27R.geojson'],
       'VAGPU 7B': ['assets/VOBL_RWY27R/SID27R_VOBL/VAGPU7B/VAGPU7B_Point.geojson', 'assets/VOBL_RWY27R/SID27R_VOBL/VAGPU7B/VAGPU7B_Line.geojson', 'assets/RWY/VOBL_RWY27R.geojson'],
-
       //VOBL_RWY27R star procedure
       'ADKAL 7F': ['assets/VOBL_RWY27R/STAR27R_VOBL/ADKAL7F/ADKAL7F_Point.geojson', 'assets/VOBL_RWY27R/STAR27R_VOBL/ADKAL7F/ADKAL7F_Line.geojson', 'assets/RWY/VOBL_RWY27R.geojson'],
       'GUNIM 7F': ['assets/VOBL_RWY27R/STAR27R_VOBL/GUNIM7F/GUNIM7F_Point.geojson', 'assets/VOBL_RWY27R/STAR27R_VOBL/GUNIM7F/GUNIM7F_Line.geojson', 'assets/RWY/VOBL_RWY27R.geojson'],
@@ -330,8 +329,7 @@ export class MapComponent implements OnInit {
       //VOBL_RWY27R APCh procedure
       'RNP_Y': ['assets/VOBL_RWY27R/APCH27R_VOBL/RNP_Y_RWY_27R_Point.geojson', 'assets/VOBL_RWY27R/APCH27R_VOBL/RNP_Y_RWY_27R_Line.geojson', 'assets/RWY/VOBL_RWY27R.geojson'],
       //VIJP_RWY09 sid procedures
-      'UKASO 1D': [
-        'assets/VIJP_RWY09/SID_RWY09/UKASO1D/UKASO1D_Point.geojson', 'assets/VIJP_RWY09/SID_RWY09/UKASO1D/UKASO1D_Line.geojson', 'assets/RWY/VIJP_RWY09.geojson'],
+      'UKASO 1D': ['assets/VIJP_RWY09/SID_RWY09/UKASO1D/UKASO1D_Point.geojson', 'assets/VIJP_RWY09/SID_RWY09/UKASO1D/UKASO1D_Line.geojson', 'assets/RWY/VIJP_RWY09.geojson'],
       'UXENI 1D': ['assets/VIJP_RWY09/SID_RWY09/UXENI1D/UXENI1D_Point.geojson', 'assets/VIJP_RWY09/SID_RWY09/UXENI1D/UXENI1D_Line.geojson', 'assets/RWY/VIJP_RWY09.geojson'],
       'GUDUM 1D': ['assets/VIJP_RWY09/SID_RWY09/GUDUM1D/GUDUM1D_1_Point.geojson', 'assets/VIJP_RWY09/SID_RWY09/GUDUM1D/GUDUM1D_1_Line.geojson', 'assets/RWY/VIJP_RWY09.geojson'],
       'NIKOT 1D': ['assets/VIJP_RWY09/SID_RWY09/NIKOT1D/NIKOT1D_Point.geojson', 'assets/VIJP_RWY09/SID_RWY09/NIKOT1D/NIKOT1D_Line.geojson', 'assets/RWY/VIJP_RWY09.geojson'],
@@ -400,7 +398,6 @@ export class MapComponent implements OnInit {
       //VOBL_RWY27L APCH procedures
       'RNP_Y_RWY27L': ['assets/VOBL_RW27L/VOBL_APCH27L/RNP_Y_RWY27L_Point.geojson', 'assets/VOBL_RW27L/VOBL_APCH27L/RNP_Y_RWY27L_Line.geojson', 'assets/RWY/VOBL_RWY27L.geojson'],
     };
-
     // Iterate over selected procedures and load them
     for (const procedureName in proceduresMap) {
       if (this.selectedProcedureName.includes(procedureName)) {
@@ -431,7 +428,7 @@ export class MapComponent implements OnInit {
   }
 
   watchAirportChanges(): void {
-   
+
     this.Airform.get('selectedAirport')?.valueChanges.subscribe((selectedAirport: string[]) => {
       // Clear all runway and procedure options when the selected airport changes
       this.optionsBengaluruKIARunway = [];
@@ -449,8 +446,8 @@ export class MapComponent implements OnInit {
           { value: '27L_RWY', label: 'RWY 27L' },
           { value: 'RWY 27R', label: 'RWY 27R' },
         ];
-          // Set view to Bengaluru
-      this.map.setView([12.9716, 77.5946], 12);
+        // Set view to Bengaluru
+        this.map.setView([13.206944,77.704167], 12);
       } else {
         this.optionsBengaluruKIARunway = [];
       }
@@ -459,11 +456,11 @@ export class MapComponent implements OnInit {
       if (selectedAirport.includes('VIJP/JAIPUR')) {
         // Show options for VIJP/JAIPUR
         this.optionsVIJPJAIPURRunway = [
-          { value: 'RWY_09', label: 'RWY_09' },
-          { value: 'RWY_27', label: 'RWY_27' },
+          { value: 'RWY_09', label: 'RWY_08' },
+          { value: 'RWY_27', label: 'RWY_26' },
         ];
-          // Set view to Jaipur
-      this.map.setView([26.9124, 75.7873], 12);
+        // Set view to Jaipur
+        this.map.setView([26.824167,75.812222], 12);
       } else {
         this.optionsVIJPJAIPURRunway = [];
       }
@@ -474,8 +471,8 @@ export class MapComponent implements OnInit {
           { value: 'RWY 02', label: 'RWY 02' },
           { value: 'RWY 20', label: 'RWY 20' },
         ];
-         // Set view to Pakyong
-      this.map.setView([27.3255, 88.6159], 12);
+        // Set view to Pakyong
+        this.map.setView([27.2394,88.5961], 12);
       } else {
         this.optionsVEPYPAKYONGRunway = [];
       }

@@ -1,10 +1,10 @@
 {
-    "type": "FeatureCollection",
-    "name": "Line_SID",
-    "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
-    "features": [
-{ "type": "Feature", "properties": { "Bearing": "106.99°", "Distance": "21.41" }, "geometry": { "type": "LineString", "coordinates": [ [ 75.98355, 26.7226917 ], [ 76.3639694, 26.6163722 ] ] } },
-{ "type": "Feature", "properties": { "Bearing": "132.79°", "Distance": "13.32" }, "geometry": { "type": "LineString", "coordinates": [ [ 76.3639694, 26.6163722 ], [ 76.5446667, 26.4641389 ] ] } },
-{ "type": "Feature", "properties": { "Bearing": "83.65°", "Distance": null }, "geometry": { "type": "LineString", "coordinates": [ [ 75.98355, 26.7226917 ], [ 75.8577235, 26.8976877 ] ] } }
+"type": "FeatureCollection",
+"name": "INTIL1D_Line",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "Bearing": "106.99°", "Distance": "21.41" }, "geometry": { "type": "MultiLineString", "coordinates": [ [ [ 75.98355, 26.72269167 ], [ 76.36396944, 26.61637222 ] ] ] } },
+{ "type": "Feature", "properties": { "Bearing": "132.79°", "Distance": "13.32" }, "geometry": { "type": "MultiLineString", "coordinates": [ [ [ 76.36396944, 26.61637222 ], [ 76.54466667, 26.46413889 ] ] ] } },
+{ "type": "Feature", "properties": { "Bearing": "83.65°", "Distance": null }, "geometry": { "type": "MultiLineString", "coordinates": [ [ [ 75.98355, 26.72269167 ], [ 75.846891033489584, 26.827524153200127 ] ] ] } }
 ]
 }
