@@ -1,6 +1,6 @@
 <div class="container-fluid">
     <div class="row">
-        <div class="col-sm-2 mt-4">
+        <div class="col-2 mt-4">
             <div class="container-fluid">
                 <a class="navbar-brand" href="https://www.cognitivenavigation.com">
                     <img src="https://www.cognitivenavigation.com/wp-content/uploads/2021/02/cropped-C_Name.png"
@@ -8,7 +8,7 @@
                 </a>
             </div>
             <form [formGroup]="Airform" autocomplete="on" novalidate class="d-flex-center">
-                <div class="example-container">
+                <div class="example-container mt-4">
 
                     <!--Select Airport -->
                     <div class="height-Top">
@@ -48,12 +48,13 @@
                                 </ng-container>
                             </mat-select>
                             <mat-icon matSuffix class="position">
-                                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAACA0lEQVR4nO2YTysFURjGfy4pO1mxYiFLWbBgQxILyso3sBGxUIrPoJCwUHZsLAiR76CUBRtX1/9YsVAoRkfvqdM0c407515z3fPU2505532fd545f94zFxwc/hSeWDHFBsIJwY3IN9zUCoNbIzHhJWnXSlRezwnBFcTETS13RMGNSDjc1IoJL0mLPVF5vVIXMgxcATfASAHzWiUcNOK0DRWjkBOJGQdG5fqkAHmtE75LTJWYJ21FJ8TzxdjgiA0nBLsvIzbciGD3ZcRGyY5IdxYh3XnMa42wFlg3/M+MvjOjfQOoS6KQcmAMeBK/F2AGqDR81PW09CmfZ2ACqIiR99fIRtgGHBk+u0ADUAZ0GH4d0lYPbBv+x0B7DnlzQhBhNbAMfEhfRg6KrcCsnHr9a+RS+pT4AeBC2hXHKlATIW8s+Am7gHvj/LQPzAHnASdeP4e2NDAP7AFv0vYI9BZSyKnRph9C2x2wkEWIevhbX4zJkSmkEL1gPeNNrgCdQCokxrxPie8S8ODj+sjCYV3Ionz1rQF9ITtP1IKodrweWSPX8vtTTM4o2cr+b4Q0GzEpMX3fkse81gjVfJ8EXn3bbNq4V31TP1T0PxeyFVAvwuzAYt7IiEqo/3BQ9gkcSgXvlwfXpwBt5ZbyRkZUwk0piKrKNwX0N8oRRRXEHYt5HRzIE74A2beFM/qxv+YAAAAASUVORK5CYII=">
+                                <img
+                                    src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAACA0lEQVR4nO2YTysFURjGfy4pO1mxYiFLWbBgQxILyso3sBGxUIrPoJCwUHZsLAiR76CUBRtX1/9YsVAoRkfvqdM0c407515z3fPU2505532fd545f94zFxwc/hSeWDHFBsIJwY3IN9zUCoNbIzHhJWnXSlRezwnBFcTETS13RMGNSDjc1IoJL0mLPVF5vVIXMgxcATfASAHzWiUcNOK0DRWjkBOJGQdG5fqkAHmtE75LTJWYJ21FJ8TzxdjgiA0nBLsvIzbciGD3ZcRGyY5IdxYh3XnMa42wFlg3/M+MvjOjfQOoS6KQcmAMeBK/F2AGqDR81PW09CmfZ2ACqIiR99fIRtgGHBk+u0ADUAZ0GH4d0lYPbBv+x0B7DnlzQhBhNbAMfEhfRg6KrcCsnHr9a+RS+pT4AeBC2hXHKlATIW8s+Am7gHvj/LQPzAHnASdeP4e2NDAP7AFv0vYI9BZSyKnRph9C2x2wkEWIevhbX4zJkSmkEL1gPeNNrgCdQCokxrxPie8S8ODj+sjCYV3Ionz1rQF9ITtP1IKodrweWSPX8vtTTM4o2cr+b4Q0GzEpMX3fkse81gjVfJ8EXn3bbNq4V31TP1T0PxeyFVAvwuzAYt7IiEqo/3BQ9gkcSgXvlwfXpwBt5ZbyRkZUwk0piKrKNwX0N8oRRRXEHYt5HRzIE74A2beFM/qxv+YAAAAASUVORK5CYII=">
                             </mat-icon>
                             <mat-hint>Select Runway</mat-hint>
                         </mat-form-field>
                     </div>
-                    
+
 
                     <!--Select Type of Procedure -->
                     <div class="height-Top">
@@ -91,27 +92,42 @@
                         </mat-form-field>
                     </div>
                 </div>
+
             </form>
-            <div class="d-grid gap-2 button-Top  mx-auto">
+
+            <div class="d-grid gap-2 button-Top">
+
+                <!-- <button (click)="changeLineColor('white')">White</button>
+                <button (click)="changeLineColor('black')">Black</button>
+                <button (click)="changeLineColor('blue')">Blue</button> -->
                 <button type="button" value="Export
                 GeoJSON" class="btn btn-outline-primary rounded-5 py-2 px-4">Export GeoJSON</button>
                 <span class="Exportting"></span>
-
                 <button type="button" value="Export CSV" class="btn btn-outline-primary rounded-5 py-2 px-4">Export
                     CSV</button>
                 <span class="Exportting"></span>
             </div>
         </div>
-        <div class="col-lg-10">
+        <div class="col-10">
             <div class="content">
                 <div class="map-container">
-                    <button class="live-location-button btn " style="color: blue;" type="button"
+                    <button class="live-location-button btn btn-outline-primary " type="button"
                         (click)="getLiveLocation()"><i class="bi bi-record-circle"></i></button>
 
-                    <!-- <button class="btn layer " style="color: blue;" type="button">
-                        <i class="bi bi-stack"></i></button> -->
-                    <!-- <button class="airplane btn " style="color: blue;" type="button">
-                        <i class="bi bi-airplane-engines"></i></button> -->
+                    <button class="White btn btn-outline-light"
+                        style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .70rem;"
+                        (click)="changeLineColor('white')" type="button">
+                        <i class="bi bi-palette"></i></button>
+                    <button class="black btn btn-outline-dark"
+                        style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .70rem;"
+                        (click)="changeLineColor('black')" type="button">
+                        <i class="bi bi-palette"></i></button>
+                    <button class="blue btn btn-outline-primary"
+                        style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .70rem;"
+                        (click)="changeLineColor('blue')" type="button">
+                        <i class="bi bi-palette"></i></button>
+
+
                     <button class=" btn circle " style="color: blue;" type="button">
                         <i class="bi bi-c-circle"></i></button>
 
@@ -119,7 +135,7 @@
                     <button class=" btn pentagon  " style="color: blue;" type="button">
                         <i class="bi bi-pentagon"></i></button>
 
-                    <button class=" btn triangle  " style="color: blue;" type="button"  (click)="loadFIR()">
+                    <button class=" btn triangle  " style="color: blue;" type="button" (click)="loadFIR()">
                         <i class="bi bi-triangle-fill"></i></button>
 
                     <button class=" btn  grid " style="color: blue;" type="button">

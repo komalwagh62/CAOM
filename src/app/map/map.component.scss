@@ -21,7 +21,7 @@ div.content {
 
 .live-location-button {
   position: absolute;
-  bottom: 112px;
+  bottom: 40px;
   /* Adjust this value as needed */
   left: 96.3%;
   /* Adjust this value as needed */
@@ -35,9 +35,9 @@ div.content {
 
 }
 
-.airplane {
+.black {
   position: absolute;
-  top: 10px;
+  top: 90px;
   left: 10px;
   z-index: 1000;
   background-color: white;
@@ -47,10 +47,21 @@ div.content {
   cursor: pointer;
 
 }
-
-.layer {
+.blue {
   position: absolute;
-  top: 60px;
+  top: 50px;
+  left: 10px;
+  z-index: 1000;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 50px;
+  padding: 5px 10px;
+  cursor: pointer;
+
+}
+.White {
+  position: absolute;
+  top: 10px;
   left: 10px;
   z-index: 1000;
   background-color: white;
@@ -114,7 +125,7 @@ mat-form-field {
 }
 
 .height-Top {
-  margin-top: 10%;
+  margin-top: 5%;
 }
 
 .button-Top {

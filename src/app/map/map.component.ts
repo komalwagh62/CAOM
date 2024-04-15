@@ -19,7 +19,8 @@ export class MapComponent implements OnInit {
   selectedRunway: string[] = [];
   selectedTypeofProcedure: string[] = [];
   selectedProcedureName: string[] = [];
-
+  private firLayer!: L.GeoJSON;
+  lineGeoJsonLayer!: L.GeoJSON;
   constructor(private formbuilder: FormBuilder,) { }
 
   optionsAirport: { value: any; label: any; }[] = [
@@ -60,11 +61,7 @@ export class MapComponent implements OnInit {
       subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
     });
 
-
-
-    const DarkMatter = L.tileLayer('  https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-      // subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
-    });
+    const DarkMatter = L.tileLayer('  https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {});
     const satellite = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {});
     const Navigation = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
       attribution: 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ',
@@ -102,7 +99,7 @@ export class MapComponent implements OnInit {
     // Add scale Control
     L.control.scale({ position: 'bottomright' }).addTo(this.map);
     // Add Zoom Control
-    L.control.zoom({}).addTo(this.map);
+    L.control.zoom({ position: 'topright' }).addTo(this.map);
     // Customize the position of the attribution control
     // Initialize LayerGroup for airports
     this.airportLayerGroup = L.layerGroup().addTo(this.map);
@@ -200,12 +197,14 @@ export class MapComponent implements OnInit {
 
         const lineFeatures = lineData.features; // Assuming lineData is your GeoJSON data
 
-        const lineGeoJsonLayer = L.geoJSON(lineData, {
+        this.lineGeoJsonLayer = L.geoJSON(lineData, {
           style: {
             color: 'black', // Set line color
             weight: 2 // Set line weight
           },
+
           onEachFeature: (feature, layer) => {
+
             const currentIndex = lineFeatures.indexOf(feature); // Get the index of the current feature
 
             if (feature.properties && feature.properties.Distance && feature.properties.Bearing) {
@@ -289,7 +288,7 @@ export class MapComponent implements OnInit {
           }
         });
 
-        this.airportLayerGroup.addLayer(lineGeoJsonLayer);
+        this.airportLayerGroup.addLayer(this.lineGeoJsonLayer);
       } catch (error) {
         console.error(`Error loading ${procedureName} SID procedure:`, error);
       }
@@ -461,8 +460,8 @@ export class MapComponent implements OnInit {
 
 
       const customIcon = L.icon({
-        iconUrl: 'assets/civil_aerodrome.png',
-        iconSize: [20, 30],
+        iconUrl: 'assets/airport.png',
+        iconSize: [30, 30],
         iconAnchor: [10, 30]
       });
 
@@ -767,13 +766,29 @@ export class MapComponent implements OnInit {
       }
     });
   }
-  
+
   loadFIR() {
-    // Add India FIR GeoJSON data
-    fetch('assets/India_FIR.geojson')
-      .then(response => response.json())
-      .then(data => {
-        L.geoJSON(data).addTo(this.map);
-      });
+    if (!this.firLayer) {
+      // Add India FIR GeoJSON data
+      fetch('assets/India_FIR.geojson')
+        .then(response => response.json())
+        .then(data => {
+          this.firLayer = L.geoJSON(data).addTo(this.map);
+        });
+    } else {
+      if (this.map.hasLayer(this.firLayer)) {
+        this.map.removeLayer(this.firLayer);
+      } else {
+        this.firLayer.addTo(this.map);
+      }
+    }
+  }
+  // Function to handle button click event
+  changeLineColor(color: string) {
+    // Check if lineGeoJsonLayer is initialized
+    if (this.lineGeoJsonLayer) {
+      // Set the new line color for the GeoJSON layer
+      this.lineGeoJsonLayer.setStyle({ color });
+    }
   }
 }
