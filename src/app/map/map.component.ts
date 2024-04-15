@@ -23,9 +23,9 @@ export class MapComponent implements OnInit {
   constructor(private formbuilder: FormBuilder,) { }
 
   optionsAirport: { value: any; label: any; }[] = [
-    { value: 'VOBL/Bengaluru (KIA)', label: 'VOBL/Bengaluru (KIA)' },
-    { value: 'VEPY/PAKYONG', label: 'VEPY/PAKYONG' },
-    { value: 'VIJP/JAIPUR', label: 'VIJP/JAIPUR'},
+    { value: 'VOBL/Bengaluru (KIA)', label: 'VOBL/BLR/Bengaluru' },
+    { value: 'VEPY/PAKYONG', label: 'VEPY/PYG/Pakyong' },
+    { value: 'VIJP/JAIPUR', label: 'VIJP/JAI/Jaipur' },
   ];
   optionsBengaluruKIARunway: { value: any; label: any; }[] = [];
   optionsVIJPJAIPURRunway: { value: any; label: any; }[] = [];
@@ -54,20 +54,43 @@ export class MapComponent implements OnInit {
   }
 
   initMap(): void {
-    this.map = L.map('map', { zoomControl: false, attributionControl: false }).setView([19.0760, 72.8777], 13,);
+    this.map = L.map('map', { zoomControl: false, attributionControl: false }).setView([20.5937, 78.9629], 4);
 
     const streets = L.tileLayer('https://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
       subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
+    });
+
+
+
+    const DarkMatter = L.tileLayer('  https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+      // subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
     });
     const satellite = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {});
     const Navigation = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
       attribution: 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ',
       maxZoom: 16
     });
+    const googleHybrid = L.tileLayer('http://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}', {
+      maxZoom: 20,
+      subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
+    });
+    const googleSat = L.tileLayer('http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {
+      maxZoom: 20,
+      subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
+    });
+    const googleTerrain = L.tileLayer('http://{s}.google.com/vt/lyrs=p&x={x}&y={y}&z={z}', {
+      maxZoom: 20,
+      subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
+    });
+
     const baseMaps = {
       'Streets': streets,
       'Satellite': satellite,
-      'Navigation': Navigation
+      'Navigation': Navigation,
+      'Hybrid': googleHybrid,
+      'Satellite google': googleSat,
+      'Terrain': googleTerrain,
+      'Dark': DarkMatter
     };
 
     const overlayMaps = {
@@ -75,11 +98,11 @@ export class MapComponent implements OnInit {
 
     L.control.layers(baseMaps, overlayMaps).addTo(this.map);
 
-    Navigation.addTo(this.map);
+    streets.addTo(this.map);
     // Add scale Control
     L.control.scale({ position: 'bottomright' }).addTo(this.map);
     // Add Zoom Control
-    L.control.zoom({ position: 'bottomright' }).addTo(this.map);
+    L.control.zoom({}).addTo(this.map);
     // Customize the position of the attribution control
     // Initialize LayerGroup for airports
     this.airportLayerGroup = L.layerGroup().addTo(this.map);
@@ -428,7 +451,6 @@ export class MapComponent implements OnInit {
   }
 
   watchAirportChanges(): void {
-
     this.Airform.get('selectedAirport')?.valueChanges.subscribe((selectedAirport: string[]) => {
       // Clear all runway and procedure options when the selected airport changes
       this.optionsBengaluruKIARunway = [];
@@ -438,8 +460,26 @@ export class MapComponent implements OnInit {
       this.selectedTypeofProcedure = [];
 
 
+      const customIcon = L.icon({
+        iconUrl: 'assets/civil_aerodrome.png',
+        iconSize: [20, 30],
+        iconAnchor: [10, 30]
+      });
+
+
+
       // Check if VOBL/Bengaluru (KIA) is selected
       if (selectedAirport.includes('VOBL/Bengaluru (KIA)')) {
+
+        this.airportLayerGroup.clearLayers(); // Remove all markers when no airport is selected
+
+        const marker = L.marker([13.198889, 77.705556], { icon: customIcon }).addTo(this.airportLayerGroup);
+
+
+        // Set the map view to the marker's position
+        this.map.setView([13.1979, 77.7063], 13);
+
+
         this.optionsBengaluruKIARunway = [
           { value: 'RWY 09L', label: 'RWY 09L' },
           { value: 'RWY_9R', label: 'RWY 09R' },
@@ -447,32 +487,43 @@ export class MapComponent implements OnInit {
           { value: 'RWY 27R', label: 'RWY 27R' },
         ];
         // Set view to Bengaluru
-        this.map.setView([13.206944,77.704167], 12);
+        this.map.setView([13.206944, 77.704167], 12);
       } else {
         this.optionsBengaluruKIARunway = [];
       }
 
       // Check if VIJP/JAIPUR is selected
       if (selectedAirport.includes('VIJP/JAIPUR')) {
+        const marker = L.marker([26.824167, 75.8025], { icon: customIcon }).addTo(this.airportLayerGroup);
+
+
+        // Set the map view to the marker's position
+        this.map.setView([23.071111, 72.626389], 13);
+
+
         // Show options for VIJP/JAIPUR
         this.optionsVIJPJAIPURRunway = [
           { value: 'RWY_09', label: 'RWY_08' },
           { value: 'RWY_27', label: 'RWY_26' },
         ];
         // Set view to Jaipur
-        this.map.setView([26.824167,75.812222], 12);
+        this.map.setView([26.824167, 75.812222], 12);
       } else {
         this.optionsVIJPJAIPURRunway = [];
       }
       // Check if VEPY/PAKYONG is selected
       if (selectedAirport.includes('VEPY/PAKYONG')) {
+        const marker = L.marker([27.225833, 88.585833], { icon: customIcon }).addTo(this.airportLayerGroup);
+
+        // Set the map view to the marker's position
+        this.map.setView([27.1333, 88.3509], 13);
         // Show options for VEPY/PAKYONG
         this.optionsVEPYPAKYONGRunway = [
           { value: 'RWY 02', label: 'RWY 02' },
           { value: 'RWY 20', label: 'RWY 20' },
         ];
         // Set view to Pakyong
-        this.map.setView([27.2394,88.5961], 12);
+        this.map.setView([27.2394, 88.5961], 12);
       } else {
         this.optionsVEPYPAKYONGRunway = [];
       }
@@ -715,5 +766,14 @@ export class MapComponent implements OnInit {
         this.optionsProcedureName = filteredOptions;
       }
     });
+  }
+  
+  loadFIR() {
+    // Add India FIR GeoJSON data
+    fetch('assets/India_FIR.geojson')
+      .then(response => response.json())
+      .then(data => {
+        L.geoJSON(data).addTo(this.map);
+      });
   }
 }

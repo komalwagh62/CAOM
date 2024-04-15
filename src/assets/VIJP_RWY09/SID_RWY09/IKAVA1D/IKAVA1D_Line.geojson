@@ -5,6 +5,7 @@
 "features": [
 { "type": "Feature", "properties": { "Bearing": "159.05°", "Distance": "21.63" }, "geometry": { "type": "MultiLineString", "coordinates": [ [ [ 75.98355, 26.72269167 ], [ 76.12498889, 26.38426667 ] ] ] } },
 { "type": "Feature", "properties": { "Bearing": "152.41°", "Distance": "32.27" }, "geometry": { "type": "MultiLineString", "coordinates": [ [ [ 76.12498889, 26.38426667 ], [ 76.39886111, 25.90475 ] ] ] } },
-{ "type": "Feature", "properties": { "Bearing": "83.65°", "Distance": null }, "geometry": { "type": "MultiLineString", "coordinates": [ [ [ 75.98355, 26.72269167 ], [ 75.846891033489584, 26.827524153200127 ] ] ] } }
+{ "type": "Feature", "properties": { "Bearing": "", "Distance": null }, "geometry": { "type": "MultiLineString", "coordinates": [ [ [ 75.98355, 26.72269167 ], [ 75.846891033489584, 26.827524153200127 ] ] ] } },
+{ "type": "Feature", "properties": { "Bearing": "83.65°", "Distance": null }, "geometry": { "type": "MultiLineString", "coordinates": [ [ [ 75.846891033489584, 26.827524153200127 ], [ 75.79928333, 26.82302222 ] ] ] } }
 ]
 }

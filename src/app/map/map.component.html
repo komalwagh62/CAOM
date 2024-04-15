@@ -15,7 +15,6 @@
                         <mat-form-field appearance="outline">
                             <mat-label>Airport</mat-label>
                             <mat-select formControlName="selectedAirport" [(ngModel)]="selectedAirport">
-                                <mat-option>--</mat-option>
                                 <mat-option *ngFor="let option of optionsAirport" [value]="option.value">
                                     {{ option.label }}
                                 </mat-option>
@@ -109,10 +108,10 @@
                     <button class="live-location-button btn " style="color: blue;" type="button"
                         (click)="getLiveLocation()"><i class="bi bi-record-circle"></i></button>
 
-                    <button class="btn layer " style="color: blue;" type="button">
-                        <i class="bi bi-stack"></i></button>
-                    <button class="airplane btn " style="color: blue;" type="button">
-                        <i class="bi bi-airplane-engines"></i></button>
+                    <!-- <button class="btn layer " style="color: blue;" type="button">
+                        <i class="bi bi-stack"></i></button> -->
+                    <!-- <button class="airplane btn " style="color: blue;" type="button">
+                        <i class="bi bi-airplane-engines"></i></button> -->
                     <button class=" btn circle " style="color: blue;" type="button">
                         <i class="bi bi-c-circle"></i></button>
 
@@ -120,7 +119,7 @@
                     <button class=" btn pentagon  " style="color: blue;" type="button">
                         <i class="bi bi-pentagon"></i></button>
 
-                    <button class=" btn triangle  " style="color: blue;" type="button">
+                    <button class=" btn triangle  " style="color: blue;" type="button"  (click)="loadFIR()">
                         <i class="bi bi-triangle-fill"></i></button>
 
                     <button class=" btn  grid " style="color: blue;" type="button">

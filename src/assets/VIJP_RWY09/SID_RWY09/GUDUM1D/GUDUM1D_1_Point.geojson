@@ -6,7 +6,6 @@
     { "type": "Feature", "properties": { "Name": "GUDUM", "Altitude": "+FL110", "Speed": null }, "geometry": { "type": "Point", "coordinates": [ 75.47241667, 25.96686111 ] } },
     { "type": "Feature", "properties": { "Name": "JP004", "Altitude": null, "Speed": null }, "geometry": { "type": "Point", "coordinates": [ 75.98355, 26.72269167 ] } },
     { "type": "Feature", "properties": { "Name": "JP430", "Altitude": "-FL090", "Speed": null }, "geometry": { "type": "Point", "coordinates": [ 75.58799722, 26.14641944 ] } },
-    { "type": "Feature", "properties": { "Name": null, "Altitude": "+2000", "Speed": null }, "geometry": { "type": "Point", "coordinates": [ 75.859086304981474, 26.902437864527613 ] } }
+    { "type": "Feature", "properties": { "Name": null, "Altitude": "+2000", "Speed": null }, "geometry": { "type": "Point", "coordinates": [ 75.846891033489584, 26.827524153200127 ] } }
     ]
     }
-    
