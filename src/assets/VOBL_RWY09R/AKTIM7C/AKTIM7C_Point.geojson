@@ -9,6 +9,6 @@
 { "type": "Feature", "properties": { "Name": "BL404", "Altitude": "-FL110", "Speed": null }, "geometry": { "type": "Point", "coordinates": [ 77.70667778, 13.01280833 ] } },
 { "type": "Feature", "properties": { "Name": "OMUKA", "Altitude": null, "Speed": null }, "geometry": { "type": "Point", "coordinates": [ 77.64480833, 12.54231944 ] } },
 { "type": "Feature", "properties": { "Name": "AKTIM", "Altitude": null, "Speed": null }, "geometry": { "type": "Point", "coordinates": [ 77.58271111, 12.06109444 ] } },
-{ "type": "Feature", "properties": { "Name": null, "Altitude": "+3400", "Speed": null }, "geometry": { "type": "Point", "coordinates": [ 77.725936032644597, 13.202809095518573 ] } }
+{ "type": "Feature", "properties": { "Name": null, "Altitude": "+3400", "Speed": null }, "geometry": { "type": "Point", "coordinates": [ 77.731476202654818, 13.18911013409928 ] } }
 ]
 }

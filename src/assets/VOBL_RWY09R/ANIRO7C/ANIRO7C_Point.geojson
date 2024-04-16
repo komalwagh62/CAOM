@@ -7,6 +7,6 @@
 { "type": "Feature", "properties": { "Name": "BL402", "Altitude": "+7000", "Speed": null }, "geometry": { "type": "Point", "coordinates": [ 77.91941944, 13.20507778 ] } },
 { "type": "Feature", "properties": { "Name": "LIGLO", "Altitude": "-FL110", "Speed": null }, "geometry": { "type": "Point", "coordinates": [ 78.10125, 13.55610556 ] } },
 { "type": "Feature", "properties": { "Name": "ANIRO", "Altitude": null, "Speed": null }, "geometry": { "type": "Point", "coordinates": [ 78.60838889, 14.03604444 ] } },
-{ "type": "Feature", "properties": { "Name": null, "Altitude": "+3400", "Speed": null }, "geometry": { "type": "Point", "coordinates": [ 77.725936032644597, 13.202809095518573 ] } }
+{ "type": "Feature", "properties": { "Name": null, "Altitude": "+3400", "Speed": null }, "geometry": { "type": "Point", "coordinates": [ 77.731476202654818, 13.18911013409928 ] } }
 ]
 }

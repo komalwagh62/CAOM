@@ -8,6 +8,6 @@
 { "type": "Feature", "properties": { "Name": "BL701", "Altitude": null, "Speed": null }, "geometry": { "type": "Point", "coordinates": [ 77.92057778, 13.322225 ] } },
 { "type": "Feature", "properties": { "Name": "BL406", "Altitude": "-FL110", "Speed": null }, "geometry": { "type": "Point", "coordinates": [ 77.78241667, 13.56040833 ] } },
 { "type": "Feature", "properties": { "Name": "SAI", "Altitude": null, "Speed": null }, "geometry": { "type": "Point", "coordinates": [ 77.78472222, 14.15000278 ] } },
-{ "type": "Feature", "properties": { "Name": null, "Altitude": "+3400", "Speed": null }, "geometry": { "type": "Point", "coordinates": [ 77.725936032644597, 13.202809095518573 ] } }
+{ "type": "Feature", "properties": { "Name": null, "Altitude": "+3400", "Speed": null }, "geometry": { "type": "Point", "coordinates": [ 77.731476202654832, 13.18911013409928 ] } }
 ]
 }

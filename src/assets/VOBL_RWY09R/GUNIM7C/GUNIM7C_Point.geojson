@@ -10,6 +10,6 @@
 { "type": "Feature", "properties": { "Name": "BL703", "Altitude": "+FL150", "Speed": null }, "geometry": { "type": "Point", "coordinates": [ 77.480375, 13.56040833 ] } },
 { "type": "Feature", "properties": { "Name": "BL407", "Altitude": null, "Speed": null }, "geometry": { "type": "Point", "coordinates": [ 76.62485833, 13.65310833 ] } },
 { "type": "Feature", "properties": { "Name": "GUNIM", "Altitude": null, "Speed": null }, "geometry": { "type": "Point", "coordinates": [ 75.53569444, 14.08563889 ] } },
-{ "type": "Feature", "properties": { "Name": null, "Altitude": "+3400", "Speed": null }, "geometry": { "type": "Point", "coordinates": [ 77.725936032644597, 13.202809095518573 ] } }
+{ "type": "Feature", "properties": { "Name": null, "Altitude": "+3400", "Speed": null }, "geometry": { "type": "Point", "coordinates": [ 77.731476202654832, 13.18911013409928 ] } }
 ]
 }

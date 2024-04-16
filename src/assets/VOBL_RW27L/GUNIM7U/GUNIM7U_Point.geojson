@@ -9,6 +9,6 @@
 { "type": "Feature", "properties": { "Name": "BL814", "Altitude": "+7000", "Speed": null }, "geometry": { "type": "Point", "coordinates": [ 77.43951111, 13.20229167 ] } },
 { "type": "Feature", "properties": { "Name": "BL815", "Altitude": null, "Speed": null }, "geometry": { "type": "Point", "coordinates": [ 77.44089444, 13.37636389 ] } },
 { "type": "Feature", "properties": { "Name": "OPAMO", "Altitude": null, "Speed": null }, "geometry": { "type": "Point", "coordinates": [ 77.09052778, 14.59294444 ] } },
-{ "type": "Feature", "properties": { "Name": null, "Altitude": "+3400", "Speed": null }, "geometry": { "type": "Point", "coordinates": [ 77.674295192405154, 13.192092959051196 ] } }
+{ "type": "Feature", "properties": { "Name": null, "Altitude": "+3400", "Speed": null }, "geometry": { "type": "Point", "coordinates": [ 77.674436747328386, 13.189992705228441 ] } }
 ]
 }

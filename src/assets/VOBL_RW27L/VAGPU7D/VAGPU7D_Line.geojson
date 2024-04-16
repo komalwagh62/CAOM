@@ -8,6 +8,7 @@
 { "type": "Feature", "properties": { "Bearing": "54.39°", "Distance": "14.50" }, "geometry": { "type": "MultiLineString", "coordinates": [ [ [ 77.44089444, 13.37636389 ], [ 77.63773333, 13.52399722 ] ] ] } },
 { "type": "Feature", "properties": { "Bearing": "335.21°", "Distance": "71.39" }, "geometry": { "type": "MultiLineString", "coordinates": [ [ [ 77.63773333, 13.52399722 ], [ 77.09052778, 14.59294444 ] ] ] } },
 { "type": "Feature", "properties": { "Bearing": "342.17°", "Distance": "69.79" }, "geometry": { "type": "MultiLineString", "coordinates": [ [ [ 77.09052778, 14.59294444 ], [ 76.68694444, 15.69333333 ] ] ] } },
-{ "type": "Feature", "properties": { "Bearing": "272.33°", "Distance": null }, "geometry": { "type": "MultiLineString", "coordinates": [ [ [ 77.61467222, 13.20089722 ], [ 77.674291205440355, 13.1920423040886 ] ] ] } }
+{ "type": "Feature", "properties": { "Bearing": "", "Distance": null }, "geometry": { "type": "MultiLineString", "coordinates": [ [ [ 77.61467222, 13.20089722 ], [ 77.6744367473284, 13.189992705228441 ] ] ] } },
+{ "type": "Feature", "properties": { "Bearing": "272.33°", "Distance": null }, "geometry": { "type": "MultiLineString", "coordinates": [ [ [ 77.6744367473284, 13.189992705228439 ], [ 77.72687222, 13.18941389 ] ] ] } }
 ]
 }
