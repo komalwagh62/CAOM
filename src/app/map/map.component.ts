@@ -22,13 +22,14 @@ export class MapComponent implements OnInit {
   private firLayer!: L.GeoJSON;
   lineGeoJsonLayer!: L.GeoJSON;
   geoJsonLayer!: L.GeoJSON;
+  map!: L.Map;
+  airportLayerGroup!: any;
+  private geoServerLayer!: L.TileLayer.WMS;
   constructor(private formbuilder: FormBuilder,) { }
-
   optionsAirport: { value: any; label: any; }[] = [
     { value: 'VOBL/Bengaluru (KIA)', label: 'VOBL/BLR/Bengaluru' },
     { value: 'VEPY/PAKYONG', label: 'VEPY/PYG/Pakyong' },
-    { value: 'VIJP/JAIPUR', label: 'VIJP/JAI/Jaipur' },
-  ];
+    { value: 'VIJP/JAIPUR', label: 'VIJP/JAI/Jaipur' },];
   optionsBengaluruKIARunway: { value: any; label: any; }[] = [];
   optionsVIJPJAIPURRunway: { value: any; label: any; }[] = [];
   optionsVEPYPAKYONGRunway: { value: any; label: any; }[] = [];
@@ -41,9 +42,6 @@ export class MapComponent implements OnInit {
   optionsVEPYTypeofProcedure: { value: any; label: any; }[] = [];
   optionsProcedureName: { value: any; label: any; }[] = [];
 
-  map!: L.Map;
-  airportLayerGroup!: L.LayerGroup;
-
   ngOnInit(): void {
     this.Airform = this.formbuilder.group({
       selectedAirport: [[]],
@@ -54,14 +52,11 @@ export class MapComponent implements OnInit {
     this.initMap();
     this.watchAirportChanges();
   }
-
   initMap(): void {
     this.map = L.map('map', { zoomControl: false, attributionControl: false }).setView([20.5937, 78.9629], 4);
-
     const streets = L.tileLayer('https://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
       subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
     });
-
     const DarkMatter = L.tileLayer('  https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {});
     const satellite = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {});
     const Navigation = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
@@ -90,19 +85,12 @@ export class MapComponent implements OnInit {
       'Terrain': googleTerrain,
       'Dark': DarkMatter
     };
-
     const overlayMaps = {
     };
-
     L.control.layers(baseMaps, overlayMaps).addTo(this.map);
-
     streets.addTo(this.map);
-    // Add scale Control
     L.control.scale({ position: 'bottomright' }).addTo(this.map);
-    // Add Zoom Control
     L.control.zoom({ position: 'topright' }).addTo(this.map);
-    // Customize the position of the attribution control
-    // Initialize LayerGroup for airports
     this.airportLayerGroup = L.layerGroup().addTo(this.map);
   }
 
@@ -195,23 +183,23 @@ export class MapComponent implements OnInit {
         // Load Line_SID GeoJSON data
         const lineResponse = await fetch(lineFileName);
         const lineData = await lineResponse.json();
-        
+
         const lineFeatures = lineData.features; // Assuming lineData is your GeoJSON data
-        
+
         this.lineGeoJsonLayer = L.geoJSON(lineData, {
           style: {
             color: 'black', // Set line color
             weight: 2 // Set line weight
           },
-        
+
           onEachFeature: (feature, layer) => {
-        
+
             const currentIndex = lineFeatures.indexOf(feature); // Get the index of the current feature
-        
+
             if (feature.properties) {
               const bearing = feature.properties.Bearing;
               const distance = feature.properties.Distance;
-        
+
               // Check if either Bearing or Distance is available
               if (bearing !== null || distance !== null) {
                 // Get the coordinates of the line
@@ -221,80 +209,95 @@ export class MapComponent implements OnInit {
                 } else if (feature.geometry.type === 'LineString') {
                   coordinates = feature.geometry.coordinates;
                 }
-        
+
                 const start = coordinates[0];
                 const end = coordinates[1];
-        
+
                 // Calculate the angle between start and end points in radians
                 let angle = Math.atan2(end[1] - start[1], end[0] - start[0]);
-        
+
                 // Ensure angle is positive
                 if (angle < 0) {
                   angle += 2 * Math.PI;
                 }
-        
+
                 // Calculate the center point of the line segment
                 const center = [(start[0] + end[0]) / 2, (start[1] + end[1]) / 2];
-        
-                // Create a custom icon
-                const customIcon = L.icon({
-                  iconUrl: 'assets/AKTIM_7A/penta1.png',
-                  iconSize: [20, 20],
-                  iconAnchor: [10, 0]
-                });
-        
-                // Calculate the rotation angle in degrees for the icon
-                let iconRotationAngle = parseFloat(bearing);
-        
-                // If current bearing is null, use the next bearing value
-                if (isNaN(iconRotationAngle)) {
-                  const nextIndex = currentIndex + 1;
-                  if (nextIndex < lineFeatures.length) {
-                    const nextFeature = lineFeatures[nextIndex];
-                    if (nextFeature.properties && nextFeature.properties.Bearing) {
-                      iconRotationAngle = parseFloat(nextFeature.properties.Bearing);
+
+                let rotationAngle; // Declare rotationAngle variable here
+
+                if (distance !== null) {
+                  // Create a custom icon
+                  const customIcon = L.icon({
+                    iconUrl: 'assets/AKTIM_7A/penta.png',
+                    iconSize: [44, 36],
+                    iconAnchor: [20, 19]
+                  });
+
+                  // Calculate the rotation angle in degrees for the icon
+                  let iconRotationAngle = parseFloat(bearing);
+
+                  // If current bearing is null, use the next bearing value
+                  if (isNaN(iconRotationAngle)) {
+                    const nextIndex = currentIndex + 1;
+                    if (nextIndex < lineFeatures.length) {
+                      const nextFeature = lineFeatures[nextIndex];
+                      if (nextFeature.properties && nextFeature.properties.Bearing) {
+                        iconRotationAngle = parseFloat(nextFeature.properties.Bearing);
+                      }
                     }
                   }
-                }
-        
-                // Create a marker with a custom icon at the center point and rotation
-                const marker = L.marker(L.latLng(center[1], center[0]), {
-                  icon: customIcon,
-                  rotationAngle: iconRotationAngle // Set rotation angle based on line direction or bearing
-                }).addTo(this.airportLayerGroup);
-        
-                // Calculate the rotation angle for the distance text relative to the line direction
-                let rotationAngle;
-                if (iconRotationAngle !== null) {
-                  if (iconRotationAngle >= 0 && iconRotationAngle < 180) {
-                    // Angle between 0 and 180 degrees
-                    rotationAngle = iconRotationAngle - 90;
+
+                  // Create a marker with a custom icon at the center point and rotation
+                  const marker = L.marker(L.latLng(center[1], center[0]), {
+                    icon: customIcon,
+                    rotationAngle: iconRotationAngle // Set rotation angle based on line direction or bearing
+                  }).addTo(this.airportLayerGroup);
+
+                  // Calculate the rotation angle for the distance text relative to the line direction
+                  if (iconRotationAngle !== null) {
+                    if (iconRotationAngle >= 0 && iconRotationAngle < 180) {
+                      // Angle between 0 and 180 degrees
+                      rotationAngle = iconRotationAngle - 90;
+                    } else {
+                      // Angle between 180 and 360 degrees
+                      rotationAngle = iconRotationAngle + 90;
+                    }
                   } else {
-                    // Angle between 180 and 360 degrees
-                    rotationAngle = iconRotationAngle + 90;
+                    // Default rotation angle if iconRotationAngle is null
+                    rotationAngle = angle * (180 / Math.PI) - 90;
                   }
-                } else {
-                  // Default rotation angle if iconRotationAngle is null
-                  rotationAngle = angle * (180 / Math.PI) - 90;
+
+                  // Bind tooltip with distance text to the marker, rotate dynamically based on the line direction
+                  const distanceTooltip = `<div style="transform: rotate(${rotationAngle}deg); font-size: 8px;">${feature.properties.Distance}</div>`;
+                  marker.bindTooltip(distanceTooltip, {
+                    permanent: true,
+                    direction: 'center',
+                    className: 'labelstyle',
+                    opacity: 1
+                  });
                 }
-        
-                // Bind tooltip with direction information to the marker
-                const tooltipContent = `<div style="transform: rotate(${rotationAngle}deg);">
-                ${distance !== null ? distance + '<br>' : ''}${bearing !== null ? bearing : ''}</div>`;
-                marker.bindTooltip(tooltipContent, {
-                  permanent: true,
-                  direction: 'center',
-                  className: 'labelstyle',
-                  opacity: 1
-                });
+
+                if (bearing !== null) {
+                  // Add bearing text outside the icon
+                  const bearingMarker = L.marker(L.latLng(center[1], center[0]), {
+                    rotationAngle: rotationAngle, // Set rotation angle
+                    icon: L.divIcon({
+                      className: 'bearing-label', // Custom CSS class for styling
+                      html: `<div style="font-size: 8px;">${feature.properties.Bearing}</div>`, // HTML content for the bearing text
+                      iconAnchor: [10, 20] // Adjust the icon anchor to shift the bearing text above by 20 pixels
+                    })
+                  }).addTo(this.airportLayerGroup);
+                }
               }
+
             }
           }
         });
-        
+
         this.airportLayerGroup.addLayer(this.lineGeoJsonLayer);
-        
-        
+
+
       } catch (error) {
         console.error(`Error loading ${procedureName} SID procedure:`, error);
       }
@@ -779,6 +782,8 @@ export class MapComponent implements OnInit {
       fetch('assets/India_FIR.geojson')
         .then(response => response.json())
         .then(data => {
+          this.airportLayerGroup.clearLayers();
+
           this.firLayer = L.geoJSON(data).addTo(this.map);
         });
     } else {
@@ -786,15 +791,31 @@ export class MapComponent implements OnInit {
         this.map.removeLayer(this.firLayer);
       } else {
         this.firLayer.addTo(this.map);
+
       }
     }
   }
-  // Function to handle button click event
+
+  loadwaypoint() {
+    if (!this.geoServerLayer) {
+      this.geoServerLayer = L.tileLayer.wms(
+        'http://localhost:8080/geoserver/CANS/wms', {
+        layers: 'waypoint',
+        format: 'image/png',
+        transparent: true,
+      } );
+      this.airportLayerGroup.clearLayers();
+      this.geoServerLayer.addTo(this.map);
+    } else {
+      if (this.map.hasLayer(this.geoServerLayer)) {
+        this.map.removeLayer(this.geoServerLayer);
+      } else {
+        this.geoServerLayer.addTo(this.map);
+      }
+    }
+  }
   changeLineColor(color: string) {
-
     this.lineGeoJsonLayer.setStyle({ color });
-
-    this.geoJsonLayer.setStyle({ color });
-
+    this.airportLayerGroup.setStyle({ color });
   }
 }
