@@ -1,19 +1,3 @@
-div.content {
-  // margin-left: 200px;
-  padding: 1px 2px;
-  height: 100%;
-}
-
-@media screen and (max-width: 400px) {
-
-  div.content {
-    margin-left: 0;
-  }
-}
-
-
-
-/* map.component.scss */
 
 .map-container {
   position: relative;
@@ -21,7 +5,7 @@ div.content {
 
 .live-location-button {
   position: absolute;
-  bottom: 40px;
+  bottom: 100px;
   /* Adjust this value as needed */
   left: 96.3%;
   /* Adjust this value as needed */
@@ -32,12 +16,11 @@ div.content {
   border-radius: 50px;
   padding: 5px 10px;
   cursor: pointer;
-
 }
 
 .black {
   position: absolute;
-  top: 90px;
+  top: 200px;
   left: 10px;
   z-index: 1000;
   background-color: white;
@@ -45,11 +28,10 @@ div.content {
   border-radius: 50px;
   padding: 5px 10px;
   cursor: pointer;
-
 }
 .blue {
   position: absolute;
-  top: 50px;
+  top: 155px;
   left: 10px;
   z-index: 1000;
   background-color: white;
@@ -57,11 +39,10 @@ div.content {
   border-radius: 50px;
   padding: 5px 10px;
   cursor: pointer;
-
 }
 .White {
   position: absolute;
-  top: 10px;
+  top: 110px;
   left: 10px;
   z-index: 1000;
   background-color: white;
@@ -71,9 +52,20 @@ div.content {
   cursor: pointer;
 }
 
+.airplane {
+  position: absolute;
+  top: 65px;
+  left: 10px;
+  z-index: 1000;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 50px;
+  padding: 5px 10px;
+  cursor: pointer;
+}
 .circle {
   position: absolute;
-  bottom: 45px;
+  bottom: 135px;
   left: 10px;
   z-index: 1000;
   background-color: white;
@@ -85,6 +77,30 @@ div.content {
 
 .pentagon {
   position: absolute;
+  bottom: 225px;
+  left: 10px;
+  z-index: 1000;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 50px;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.Vortac {
+  position: absolute;
+  bottom: 180px;
+  left: 10px;
+  z-index: 1000;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 50px;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.Restricted_Airspace {
+  position: absolute;
   bottom: 90px;
   left: 10px;
   z-index: 1000;
@@ -95,10 +111,20 @@ div.content {
   cursor: pointer;
 }
 
-
+.Obstacle {
+  position: absolute;
+  bottom: 45px;
+  left: 10px;
+  z-index: 1000;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 50px;
+  padding: 5px 10px;
+  cursor: pointer;
+}
 .triangle {
   position: absolute;
-  bottom: 135px;
+  bottom: 270px;
   left: 10px;
   z-index: 1000;
   background-color: white;
@@ -119,6 +145,27 @@ div.content {
   padding: 5px 10px;
   cursor: pointer;
 }
+.btn {
+  display: inline-block;
+  padding: 0; /* Remove padding */
+  cursor: pointer;
+}
+.icon-container {
+  width: 40px; /* Adjust width to desired size */
+  height: 40px; /* Adjust height to desired size */
+  border-radius: 0; /* Ensure border-radius is set to 0 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden; /* Ensure the image does not overflow the container */
+}
+
+.icon-container img {
+  width: 100%; /* Ensure the icon fills the square container */
+  height: 100%; /* Ensure the icon fills the square container */
+  object-fit: cover; /* Maintain aspect ratio and cover the container */
+}
+
 
 mat-form-field {
   width: 100%;

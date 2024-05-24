@@ -52,25 +52,32 @@ export class MapComponent implements OnInit {
     this.initMap();
     this.watchAirportChanges();
   }
-  initMap(): void {
+  private initMap(): void {
     this.map = L.map('map', { zoomControl: false, attributionControl: false }).setView([20.5937, 78.9629], 4);
+
     const streets = L.tileLayer('https://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
       subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
     });
-    const DarkMatter = L.tileLayer('  https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {});
+
+    const darkMatter = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {});
+
     const satellite = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {});
-    const Navigation = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
+
+    const navigation = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
       attribution: 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ',
       maxZoom: 16
     });
+
     const googleHybrid = L.tileLayer('http://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}', {
       maxZoom: 20,
       subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
     });
+
     const googleSat = L.tileLayer('http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {
       maxZoom: 20,
       subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
     });
+
     const googleTerrain = L.tileLayer('http://{s}.google.com/vt/lyrs=p&x={x}&y={y}&z={z}', {
       maxZoom: 20,
       subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
@@ -79,18 +86,20 @@ export class MapComponent implements OnInit {
     const baseMaps = {
       'Streets': streets,
       'Satellite': satellite,
-      'Navigation': Navigation,
+      'Navigation': navigation,
       'Hybrid': googleHybrid,
-      'Satellite google': googleSat,
+      'Satellite Google': googleSat,
       'Terrain': googleTerrain,
-      'Dark': DarkMatter
+      'Dark': darkMatter
     };
-    const overlayMaps = {
-    };
-    L.control.layers(baseMaps, overlayMaps).addTo(this.map);
+
+    const overlayMaps = {};
+
+    L.control.layers(baseMaps, overlayMaps ,{ position: 'topleft' }).addTo(this.map);
     streets.addTo(this.map);
-    L.control.scale({ position: 'bottomright' }).addTo(this.map);
-    L.control.zoom({ position: 'topright' }).addTo(this.map);
+    L.control.scale({ position: 'bottomright', metric: false  }).addTo(this.map);
+    L.control.zoom({ position: 'bottomright' }).addTo(this.map);
+
     this.airportLayerGroup = L.layerGroup().addTo(this.map);
   }
 
@@ -803,7 +812,7 @@ export class MapComponent implements OnInit {
         layers: 'waypoint',
         format: 'image/png',
         transparent: true,
-      } );
+      });
       this.airportLayerGroup.clearLayers();
       this.geoServerLayer.addTo(this.map);
     } else {
