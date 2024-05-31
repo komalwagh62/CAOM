@@ -112,15 +112,30 @@
             <div class="content">
                 <div class="map-container">
 
+                    <div class="top-right-buttons">
+
+                        <select class="form-select form-select-sm" aria-label="Default select example">
+                            <option selected>AIRAC 2402</option>
+                            <option value="1">AIRAC 2403</option>
+                            <option value="2">AIRAC 2404</option>
+                            <option value="3">AIRAC 2405</option>
+                        </select>
+                        <input type="search" class="btn " id="site-search" name="q" placeholder="Search" />
+                        <button class="btn btn btn-outline-primary" type="button"><i class="bi bi-search"></i></button>
+                        <button class="btn btn btn-outline-primary" type="button"><i class="bi bi-bell"></i></button>
+                        <button class="btn btn btn-outline-primary" type="button"><i
+                                class="bi bi-person-gear"></i></button>
+                    </div>
                     <!-- Other buttons -->
-                
-                    <button class="live-location-button btn btn-outline-primary" type="button" (click)="getLiveLocation()">
+
+                    <button class="live-location-button btn btn-outline-primary" type="button"
+                        (click)="getLiveLocation()">
                         <div class="icon-container">
                             <i class="bi bi-record-circle"></i>
                         </div>
                     </button>
-                
-                    <button class="btn airplane"  style="color: blue;"  type="button">
+
+                    <button class="btn airplane" style="color: blue;" type="button">
                         <div class="icon-container">
                             <i class="bi bi-airplane"></i>
                         </div>
@@ -143,29 +158,31 @@
                             <i class="bi bi-palette"></i>
                         </div>
                     </button> -->
-                
+
                     <button class="btn circle" style="color: blue;" type="button">
                         <div class="icon-container">
-                            <img src="assets/CA.png" style="height: 25px; width: 30px;" alt="Restricted_Airspace" srcset="">
+                            <img src="assets/CA.png" style="height: 25px; width: 30px;" alt="Restricted_Airspace"
+                                srcset="">
 
                         </div>
                     </button>
-                
+
                     <button class="btn pentagon" style="color: blue;" type="button" (click)="loadwaypoint()">
                         <div class="icon-container">
                             <i class="bi bi-triangle-fill"></i>
                         </div>
                     </button>
-                
+
                     <button class="btn triangle" style="color: blue;" type="button" (click)="loadFIR()">
                         <div class="icon-container">
                             <i class="bi bi-pentagon"></i>
                         </div>
                     </button>
-                
+
                     <button class="btn Vortac" style="color: blue;" type="button">
                         <div class="icon-container">
-                            <svg data-name="Layer 1" height="30" width="20" id="Layer_1" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+                            <svg data-name="Layer 1" height="30" width="20" id="Layer_1" viewBox="0 0 32 32"
+                                xmlns="http://www.w3.org/2000/svg">
                                 <defs>
                                     <style>
                                         .cls-1 {
@@ -174,35 +191,40 @@
                                     </style>
                                 </defs>
                                 <circle cx="16" cy="14" r="2" fill="blue" />
-                                <path d="M29.8682,10.5039l-4-7a.9992.9992,0,0,0-1.3828-.3613L19.7231,6H12.2769L7.5146,3.1426a.9992.9992,0,0,0-1.3828.3613l-4,7a1,1,0,0,0,.3536,1.3535l4.7758,2.8657L11,21.2656V27a1,1,0,0,0,1,1h8a1,1,0,0,0,1-1V21.2656l3.7388-6.5425,4.7758-2.8657A1,1,0,0,0,29.8682,10.5039ZM18.8484,21H13.1516L8.5757,12.9922,11.4287,8h9.1426l2.853,4.9922Z" transform="translate(0 0)" fill="blue" />
-                                <rect class="cls-1" data-name="&lt;Transparent Rectangle&gt;" height="32" id="_Transparent_Rectangle_" transform="translate(32 32) rotate(-180)" width="32" />
+                                <path
+                                    d="M29.8682,10.5039l-4-7a.9992.9992,0,0,0-1.3828-.3613L19.7231,6H12.2769L7.5146,3.1426a.9992.9992,0,0,0-1.3828.3613l-4,7a1,1,0,0,0,.3536,1.3535l4.7758,2.8657L11,21.2656V27a1,1,0,0,0,1,1h8a1,1,0,0,0,1-1V21.2656l3.7388-6.5425,4.7758-2.8657A1,1,0,0,0,29.8682,10.5039ZM18.8484,21H13.1516L8.5757,12.9922,11.4287,8h9.1426l2.853,4.9922Z"
+                                    transform="translate(0 0)" fill="blue" />
+                                <rect class="cls-1" data-name="&lt;Transparent Rectangle&gt;" height="32"
+                                    id="_Transparent_Rectangle_" transform="translate(32 32) rotate(-180)" width="32" />
                             </svg>
                         </div>
                     </button>
-                
+
                     <button class="btn Restricted_Airspace" type="button">
                         <div class="icon-container">
-                            <img src="assets/Restricted_Airspace.png" style="height: 30px; width: 50px;" alt="Restricted_Airspace" srcset="">
+                            <img src="assets/Restricted_Airspace.png" style="height: 30px; width: 50px;"
+                                alt="Restricted_Airspace" srcset="">
                         </div>
                     </button>
 
                     <button class="btn Obstacle" type="button">
                         <div class="icon-container">
-                            <img src="assets/Lighted_Obstacle.png" style="height: 40px; width: 60px;" alt="Restricted_Airspace" srcset="">
+                            <img src="assets/Lighted_Obstacle.png" style="height: 40px; width: 60px;"
+                                alt="Restricted_Airspace" srcset="">
                         </div>
                     </button>
-                
+
                     <button class="btn grid" style="color: blue;" type="button">
                         <div class="icon-container">
                             <i class="bi bi-grid-3x3"></i>
                         </div>
                     </button>
-                
+
                     <!-- Other buttons -->
-                
+
                     <div id="map" style="height: 700px;"></div>
                 </div>
-                
+
             </div>
         </div>
     </div>

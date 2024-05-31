@@ -95,9 +95,9 @@ export class MapComponent implements OnInit {
 
     const overlayMaps = {};
 
-    L.control.layers(baseMaps, overlayMaps ,{ position: 'topleft' }).addTo(this.map);
+    L.control.layers(baseMaps, overlayMaps, { position: 'topleft' }).addTo(this.map);
     streets.addTo(this.map);
-    L.control.scale({ position: 'bottomright', metric: false  }).addTo(this.map);
+    L.control.scale({ position: 'bottomright', metric: false }).addTo(this.map);
     L.control.zoom({ position: 'bottomright' }).addTo(this.map);
 
     this.airportLayerGroup = L.layerGroup().addTo(this.map);
@@ -805,16 +805,142 @@ export class MapComponent implements OnInit {
     }
   }
 
+  // loadwaypoint() {
+  //   const wmsurl = 'http://localhost:8080/geoserver/wms';
+  //   if (!this.geoServerLayer) {
+  //     this.geoServerLayer = L.tileLayer.wms(
+  //       wmsurl, {
+  //       layers: 'waypoint',
+  //       format: 'image/png',
+  //       transparent: true,
+
+  //     });
+  //     this.airportLayerGroup.clearLayers();
+  //     this.geoServerLayer.addTo(this.map);
+
+  //     this.map.on("click", (e) => {
+
+  //       const url = `${wmsurl}?
+  //       request=GetFeatureInfo
+  //       &service=WMS
+  //       &version=1.1.1
+  //       &layers=waypoint
+  //       &styles=
+  //       &srs=EPSG%3A4326
+  //       &format=image%2Fpng
+  //       &bbox=-${this.map.getBounds().toBBoxString()}
+  //       &width=${this.map.getSize().x}
+  //       &height=${this.map.getSize().y}
+  //       &query_layers=waypoint
+  //       &info_format=text%2Fhtml
+  //       &feature_count=50
+  //       &x=${this.map.latLngToContainerPoint(e.latlng).x}
+  //       &y=${this.map.latLngToContainerPoint(e.latlng).y}
+  //       &exceptions=application%2Fvnd.ogc.se_xml`
+  //       console.log(url)
+  //     })
+  //   } else {
+  //     if (this.map.hasLayer(this.geoServerLayer)) {
+  //       this.map.removeLayer(this.geoServerLayer);
+  //     } else {
+  //       this.geoServerLayer.addTo(this.map);
+  //     }
+  //   }
+  // }
+
+  // loadwaypoint() {
+  //   const wmsUrl = 'http://localhost:8080/geoserver/wms';
+  //   const layerName = 'waypoint'; // Check if this is the correct layer name
+
+  //   if (!this.geoServerLayer) {
+  //     this.geoServerLayer = L.tileLayer.wms(
+  //       wmsUrl,
+  //       {
+  //         layers: layerName,
+  //         format: 'image/png',
+  //         transparent: true,
+  //       }
+  //     );
+  //     this.airportLayerGroup.clearLayers();
+  //     this.geoServerLayer.addTo(this.map);
+
+  //     this.map.on("click", (e) => {
+  //       const latlng = e.latlng;
+  //       const containerPoint = this.map.latLngToContainerPoint(latlng);
+  //       const size = this.map.getSize();
+  //       const bbox = this.map.getBounds().toBBoxString();
+
+  //       const url = `${wmsUrl}?service=WMS&version=1.1.1&request=GetFeatureInfo&layers=${layerName}&styles=&srs=EPSG%3A4326&format=image%2Fpng&bbox=${bbox}&width=${size.x}&height=${size.y}&query_layers=${layerName}&info_format=text%2Fhtml&feature_count=50&x=${containerPoint.x}&y=${containerPoint.y}&exceptions=application%2Fvnd.ogc.se_xml`;
+
+  //       console.log(url);
+  //       // You can perform further actions with the URL, like making an AJAX request to fetch feature info
+  //     });
+  //   } else {
+  //     if (this.map.hasLayer(this.geoServerLayer)) {
+  //       this.map.removeLayer(this.geoServerLayer);
+  //     } else {
+  //       this.geoServerLayer.addTo(this.map);
+  //     }
+  //   }
+  // }
+
   loadwaypoint() {
+    const wmsUrl = 'http://localhost:8080/geoserver/wms';
+    const layerName = 'waypoint';
     if (!this.geoServerLayer) {
       this.geoServerLayer = L.tileLayer.wms(
-        'http://localhost:8080/geoserver/CANS/wms', {
-        layers: 'waypoint',
-        format: 'image/png',
-        transparent: true,
-      });
+        wmsUrl,
+        {
+          layers: layerName,
+          format: 'image/png',
+          transparent: true,
+        }
+      );
       this.airportLayerGroup.clearLayers();
       this.geoServerLayer.addTo(this.map);
+
+
+      this.map.on('click', (e: L.LeafletMouseEvent) => {
+        const latlng = e.latlng;
+        const containerPoint = this.map.latLngToContainerPoint(latlng);
+        const size = this.map.getSize();
+        const bbox = this.map.getBounds().toBBoxString();
+
+        const params = new URLSearchParams({
+          service: 'WMS',
+          version: '1.1.1',
+          request: 'GetFeatureInfo',
+          layers: layerName,
+          styles: '',
+          srs: 'EPSG:4326',
+          format: 'image%2Fpng',
+          bbox: bbox,
+          width: size.x.toString(),
+          height: size.y.toString(),
+          query_layers: layerName,
+          info_format: 'application/json',
+          feature_count: '50',
+          x: containerPoint.x.toString(),
+          y: containerPoint.y.toString(),
+          exceptions: 'application/vnd.ogc.se_xml'
+        });
+
+        const url = `${wmsUrl}?${params.toString()}`;
+
+        console.log(url);
+
+        fetch(url)
+          .then(response => {
+            if (!response.ok) {
+              throw new Error('Network response was not ok');
+            }
+            return response.text();
+          })
+          .then(data => this.showGetFeatureInfo(data, latlng))
+          .catch(error => {
+            console.error('There was a problem with the fetch operation:', error);
+          });
+      });
     } else {
       if (this.map.hasLayer(this.geoServerLayer)) {
         this.map.removeLayer(this.geoServerLayer);
@@ -822,6 +948,15 @@ export class MapComponent implements OnInit {
         this.geoServerLayer.addTo(this.map);
       }
     }
+  }
+
+
+  private showGetFeatureInfo(data: string, latlng: L.LatLng): void {
+    console.log(data)
+    L.popup()
+      .setLatLng(latlng)
+      .setContent(data)
+      .openOn(this.map);
   }
   changeLineColor(color: string) {
     this.lineGeoJsonLayer.setStyle({ color });

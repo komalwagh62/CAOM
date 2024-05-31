@@ -1,16 +1,33 @@
-
 .map-container {
   position: relative;
 }
 
+.top-right-buttons {
+  position: absolute;
+  z-index: 1000;
+  top: 10px;
+  right: 10px;
+  display: flex;
+  gap: 10px;
+
+}
+
+.top-right-buttons .btn {
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 50px;
+  padding: 5px 10px;
+  cursor: pointer;
+  z-index: 1000;
+  font-size: 14px;
+}
+
+
 .live-location-button {
   position: absolute;
   bottom: 100px;
-  /* Adjust this value as needed */
   left: 96.3%;
-  /* Adjust this value as needed */
   z-index: 1000;
-  /* Ensure the button is above the map */
   background-color: white;
   border: 1px solid #ccc;
   border-radius: 50px;
@@ -29,6 +46,7 @@
   padding: 5px 10px;
   cursor: pointer;
 }
+
 .blue {
   position: absolute;
   top: 155px;
@@ -40,6 +58,7 @@
   padding: 5px 10px;
   cursor: pointer;
 }
+
 .White {
   position: absolute;
   top: 110px;
@@ -63,6 +82,7 @@
   padding: 5px 10px;
   cursor: pointer;
 }
+
 .circle {
   position: absolute;
   bottom: 135px;
@@ -122,6 +142,7 @@
   padding: 5px 10px;
   cursor: pointer;
 }
+
 .triangle {
   position: absolute;
   bottom: 270px;
@@ -136,7 +157,7 @@
 
 .grid {
   position: absolute;
-  bottom: -0px;
+  bottom: 0;
   left: 10px;
   z-index: 1000;
   background-color: white;
@@ -145,27 +166,28 @@
   padding: 5px 10px;
   cursor: pointer;
 }
+
 .btn {
   display: inline-block;
-  padding: 0; /* Remove padding */
+  padding: 0;
   cursor: pointer;
 }
+
 .icon-container {
-  width: 40px; /* Adjust width to desired size */
-  height: 40px; /* Adjust height to desired size */
-  border-radius: 0; /* Ensure border-radius is set to 0 */
+  width: 40px;
+  height: 40px;
+  border-radius: 0;
   display: flex;
   justify-content: center;
   align-items: center;
-  overflow: hidden; /* Ensure the image does not overflow the container */
+  overflow: hidden;
 }
 
 .icon-container img {
-  width: 100%; /* Ensure the icon fills the square container */
-  height: 100%; /* Ensure the icon fills the square container */
-  object-fit: cover; /* Maintain aspect ratio and cover the container */
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
-
 
 mat-form-field {
   width: 100%;
@@ -189,11 +211,7 @@ img {
 
 .labelstyle {
   background-color: none;
-  /* Adjust transparency here */
   border: none;
-  /* Optional: remove border */
   box-shadow: none;
-  /* Optional: remove box shadow */
   color: black;
-  /* Optional: set text color */
 }
