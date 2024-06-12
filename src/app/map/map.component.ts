@@ -819,59 +819,16 @@ export class MapComponent implements OnInit {
         }
       );
       this.airportLayerGroup.clearLayers();
-      this.geoServerLayer.addTo(this.map);
-
-
-      this.map.on('click', (e: L.LeafletMouseEvent) => {
-        const latlng = e.latlng;
-        const containerPoint = this.map.latLngToContainerPoint(latlng);
-        const size = this.map.getSize();
-        const bbox = this.map.getBounds().toBBoxString();
-
-        const params = new URLSearchParams({
-          service: 'WMS',
-          version: '1.1.1',
-          request: 'GetFeatureInfo',
-          layers: layerName,
-          styles: '',
-          srs: 'EPSG:4326',
-          format: 'image%2Fpng',
-          bbox: bbox,
-          width: size.x.toString(),
-          height: size.y.toString(),
-          query_layers: layerName,
-          info_format: 'application/json',
-          feature_count: '50',
-          x: containerPoint.x.toString(),
-          y: containerPoint.y.toString(),
-          exceptions: 'application/vnd.ogc.se_xml'
-        });
-
-        const url = `${wmsUrl}?${params.toString()}`;
-
-        console.log(url);
-
-        fetch(url)
-          .then(response => {
-            if (!response.ok) {
-              throw new Error('Network response was not ok');
-            }
-            return response.text();
-          })
-          .then(data => this.showGetFeatureInfo(data, latlng))
-          .catch(error => {
-            console.error('There was a problem with the fetch operation:', error);
-          });
-      });
+      this.geoServerLayer.addTo(this.map).bringToFront(); 
     } else {
       if (this.map.hasLayer(this.geoServerLayer)) {
         this.map.removeLayer(this.geoServerLayer);
       } else {
-        this.geoServerLayer.addTo(this.map);
+        this.geoServerLayer.addTo(this.map).bringToFront(); 
       }
     }
   }
-
+  
   loadnonconvlinedata() {
     const wmsUrl = 'http://localhost:8080/geoserver/wms';
     const layerName = 'nonconvlinedata';
