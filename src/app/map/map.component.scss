@@ -11,6 +11,28 @@
   gap: 10px;
 
 }
+.blueAWY {
+  position: absolute;
+  bottom: 315px;
+  left: 10px;
+  z-index: 1000;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 50px;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+.blackAWY {
+  position: absolute;
+  bottom: 360px;
+  left: 10px;
+  z-index: 1000;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 50px;
+  padding: 5px 10px;
+  cursor: pointer;
+}
 
 .top-right-buttons .btn {
   background-color: white;
@@ -193,9 +215,6 @@ mat-form-field {
   width: 100%;
 }
 
-.height-Top {
-  margin-top: 5%;
-}
 
 .button-Top {
   margin-top: 50%;
