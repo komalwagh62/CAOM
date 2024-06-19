@@ -24,6 +24,7 @@ export class MapComponent implements OnInit {
   geoJsonLayer!: L.GeoJSON;
   map!: L.Map;
   airportLayerGroup!: any;
+  wmsUrl ="http://ec2-3-19-221-197.us-east-2.compute.amazonaws.com:8080/geoserver/wms"
   private waypointLayer!: L.TileLayer.WMS;
   private nonConvLineDataLayer!: L.TileLayer.WMS;
   private convLineDataLayer!: L.TileLayer.WMS;
@@ -31,7 +32,7 @@ export class MapComponent implements OnInit {
   private controlairspaceLayer!: L.TileLayer.WMS;
   private aerodrome_obstacleLayer!: L.TileLayer.WMS;
   private restricted_areasLayer!: L.TileLayer.WMS;
-
+  private airportdetails!: L.TileLayer.WMS;
   constructor(private formbuilder: FormBuilder,) { }
   optionsAirport: { value: any; label: any; }[] = [
     { value: 'VOBL/Bengaluru (KIA)', label: 'VOBL/BLR/Bengaluru' },
@@ -814,11 +815,11 @@ export class MapComponent implements OnInit {
   }
 
   loadwaypoint() {
-    const wmsUrl = 'http://ec2-18-116-13-126.us-east-2.compute.amazonaws.com:8080/geoserver/wms';
-    const layerName = 'waypoint';
+   
+    const layerName = 'significantpoints';
     if (!this.waypointLayer) {
       this.waypointLayer = L.tileLayer.wms(
-        wmsUrl,
+        this.wmsUrl,
         {
           layers: layerName,
           format: 'image/png',
@@ -836,11 +837,11 @@ export class MapComponent implements OnInit {
     }
   }
   loadnonconvlinedata() {
-    const wmsUrl = 'http://ec2-18-116-13-126.us-east-2.compute.amazonaws.com:8080/geoserver/wms';
+  
     const layerName = 'nonconvlinedata';
     if (!this.nonConvLineDataLayer) {
       this.nonConvLineDataLayer = L.tileLayer.wms(
-        wmsUrl,
+       this.wmsUrl,
         {
           layers: layerName,
           format: 'image/png',
@@ -858,11 +859,11 @@ export class MapComponent implements OnInit {
     }
   }
   loadconvlinedata() {
-    const wmsUrl = 'http://ec2-18-116-13-126.us-east-2.compute.amazonaws.com:8080/geoserver/wms';
+   
     const layerName = 'convlinedata';
     if (!this.convLineDataLayer) {
       this.convLineDataLayer = L.tileLayer.wms(
-        wmsUrl,
+        this.wmsUrl,
         {
           layers: layerName,
           format: 'image/png',
@@ -880,11 +881,11 @@ export class MapComponent implements OnInit {
     }
   }
   loadnavaids() {
-    const wmsUrl = 'http://ec2-18-116-13-126.us-east-2.compute.amazonaws.com:8080/geoserver/wms';
+   
     const layerName = 'navaids';
     if (!this.navaidsLayer) {
       this.navaidsLayer = L.tileLayer.wms(
-        wmsUrl,
+        this.wmsUrl,
         {
           layers: layerName,
           format: 'image/png',
@@ -902,11 +903,11 @@ export class MapComponent implements OnInit {
     }
   }
   loadcontrolairspace() {
-    const wmsUrl = 'http://ec2-18-116-13-126.us-east-2.compute.amazonaws.com:8080/geoserver/wms';
+   
     const layerName = 'controlairspace';
     if (!this.controlairspaceLayer) {
       this.controlairspaceLayer = L.tileLayer.wms(
-        wmsUrl,
+        this.wmsUrl,
         {
           layers: layerName,
           format: 'image/png',
@@ -924,11 +925,11 @@ export class MapComponent implements OnInit {
     }
   }
   loadaerodrome_obstacle() {
-    const wmsUrl = 'http://ec2-18-116-13-126.us-east-2.compute.amazonaws.com:8080/geoserver/wms';
+   
     const layerName = 'aerodrome_obstacle';
     if (!this.aerodrome_obstacleLayer) {
       this.aerodrome_obstacleLayer = L.tileLayer.wms(
-        wmsUrl,
+        this.wmsUrl,
         {
           layers: layerName,
           format: 'image/png',
@@ -946,12 +947,10 @@ export class MapComponent implements OnInit {
     }
   }
   loadrestricted_areas() {
-    const wmsUrl = 'http://ec2-18-116-13-126.us-east-2.compute.amazonaws.com:8080/geoserver/wms' ;
-    
     const layerName = 'restricted_areas';
     if (!this.restricted_areasLayer) {
       this.restricted_areasLayer = L.tileLayer.wms(
-        wmsUrl,
+        this.wmsUrl,
         {
           layers: layerName,
           format: 'image/png',
@@ -965,6 +964,28 @@ export class MapComponent implements OnInit {
         this.map.removeLayer(this.restricted_areasLayer);
       } else {
         this.restricted_areasLayer.addTo(this.map).bringToFront();
+      }
+    }
+  }
+
+  loadairport() {
+    const layerName = 'airportdetails';
+    if (!this.airportdetails) {
+      this.airportdetails = L.tileLayer.wms(
+        this.wmsUrl,
+        {
+          layers: layerName,
+          format: 'image/png',
+          transparent: true,
+        }
+      );
+      this.airportLayerGroup.clearLayers();
+      this.airportdetails.addTo(this.map).bringToFront();
+    } else {
+      if (this.map.hasLayer(this.airportdetails)) {
+        this.map.removeLayer(this.airportdetails);
+      } else {
+        this.airportdetails.addTo(this.map).bringToFront();
       }
     }
   }
