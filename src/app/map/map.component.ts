@@ -456,25 +456,6 @@ export class MapComponent implements OnInit {
     }
   }
 
-  getLiveLocation(): void {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((position) => {
-        const latitude = position.coords.latitude;
-        const longitude = position.coords.longitude;
-
-        // Add marker for live location
-        const marker = L.marker([latitude, longitude]).addTo(this.map);
-        marker.bindPopup('Your Live Location').openPopup();
-
-        // Pan the map to the live location
-        this.map.panTo([latitude, longitude]);
-      }, (error) => {
-        console.error('Error getting live location:', error);
-      });
-    } else {
-      console.error('Geolocation is not supported by this browser.');
-    }
-  }
 
   watchAirportChanges(): void {
     this.Airform.get('selectedAirport')?.valueChanges.subscribe((selectedAirport: string[]) => {
