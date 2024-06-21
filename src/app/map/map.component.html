@@ -1,11 +1,11 @@
 
+<div class="example-container" [class.example-is-mobile]="mobileQuery.matches">
 
-
-
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-lg-2 mt-4">
-            <form [formGroup]="Airform" autocomplete="on" novalidate class="d-flex-center">
+    <mat-sidenav-container class="example-sidenav-container" [style.marginTop.px]="mobileQuery.matches ? 56 : 0"
+        autosize>
+        <mat-sidenav #snav [mode]="mobileQuery.matches ? 'over' : 'side'" [fixedInViewport]="mobileQuery.matches"
+            fixedTopGap="56">
+            <form [formGroup]="Airform" class="text-center mt-4" autocomplete="on" novalidate>
                 <div class="example-container">
 
                     <!--Select Airport -->
@@ -89,23 +89,22 @@
                             <mat-hint>Select Procedure Name</mat-hint>
                         </mat-form-field>
                     </div>
+                    <div class="d-grid gap-2 col-10 mx-auto mt-4">
+                        <button type="button" value="Export
+                    GeoJSON" class="btn btn-outline-primary rounded-5 py-2 px-4">Export GeoJSON</button>
+
+                        <button type="button" value="Export CSV"
+                            class="btn btn-outline-primary rounded-5 py-2 px-4">Export
+                            CSV</button>
+
+                    </div>
                 </div>
 
             </form>
-            <div class="d-grid gap-2 button-Top">
 
-                <!-- <button (click)="changeLineColor('white')">White</button>
-                <button (click)="changeLineColor('black')">Black</button>
-                <button (click)="changeLineColor('blue')">Blue</button> -->
-                <button type="button" value="Export
-                GeoJSON" class="btn btn-outline-primary rounded-5 py-2 px-4">Export GeoJSON</button>
-                <span class="Exportting"></span>
-                <button type="button" value="Export CSV" class="btn btn-outline-primary rounded-5 py-2 px-4">Export
-                    CSV</button>
-                <span class="Exportting"></span>
-            </div>
-        </div>
-        <div class="col-lg-10">
+        </mat-sidenav>
+
+        <mat-sidenav-content>
             <div class="content">
                 <div class="map-container">
 
@@ -122,8 +121,8 @@
                             <button class="btn  btn-outline-primary" type="button"><i class="bi bi-search"></i></button>
                         </div>
                         <!-- <button class="btn btn btn-outline-primary" type="button"><i class="bi bi-bell"></i></button>
-                        <button class="btn btn btn-outline-primary" type="button"><i
-                                class="bi bi-person-gear"></i></button> -->
+                    <button class="btn btn btn-outline-primary" type="button"><i
+                            class="bi bi-person-gear"></i></button> -->
                     </div>
                     <!-- Other buttons -->
 
@@ -132,32 +131,21 @@
                             <i class="bi bi-airplane"></i>
                         </div>
                     </button>
-
-                    <!-- <button class="White btn btn-outline-light" style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .70rem;" (click)="changeLineColor('white')" type="button">
+                    <button class="btn sideManu" (click)="toggleSidenav(snav)"
+                        [title]="isSidenavOpen ? 'Close Sidenav' : 'Open Sidenav'" style="color: blue;" type="button">
                         <div class="icon-container">
-                            <i class="bi bi-palette"></i>
+                            <mat-icon>{{ isSidenavOpen ? 'keyboard_arrow_left' : 'keyboard_arrow_right' }}</mat-icon>
                         </div>
                     </button>
-                
-                    <button class="black btn btn-outline-dark" style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .70rem;" (click)="changeLineColor('black')" type="button">
-                        <div class="icon-container">
-                            <i class="bi bi-palette"></i>
-                        </div>
+                    <button class="btn blackAWY " style="color: blue;" title="Conventional Airways" type="button"
+                        (click)="loadconvlinedata()">
+                        <div class="icon-container"> <img src="assets/BlackAWY.png" title="Conventional Airways"
+                                style="height: 25px; width: 30px;" alt="Restricted_Airspace" srcset=""> </div>
                     </button>
-                
-                    <button class="blue btn btn-outline-primary" style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .70rem;" (click)="changeLineColor('blue')" type="button">
-                        <div class="icon-container">
-                            <i class="bi bi-palette"></i>
-                        </div>
-                    </button> -->
-
-                    <button class="btn blackAWY " style="color: blue;" title="Conventional Airways" type="button" (click)="loadconvlinedata()">
-                        <div class="icon-container"> <img src="assets/BlackAWY.png" title="Conventional Airways" style="height: 25px; width: 30px;"
-                                alt="Restricted_Airspace" srcset=""> </div>
-                    </button>
-                    <button class="btn blueAWY " style="color: blue;" title="Non-Conventional Airways" type="button" (click)="loadnonconvlinedata()">
-                        <div class="icon-container"> <img src="assets/AWY.png" title="Non-Conventional Airways" style="height: 25px; width: 30px;"
-                                alt="Restricted_Airspace" srcset=""> </div>
+                    <button class="btn blueAWY " style="color: blue;" title="Non-Conventional Airways" type="button"
+                        (click)="loadnonconvlinedata()">
+                        <div class="icon-container"> <img src="assets/AWY.png" title="Non-Conventional Airways"
+                                style="height: 25px; width: 30px;" alt="Restricted_Airspace" srcset=""> </div>
                     </button>
                     <button class="btn triangle" style="color: blue;" title="FIR" type="button" (click)="loadFIR()">
                         <div class="icon-container">
@@ -165,17 +153,19 @@
                         </div>
                     </button>
 
-                    <button class="btn pentagon" style="color: blue;"  title="Waypoint" type="button" (click)="loadwaypoint()">
+                    <button class="btn pentagon" style="color: blue;" title="Waypoint" type="button"
+                        (click)="loadwaypoint()">
                         <div class="icon-container">
                             <i class="bi bi-triangle-fill" title="Waypoint"></i>
                         </div>
                     </button>
 
-                    
-                    <button class="btn Vortac" style="color: blue;" title="Navaids" type="button" (click)="loadnavaids()">
+
+                    <button class="btn Vortac" style="color: blue;" title="Navaids" type="button"
+                        (click)="loadnavaids()">
                         <div class="icon-container">
-                            <svg data-name="Layer 1" height="30"  title="Navaids" width="20" id="Layer_1" viewBox="0 0 32 32"
-                                xmlns="http://www.w3.org/2000/svg">
+                            <svg data-name="Layer 1" height="30" title="Navaids" width="20" id="Layer_1"
+                                viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
                                 <defs>
                                     <style>
                                         .cls-1 {
@@ -195,33 +185,38 @@
 
 
                     <!-- <button class="btn grid" style="color: blue;" type="button">
-                        <div class="icon-container">
-                            <i class="bi bi-grid-3x3"></i>
-                        </div>
-                    </button> -->
+                    <div class="icon-container">
+                        <i class="bi bi-grid-3x3"></i>
+                    </div>
+                </button> -->
 
-                    <button class="btn circle " style="color: blue;" title="Controlled Airspace" type="button" (click)="loadcontrolairspace()">
+                    <button class="btn circle " style="color: blue;" title="Controlled Airspace" type="button"
+                        (click)="loadcontrolairspace()">
                         <div class="icon-container">
-                            <img src="assets/CA.png" style="height: 21px; width: 22px;" title="Controlled Airspace" alt="Controlled Airspace"
-                                srcset="">
-                        </div>
-                    </button>
-
-                    <button class="btn Restricted_Airspace" type="button" title="Restricted Airspace" (click)="loadrestricted_areas()">
-                        <div class="icon-container">
-                            <img src="assets/Restricted_Airspace.png" title="Restricted Airspace" style="height: 25px; width: 25px;"
-                                alt="Restricted Airspace" srcset="Restricted Airspace">
+                            <img src="assets/CA.png" style="height: 21px; width: 22px;" title="Controlled Airspace"
+                                alt="Controlled Airspace" srcset="">
                         </div>
                     </button>
 
-                    <button class="btn Obstacle" type="button" title="Aerodrome Obstacle" (click)="loadaerodrome_obstacle()">
+                    <button class="btn Restricted_Airspace" type="button" title="Restricted Airspace"
+                        (click)="loadrestricted_areas()">
                         <div class="icon-container">
-                            <img src="assets/Lighted_Obstacle.png" title="Aerodrome Obstacle" style="height: 40px; width: 60px;"
-                                alt="Aerodrome Obstacle" srcset="Aerodrome Obstacle">
+                            <img src="assets/Restricted_Airspace.png" title="Restricted Airspace"
+                                style="height: 25px; width: 25px;" alt="Restricted Airspace"
+                                srcset="Restricted Airspace">
                         </div>
                     </button>
 
-                    <button class="btn airport" style="color: blue;"  title="Airport" type="button" (click)="loadairport()">
+                    <button class="btn Obstacle" type="button" title="Aerodrome Obstacle"
+                        (click)="loadaerodrome_obstacle()">
+                        <div class="icon-container">
+                            <img src="assets/Lighted_Obstacle.png" title="Aerodrome Obstacle"
+                                style="height: 40px; width: 60px;" alt="Aerodrome Obstacle" srcset="Aerodrome Obstacle">
+                        </div>
+                    </button>
+
+                    <button class="btn airport" style="color: blue;" title="Airport" type="button"
+                        (click)="loadairport()">
                         <div class="icon-container">
                             <img src="assets/airport.png" title="Airport" style="height: 25px; width: 30px;"
                                 alt="Airport" srcset="">
@@ -234,6 +229,8 @@
                 </div>
 
             </div>
-        </div>
-    </div>
+
+        </mat-sidenav-content>
+
+    </mat-sidenav-container>
 </div>

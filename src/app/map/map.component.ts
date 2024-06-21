@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { MediaMatcher } from '@angular/cdk/layout';
+import { ChangeDetectorRef, OnDestroy } from '@angular/core';
 import * as L from 'leaflet';
 import 'leaflet-rotatedmarker';
 declare module 'leaflet' {
@@ -33,7 +35,7 @@ export class MapComponent implements OnInit {
   private aerodrome_obstacleLayer!: L.TileLayer.WMS;
   private restricted_areasLayer!: L.TileLayer.WMS;
   private airportdetails!: L.TileLayer.WMS;
-  constructor(private formbuilder: FormBuilder,) { }
+ 
   optionsAirport: { value: any; label: any; }[] = [
     { value: 'VOBL/Bengaluru (KIA)', label: 'VOBL/BLR/Bengaluru' },
     { value: 'VEPY/PAKYONG', label: 'VEPY/PYG/Pakyong' },
@@ -49,6 +51,31 @@ export class MapComponent implements OnInit {
   optionsRWY_27RTypeofProcedure: { value: any; label: any; }[] = [];
   optionsVEPYTypeofProcedure: { value: any; label: any; }[] = [];
   optionsProcedureName: { value: any; label: any; }[] = [];
+
+  isSidenavOpen = false; // Boolean to track the state of the sidenav
+
+  toggleSidenav(snav: any) {
+    snav.toggle();
+    this.isSidenavOpen = !this.isSidenavOpen;
+  }
+
+  mobileQuery!: MediaQueryList;
+
+  fillerNav = ['Home', 'Login', 'Join Us'].concat(Array.from({ length: 0 }, (_, i) => ` ${i + 1}`));
+
+
+  private _mobileQueryListener: () => void;
+
+  constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher,private formbuilder: FormBuilder) {
+    this.mobileQuery = media.matchMedia('(max-width: 600px)');
+    this._mobileQueryListener = () => changeDetectorRef.detectChanges();
+    this.mobileQuery.addListener(this._mobileQueryListener);
+  }
+
+  ngOnDestroy(): void {
+    this.mobileQuery.removeListener(this._mobileQueryListener);
+  }
+
 
   ngOnInit(): void {
     this.Airform = this.formbuilder.group({
