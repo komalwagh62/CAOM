@@ -35,6 +35,14 @@ export class MapComponent implements OnInit {
   private aerodrome_obstacleLayer!: L.TileLayer.WMS;
   private restricted_areasLayer!: L.TileLayer.WMS;
   private airportdetails!: L.TileLayer.WMS;
+  private Airway2!: L.TileLayer.WMS;
+  private thailandenroute!: L.TileLayer.WMS;
+  private FIR!: L.TileLayer.WMS;
+
+
+  
+
+  
  
   optionsAirport: { value: any; label: any; }[] = [
     { value: 'VOBL/Bengaluru (KIA)', label: 'VOBL/BLR/Bengaluru' },
@@ -89,7 +97,7 @@ export class MapComponent implements OnInit {
   }
 
   initMap(): void {
-    this.map = L.map('map', { zoomControl: false, attributionControl: false }).setView([20.5937, 78.9629], 4);
+    this.map = L.map('map', { zoomControl: false, attributionControl: false }).setView([20.5937, 78.9629], 5);
 
     const streets = L.tileLayer('https://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
       subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
@@ -132,7 +140,7 @@ export class MapComponent implements OnInit {
     const overlayMaps = {};
 
     L.control.layers(baseMaps, overlayMaps, { position: 'topleft' }).addTo(this.map);
-    streets.addTo(this.map);
+    googleTerrain.addTo(this.map);
     L.control.scale({ position: 'bottomright', metric: false }).addTo(this.map);
     L.control.zoom({ position: 'bottomright' }).addTo(this.map);
 
@@ -994,6 +1002,71 @@ export class MapComponent implements OnInit {
         this.map.removeLayer(this.airportdetails);
       } else {
         this.airportdetails.addTo(this.map).bringToFront();
+      }
+    }
+  }
+
+  loadairway2() {
+    const layerName = 'thailandconvlinedata';
+    if (!this.Airway2) {
+      this.Airway2 = L.tileLayer.wms(
+        this.wmsUrl,
+        {
+          layers: layerName,
+          format: 'image/png',
+          transparent: true,
+        }
+      );
+      this.airportLayerGroup.clearLayers();
+      this.Airway2.addTo(this.map).bringToFront();
+    } else {
+      if (this.map.hasLayer(this.Airway2)) {
+        this.map.removeLayer(this.Airway2);
+      } else {
+        this.Airway2.addTo(this.map).bringToFront();
+      }
+    }
+  }
+  loadthailandenroute() {
+    const layerName = 'thailandenroute';
+    if (!this.thailandenroute) {
+      this.thailandenroute = L.tileLayer.wms(
+        this.wmsUrl,
+        {
+          layers: layerName,
+          format: 'image/png',
+          transparent: true,
+        }
+      );
+      this.airportLayerGroup.clearLayers();
+      this.thailandenroute.addTo(this.map).bringToFront();
+    } else {
+      if (this.map.hasLayer(this.thailandenroute)) {
+        this.map.removeLayer(this.thailandenroute);
+      } else {
+        this.thailandenroute.addTo(this.map).bringToFront();
+      }
+    }
+  }
+
+  loadFIR1() {
+    const layerName = 'FIR';
+    if (!this.FIR) {
+      this.FIR = L.tileLayer.wms(
+        this.wmsUrl,
+        {
+          layers: layerName,
+          format: 'image/png',
+          transparent: true,
+        }
+      );
+      this.airportLayerGroup.clearLayers();
+      this.FIR.addTo(this.map).bringToFront();
+    } else {
+      if (this.map.hasLayer(this.FIR)) {
+        this.map.removeLayer(this.FIR);
+      } else {
+        this.FIR.addTo(this.map).bringToFront();
       }
     }
   }

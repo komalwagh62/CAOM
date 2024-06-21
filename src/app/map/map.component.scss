@@ -17,11 +17,11 @@
   bottom: 500px;
   left: 10px;
   z-index: 1000;
-  background-color: white;
-  border: 1px solid #ccc;
-  border-radius: 50px;
-  padding: 5px 10px;
-  cursor: pointer;
+  // background-color: white;
+  // border: 1px solid #ccc;
+  // border-radius: 50px;
+  // padding: 5px 10px;
+  // cursor: pointer;
 }
 
 .blueAWY {
@@ -111,7 +111,7 @@
 
 .Restricted_Airspace {
   position: absolute;
-  bottom: 90px;
+  bottom: 93px;
   left: 10px;
   z-index: 1000;
   background-color: white;
@@ -123,7 +123,7 @@
 
 .Obstacle {
   position: absolute;
-  bottom: 45px;
+  bottom: 50px;
   left: 10px;
   z-index: 1000;
   background-color: white;
@@ -147,7 +147,7 @@
 
 .airport {
   position: absolute;
-  bottom: 0;
+  bottom: 5px;
   left: 10px;
   z-index: 1000;
   background-color: white;
@@ -181,7 +181,7 @@
 
 mat-form-field {
   width: 90%;
-  
+
 }
 
 img {
@@ -199,7 +199,45 @@ img {
   color: black;
 }
 
+.top-center-button {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  // background-color: white;
+  // border: 1px solid #ccc;
+  // border-radius: 50% 50% 50% 50%;
+  // padding: 5px 10px;
+  // cursor: pointer;
+}
 
+.offcanvas {
+  height: 5%;
+  /* Adjust this value as needed */
+}
+
+.live-location-button {
+  position: absolute;
+  bottom: 100px;
+  left: 97%;
+  z-index: 1000;
+}
+.Thailand-Waypoint{
+  position: absolute;
+  bottom: 150px;
+  left: 97%;
+  z-index: 1000;
+}
+.World-FIR{
+  position: absolute;
+  bottom: 200px;
+  left: 97%;
+  z-index: 1000;
+}
+nav{
+  background-color: transparent;
+}
 
 
 

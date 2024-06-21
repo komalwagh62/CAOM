@@ -1,4 +1,80 @@
+<div class="offcanvas offcanvas-top " tabindex="-1" id="offcanvasTop" aria-labelledby="offcanvasTopLabel">
 
+    <!-- <mat-toolbar class="example-toolbar bg-transparent">
+
+        <div class="example-app-name">
+            <a class="navbar-brand" href="https://www.cognitivenavigation.com" title="Cognitive navigation Pvt.Ltd">
+                <img src="https://www.cognitivenavigation.com/wp-content/uploads/2024/03/cropped-C_Name.png"
+                    alt="Cognitive navigation Pvt.Ltd"  title="Cognitive navigation Pvt.Ltd" width="30" height="50" class="d-inline-block align-text-top">
+            </a>
+        </div>
+        <span class="example-spacer"></span>
+        <div class="example-button-row">
+            <button mat-button color="primary">Log In</button>
+            <button mat-stroked-button color="primary">Join Us</button>
+        </div>
+    </mat-toolbar> -->
+
+    <nav class="navbar navbar-expand-lg bg-body-tertiary fixed-top  bg-transparent">
+        <div class="container-fluid">
+            <div class="example-app-name">
+                <a class="navbar-brand" href="https://www.cognitivenavigation.com" title="Cognitive navigation Pvt.Ltd">
+                    <img src="https://www.cognitivenavigation.com/wp-content/uploads/2024/03/cropped-C_Name.png"
+                        alt="Cognitive navigation Pvt.Ltd" title="Cognitive navigation Pvt.Ltd" width="40" height="40"
+                        class="d-inline-block align-text-top">
+                </a>
+            </div>
+            <span class="example-spacer"></span>
+            <!-- <div class="example-button-row">
+                <button mat-button color="primary">Log In</button>
+                <button mat-stroked-button color="primary">Join Us</button>
+            </div> -->
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0 nav ">
+                <li class="nav-item">
+                    <a class="nav-link " aria-current="page" href="#">ADM</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        ADM
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">1.1. AIP digitalization</a></li>
+                        <li><a class="dropdown-item" href="#">1.2. Terrain & Obstacle Database (eTOD & OLS) </a></li>
+                        <li><a class="dropdown-item" href="#">1.3. AMDB</a></li>
+                        <li><a class="dropdown-item" href="#">1.4. Instrument Flight Procedure (IFP) Management</a></li>
+
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item" href="#">Something else here</a></li>
+                    </ul>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="#">MDM</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        Dropdown
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">Action</a></li>
+                        <li><a class="dropdown-item" href="#">Another action</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item" href="#">Something else here</a></li>
+                    </ul>
+                </li>
+
+            </ul>
+
+        </div>
+    </nav>
+
+</div>
 <div class="example-container" [class.example-is-mobile]="mobileQuery.matches">
 
     <mat-sidenav-container class="example-sidenav-container" [style.marginTop.px]="mobileQuery.matches ? 56 : 0"
@@ -108,6 +184,17 @@
             <div class="content">
                 <div class="map-container">
 
+                    <button class="btn btn-outline-primary top-center-button" title="Open Navigation Toolbar"
+                        style="color: blue;" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop"
+                        aria-controls="offcanvasTop">
+                        <div class="icon-container">
+                            <mat-icon title="Open Navigation Toolbar">keyboard_arrow_down</mat-icon>
+                        </div>
+                    </button>
+
+
+
+
                     <div class="top-right-buttons">
 
                         <select class="form-select form-select-sm" aria-label="Default select example">
@@ -120,18 +207,15 @@
                             <input type="search" class="btn " id="site-search" name="q" placeholder="Search" />
                             <button class="btn  btn-outline-primary" type="button"><i class="bi bi-search"></i></button>
                         </div>
-                        <!-- <button class="btn btn btn-outline-primary" type="button"><i class="bi bi-bell"></i></button>
-                    <button class="btn btn btn-outline-primary" type="button"><i
-                            class="bi bi-person-gear"></i></button> -->
+
                     </div>
-                    <!-- Other buttons -->
 
                     <button class="btn airplane" style="color: blue;" type="button">
                         <div class="icon-container">
                             <i class="bi bi-airplane"></i>
                         </div>
                     </button>
-                    <button class="btn sideManu" (click)="toggleSidenav(snav)"
+                    <button class="btn btn-outline-primary sideManu" (click)="toggleSidenav(snav)"
                         [title]="isSidenavOpen ? 'Close Sidenav' : 'Open Sidenav'" style="color: blue;" type="button">
                         <div class="icon-container">
                             <mat-icon>{{ isSidenavOpen ? 'keyboard_arrow_left' : 'keyboard_arrow_right' }}</mat-icon>
@@ -220,6 +304,26 @@
                         <div class="icon-container">
                             <img src="assets/airport.png" title="Airport" style="height: 25px; width: 30px;"
                                 alt="Airport" srcset="">
+                        </div>
+                    </button>
+
+                    <button class="btn live-location-button" (click)="loadairway2()" title="Thailand Conventional Airways" style="color: blue;" type="button">
+                        <div class="icon-container">
+                            <img src="assets/BlackAWY.png" title="Thailand Conventional Airways"
+                            style="height: 25px; width: 30px;" alt="Restricted_Airspace" srcset="">
+                        </div>
+                    </button>
+
+                    <button class="btn Thailand-Waypoint" (click)="loadthailandenroute()" title="Thailand Waypoint " style="color: blue;" type="button">
+                        <div class="icon-container">
+                            <i class="bi bi-triangle-fill"  title="Thailand Waypoint " ></i>
+                           
+                        </div>
+                    </button>
+                    <button class="btn World-FIR" title="World FIR"  (click)="loadFIR1()" style="color: blue;" type="button">
+                        <div class="icon-container">
+                         
+                            <i class="bi bi-pentagon" title="World FIR"></i>
                         </div>
                     </button>
 
