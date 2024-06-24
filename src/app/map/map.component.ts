@@ -60,7 +60,7 @@ export class MapComponent implements OnInit {
   optionsVEPYTypeofProcedure: { value: any; label: any; }[] = [];
   optionsProcedureName: { value: any; label: any; }[] = [];
 
-  isSidenavOpen = false; // Boolean to track the state of the sidenav
+  isSidenavOpen = true; // Boolean to track the state of the sidenav
 
   toggleSidenav(snav: any) {
     snav.toggle();
