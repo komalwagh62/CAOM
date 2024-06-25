@@ -213,9 +213,19 @@ img {
 }
 
 .offcanvas {
-  height: 5%;
+  height: 10%;
   /* Adjust this value as needed */
 }
+
+.custom-outline {
+  border: 1px solid #ffffff; /* Adjust the color as needed */
+  border-radius: 5px; /* Optional: Adds rounded corners */
+  padding: 10px; /* Optional: Adds padding inside the border */
+  background-color: rgb(255, 255, 255);
+  width: 100%;
+  color: black;
+}
+
 
 .live-location-button {
   position: absolute;

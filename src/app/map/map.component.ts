@@ -140,7 +140,7 @@ export class MapComponent implements OnInit {
     const overlayMaps = {};
 
     L.control.layers(baseMaps, overlayMaps, { position: 'topleft' }).addTo(this.map);
-    googleTerrain.addTo(this.map);
+    navigation.addTo(this.map);
     L.control.scale({ position: 'bottomright', metric: false }).addTo(this.map);
     L.control.zoom({ position: 'bottomright' }).addTo(this.map);
 

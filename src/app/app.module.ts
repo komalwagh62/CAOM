@@ -18,6 +18,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SidenavComponent } from './sidenav/sidenav.component';
 import {MatListModule} from '@angular/material/list';
 import {MatSidenavModule} from '@angular/material/sidenav';
+import {MatMenuModule} from '@angular/material/menu';
 
 import {MatToolbarModule} from '@angular/material/toolbar';
 import { FooterComponent } from './shared/footer/footer.component';
@@ -45,7 +46,8 @@ import { FooterComponent } from './shared/footer/footer.component';
     HttpClientModule,
     MatToolbarModule,
     MatSidenavModule,
-    MatListModule
+    MatListModule,
+    MatMenuModule
    
   ],
   providers: [
