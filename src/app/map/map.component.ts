@@ -4,6 +4,8 @@ import { MediaMatcher } from '@angular/cdk/layout';
 import { ChangeDetectorRef, OnDestroy } from '@angular/core';
 import * as L from 'leaflet';
 import 'leaflet-rotatedmarker';
+import { AuthService } from '../Service/auth.service';
+import { Router } from '@angular/router';
 declare module 'leaflet' {
   interface MarkerOptions {
     rotationAngle?: number;
@@ -16,6 +18,9 @@ declare module 'leaflet' {
   styleUrls: ['./map.component.scss']
 })
 export class MapComponent implements OnInit {
+  hasUnsavedChanges() {
+    throw new Error('Method not implemented.');
+  }
   Airform !: FormGroup;
   selectedAirport: string[] = [];
   selectedRunway: string[] = [];
@@ -74,7 +79,7 @@ export class MapComponent implements OnInit {
 
   private _mobileQueryListener: () => void;
 
-  constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher,private formbuilder: FormBuilder) {
+  constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher,private formbuilder: FormBuilder,private authService: AuthService, private router : Router) {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
@@ -1082,5 +1087,10 @@ export class MapComponent implements OnInit {
   changeLineColor(color: string) {
     this.lineGeoJsonLayer.setStyle({ color });
     this.airportLayerGroup.setStyle({ color });
+  }
+
+  logout(): void {
+    this.authService.logout();
+    this.router.navigate(['/login']);
   }
 }

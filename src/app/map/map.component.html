@@ -174,9 +174,7 @@
 
     </mat-toolbar> -->
 
-
-
-    <nav class="navbar navbar-expand-lg bg-light bg-gradient p-2" style="--bs-bg-opacity: .15;">
+    <nav class="navbar navbar-expand-lg  bg-body-tertiary">
         <div class="container-fluid">
             <!-- <a class="navbar-brand" href="https://www.cognitivenavigation.com" title="Cognitive navigation Pvt.Ltd">
                 <img src="https://www.cognitivenavigation.com/wp-content/uploads/2024/03/cropped-C_Name.png"
@@ -275,18 +273,15 @@
                         </ul>
                     </li>
 
-                    <!-- <button type="button" mat-button class="bg-body-tertiary " color="black">Log In</button>
-                    <button type="button" mat-stroked-button class="bg-body-tertiary text-end" color="black">Join
-                        Us</button> -->
+                    <!-- <button type="button" mat-button class="bg-body-tertiary " color="black">Log In</button> -->
                 </ul>
 
             </div>
+            <button type="button" mat-stroked-button class="bg-body-tertiary text-end" style="color: red;"
+                (click)="logout()">Log-Out</button>
+
         </div>
     </nav>
-
-
-
-
 </div>
 <div class="example-container" [class.example-is-mobile]="mobileQuery.matches">
 
@@ -415,16 +410,16 @@
 
                     <div class="butoom-center-button " title="Cognitive navigation Pvt.Ltd">
 
-                        <div class="container-fluid">
+                        <!-- <div class="container-fluid">
                             <a class="" href="https://www.cognitivenavigation.com" title="Cognitive navigation Pvt.Ltd">
                                 <img src="https://www.cognitivenavigation.com/wp-content/uploads/2024/03/cropped-C_Name.png"
                                     alt="Cognitive navigation Pvt.Ltd" title="Cognitive navigation Pvt.Ltd" width="50"
                                     height="40" class="d-inline-block align-text-top">
                             </a>
-                        </div>
+                        </div> -->
 
-                        <!-- <small title="Cognitive navigation Pvt.Ltd" color="primary">Cognitive Navigation
-                        </small> -->
+                        <small title="Cognitive navigation Pvt.Ltd" color="primary">Cognitive Navigation
+                        </small>
 
                     </div>
 
@@ -458,9 +453,8 @@
                         </div>
                     </button>
 
-                    <button mat-mini-fab color="nun" class="manu1" [matMenuTriggerFor]="afterMenu">
+                    <button mat-mini-fab color="nun" class="manu1" [matMenuTriggerFor]="afterMenu" >
                         <mat-icon color="primary">menu</mat-icon></button>
-
 
                     <!-- <button class="btn live-location-button" (click)="loadairway2()" title="Thailand Conventional Airways" style="color: blue;" type="button">
                         <div class="icon-container">
@@ -481,20 +475,15 @@
                             <i class="bi bi-pentagon" title="World FIR"></i>
                         </div>
                     </button> -->
-
                     <!-- Other buttons -->
-
                     <div id="map" style="height: 100vh;"></div>
                 </div>
-
             </div>
-
         </mat-sidenav-content>
-
     </mat-sidenav-container>
 </div>
 
-<mat-menu #afterMenu="matMenu" class="bg-transparent" xPosition="after">
+<mat-menu #afterMenu="matMenu" class="bg-transparent" xPosition="after" [hasBackdrop]="false" [overlapTrigger]="false">
     <div class="d-grid gap-2">
         <button mat-icon-button title="Conventional Airways" (click)="loadconvlinedata()">
             <div class="icon-container"> <img src="assets/BlackAWY.png" title="Conventional Airways"
@@ -520,15 +509,14 @@
 
         <button mat-icon-button title="Navaids" (click)="loadnavaids()">
             <div class="icon-container">
-                <img src="assets/navaid.png" style="height: 25px; width: 30px;" title="Navaids"
-                    alt="Controlled Airspace">
+                <img src="assets/navaid.png" style="height: 100%; ;" title="Navaids" alt="Controlled Airspace">
             </div>
         </button>
 
         <button mat-icon-button title="Controlled Airspace" (click)="loadcontrolairspace()">
             <div class="icon-container">
-                <img src="assets/CA.png" style="height: 21px; width: 22px;" title="Controlled Airspace"
-                    alt="Controlled Airspace" srcset="">
+                <img src="assets/CA.png" style="height: 100%; " title="Controlled Airspace" alt="Controlled Airspace"
+                    srcset="">
             </div>
         </button>
 
@@ -541,7 +529,7 @@
 
         <button mat-icon-button title="Aerodrome Obstacle" (click)="loadaerodrome_obstacle()">
             <div class="icon-container">
-                <img src="assets/Lighted_Obstacle.png" title="Aerodrome Obstacle" style="height: 50px; width: 60px;"
+                <img src="assets/Lighted_Obstacle.png" title="Aerodrome Obstacle" style="height: 80%;  width: 50px; "
                     alt="Aerodrome Obstacle" srcset="Aerodrome Obstacle">
             </div>
         </button>
