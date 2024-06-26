@@ -238,7 +238,7 @@ img {
   z-index: 1000;
   color: #0d6efd;
 
- 
+
 }
 
 .offcanvas {
@@ -349,4 +349,19 @@ h1.example-app-name {
   /* Background color on hover */
   color: azure;
   /* Text color on hover */
+}
+
+
+
+
+
+.btn-group input[type="search"] {
+  transition: width 0.3s ease;
+  width: 0;
+  opacity: 0;
+}
+
+.btn-group input[type="search"].expanded {
+  width: 200px;
+  opacity: 1;
 }

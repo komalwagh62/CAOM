@@ -1093,4 +1093,22 @@ export class MapComponent implements OnInit {
     this.authService.logout();
     this.router.navigate(['/login']);
   }
+
+  isExpanded = false;
+  searchQuery = '';
+
+  toggleSearchBar() {
+    this.isExpanded = !this.isExpanded;
+    if (this.isExpanded) {
+      setTimeout(() => {
+        const searchInput = document.getElementById('site-search');
+        if (searchInput) {
+          searchInput.focus();
+        }
+      }, 0);
+    }
+  }
+
+ 
+
 }

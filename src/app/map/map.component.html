@@ -426,20 +426,24 @@
 
 
 
+                    <!-- your-component.component.html -->
                     <div class="top-right-buttons">
-
                         <select class="form-select form-select-sm" aria-label="Default select example">
                             <option selected>AIRAC 2402</option>
                             <option value="1">AIRAC 2403</option>
                             <option value="2">AIRAC 2404</option>
                             <option value="3">AIRAC 2405</option>
                         </select>
-                        <div class="btn-group" role="group" aria-label="Basic example">
-                            <input type="search" class="btn " id="site-search" name="q" placeholder="Search" />
-                            <button class="btn  btn-outline-primary" type="button"><i class="bi bi-search"></i></button>
-                        </div>
 
+                        <div class="btn-group" role="group" aria-label="Basic example">
+                            <input type="search" class="btn" id="site-search" placeholder="Search"
+                                [class.expanded]="isExpanded">
+                            <button class="btn btn-outline-primary" type="button" (click)="toggleSearchBar()">
+                                <i class="bi bi-search"></i>
+                            </button>
+                        </div>
                     </div>
+
 
                     <button mat-mini-fab color="nun" class=" airplane" style="color: blue;" type="button">
                         <div class="icon-container">
@@ -453,7 +457,7 @@
                         </div>
                     </button>
 
-                    <button mat-mini-fab color="nun" class="manu1" [matMenuTriggerFor]="afterMenu" >
+                    <button mat-mini-fab color="nun" class="manu1" [matMenuTriggerFor]="afterMenu">
                         <mat-icon color="primary">menu</mat-icon></button>
 
                     <!-- <button class="btn live-location-button" (click)="loadairway2()" title="Thailand Conventional Airways" style="color: blue;" type="button">
