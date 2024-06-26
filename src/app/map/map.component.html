@@ -1,4 +1,5 @@
-<div class="offcanvas offcanvas-top bg-transparent" tabindex="-1" id="offcanvasTop" aria-labelledby="offcanvasTopLabel">
+<div class="offcanvas offcanvas-lg offcanvas-top bg-transparent" data-bs-backdrop="true" tabindex="-1" id="offcanvasTop"
+    aria-labelledby="offcanvasTopLabel">
 
     <!-- <mat-toolbar class="example-toolbar bg-transparent">
 
@@ -137,8 +138,8 @@
                 ADM
             </button>
             <mat-menu #ADM="matMenu" yPosition="below">
-                <button mat-menu-item>Vertebrates</button>
-                <button mat-menu-item>Invertebrates</button>
+                <button mat-icon-button>Vertebrates</button>
+                <button mat-icon-button>Invertebrates</button>
             </mat-menu>
 
             <button mat-fab class="bg-body-tertiary" color="black" extended>
@@ -175,23 +176,23 @@
 
 
 
-    <nav class="navbar navbar-expand-lg  bg-transparent">
+    <nav class="navbar navbar-expand-lg bg-light bg-gradient p-2" style="--bs-bg-opacity: .15;">
         <div class="container-fluid">
-            <a class="navbar-brand" href="https://www.cognitivenavigation.com" title="Cognitive navigation Pvt.Ltd">
+            <!-- <a class="navbar-brand" href="https://www.cognitivenavigation.com" title="Cognitive navigation Pvt.Ltd">
                 <img src="https://www.cognitivenavigation.com/wp-content/uploads/2024/03/cropped-C_Name.png"
                     alt="Cognitive navigation Pvt.Ltd" title="Cognitive navigation Pvt.Ltd" width="30" height="50"
                     class="d-inline-block align-text-top">
-            </a>
+            </a> -->
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse justify-content-md-end" id="navbarNav">
+            <div class="collapse navbar-collapse justify-content-md-center" id="navbarNav">
                 <ul class="navbar-nav gap-2 p-1 small">
                     <li class="nav-item dropdown badge text-wrap">
-                        <a class="nav-link dropdown-toggle custom-outline btn-outline-primary" href="#" id="admDropdown"
-                            role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            AERONAUTICAL DATA <br> MANAGEMENT
+                        <a class="nav-link  active dropdown-toggle custom-outline btn-outline-primary " href="#"
+                            id="admDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            AERONAUTICAL DATA<br><br> MANAGEMENT
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="admDropdown">
                             <li><a class="dropdown-item " href="#">AIP digitalization</a></li>
@@ -212,12 +213,12 @@
                             <li><a class="dropdown-item" href="#">Airport & Enroute compatibility</a></li>
                         </ul>
                     </li>
-                    <li class="nav-item badge text-wrap"><a class="nav-link custom-outline" href="#">NOTAM <br>
+                    <li class="nav-item badge text-wrap"><a class="nav-link custom-outline" href="#"><br> NOTAM
                             MANAGEMENT</a></li>
                     <li class="nav-item dropdown badge text-wrap">
                         <a class="nav-link dropdown-toggle custom-outline" href="#" id="wxmDropdown" role="button"
                             data-bs-toggle="dropdown" aria-expanded="false">
-                            AVIATION WEATHER <br>MANAGEMENT
+                            AVIATION WEATHER <br> <br>MANAGEMENT
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="wxmDropdown">
                             <li><a class="dropdown-item" href="#">Weather data</a></li>
@@ -228,7 +229,7 @@
                     <li class="nav-item dropdown badge text-wrap">
                         <a class="nav-link dropdown-toggle custom-outline" href="#" id="fpmDropdown" role="button"
                             data-bs-toggle="dropdown" aria-expanded="false">
-                            FLIGHT PLANNING <br>MANAGEMENT
+                            FLIGHT PLANNING <br> <br>MANAGEMENT
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="fpmDropdown">
                             <li><a class="dropdown-item" href="#">Route Planning</a></li>
@@ -238,7 +239,7 @@
                     <li class="nav-item dropdown badge text-wrap">
                         <a class="nav-link dropdown-toggle custom-outline" href="#" id="apmDropdown" role="button"
                             data-bs-toggle="dropdown" aria-expanded="false">
-                            AIRCRAFT PERFORMANCE <br>MANAGEMENT
+                            ACFT PERFORMANCE <br> <br>MANAGEMENT
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="apmDropdown">
                             <li><a class="dropdown-item" href="#">Block time & Payload analysis</a></li>
@@ -253,7 +254,7 @@
                     </li>
                     <li class="nav-item dropdown badge text-wrap">
                         <a class="nav-link dropdown-toggle custom-outline" href="#" id="airworthinessDropdown"
-                            role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            role="button" data-bs-toggle="dropdown" aria-expanded="false"><br>
                             AIRWORTHINESS
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="airworthinessDropdown">
@@ -265,8 +266,8 @@
                     </li>
                     <li class="nav-item dropdown badge text-wrap">
                         <a class="nav-link dropdown-toggle custom-outline" href="#" id="dashboardReportsDropdown"
-                            role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            DASHBOARD <br> & REPORTS
+                            role="button" data-bs-toggle="dropdown" aria-expanded="false"><br>
+                            DASHBOARD & REPORTS
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="dashboardReportsDropdown">
                             <li><a class="dropdown-item" href="#">Ops dashboard</a></li>
@@ -274,9 +275,9 @@
                         </ul>
                     </li>
 
-                    <button type="button" mat-button class="bg-body-tertiary " color="black">Log In</button>
+                    <!-- <button type="button" mat-button class="bg-body-tertiary " color="black">Log In</button>
                     <button type="button" mat-stroked-button class="bg-body-tertiary text-end" color="black">Join
-                        Us</button>
+                        Us</button> -->
                 </ul>
 
             </div>
@@ -293,6 +294,14 @@
         autosize>
         <mat-sidenav #snav [mode]="mobileQuery.matches ? 'over' : 'side'" opened="true"
             [fixedInViewport]="mobileQuery.matches" fixedTopGap="56">
+            <div class="container-fluid img-size mt-2">
+                <a class="navbar-brand mt-4" href="https://www.cognitivenavigation.com"
+                    title="Cognitive navigation Pvt.Ltd">
+                    <img src="https://www.cognitivenavigation.com/wp-content/uploads/2024/03/cropped-C_Name.png"
+                        alt="Cognitive navigation Pvt.Ltd" title="Cognitive navigation Pvt.Ltd" width="10" height="40"
+                        class="d-inline-block align-text-top">
+                </a>
+            </div>
             <form [formGroup]="Airform" class="text-center mt-4" autocomplete="on" novalidate>
                 <div class="example-container">
 
@@ -396,13 +405,28 @@
             <div class="content">
                 <div class="map-container">
 
-                    <button mat-mini-fab color="nun" class=" top-center-button" title="Open Navigation Toolbar"
-                        style="color: blue;" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop"
+                    <button mat-mini-fab color="none" class="top-center-button" title="Open Navigation Toolbar"
+                        type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop"
                         aria-controls="offcanvasTop">
                         <div class="icon-container">
                             <mat-icon title="Open Navigation Toolbar">keyboard_arrow_down</mat-icon>
                         </div>
                     </button>
+
+                    <div class="butoom-center-button " title="Cognitive navigation Pvt.Ltd">
+
+                        <div class="container-fluid">
+                            <a class="" href="https://www.cognitivenavigation.com" title="Cognitive navigation Pvt.Ltd">
+                                <img src="https://www.cognitivenavigation.com/wp-content/uploads/2024/03/cropped-C_Name.png"
+                                    alt="Cognitive navigation Pvt.Ltd" title="Cognitive navigation Pvt.Ltd" width="50"
+                                    height="40" class="d-inline-block align-text-top">
+                            </a>
+                        </div>
+
+                        <!-- <small title="Cognitive navigation Pvt.Ltd" color="primary">Cognitive Navigation
+                        </small> -->
+
+                    </div>
 
 
 
@@ -422,102 +446,21 @@
 
                     </div>
 
-                    <button class="btn airplane" style="color: blue;" type="button">
+                    <button mat-mini-fab color="nun" class=" airplane" style="color: blue;" type="button">
                         <div class="icon-container">
                             <i class="bi bi-airplane"></i>
                         </div>
                     </button>
-                    <button mat-mini-fab color="nun" class=" sideManu" (click)="toggleSidenav(snav)"
-                        [title]="isSidenavOpen ? 'Close Sidenav' : 'Open Sidenav'" style="color: blue;" type="button">
+                    <button mat-mini-fab color="none" class="sideManu" (click)="toggleSidenav(snav)"
+                        [title]="isSidenavOpen ? 'Close Sidenav' : 'Open Sidenav'" type="button">
                         <div class="icon-container">
                             <mat-icon>{{ isSidenavOpen ? 'keyboard_arrow_left' : 'keyboard_arrow_right' }}</mat-icon>
                         </div>
                     </button>
-                    <button class="btn blackAWY " style="color: blue;" title="Conventional Airways" type="button"
-                        (click)="loadconvlinedata()">
-                        <div class="icon-container"> <img src="assets/BlackAWY.png" title="Conventional Airways"
-                                style="height: 25px; width: 30px;" alt="Restricted_Airspace" srcset=""> </div>
-                    </button>
-                    <button class="btn blueAWY " style="color: blue;" title="Non-Conventional Airways" type="button"
-                        (click)="loadnonconvlinedata()">
-                        <div class="icon-container"> <img src="assets/AWY.png" title="Non-Conventional Airways"
-                                style="height: 25px; width: 30px;" alt="Restricted_Airspace" srcset=""> </div>
-                    </button>
-                    <button class="btn triangle" style="color: blue;" title="FIR" type="button" (click)="loadFIR()">
-                        <div class="icon-container">
-                            <i class="bi bi-pentagon" title="FIR"></i>
-                        </div>
-                    </button>
 
-                    <button class="btn pentagon" style="color: blue;" title="Waypoint" type="button"
-                        (click)="loadwaypoint()">
-                        <div class="icon-container">
-                            <i class="bi bi-triangle-fill" title="Waypoint"></i>
-                        </div>
-                    </button>
+                    <button mat-mini-fab color="nun" class="manu1" [matMenuTriggerFor]="afterMenu">
+                        <mat-icon color="primary">menu</mat-icon></button>
 
-
-                    <button class="btn Vortac" style="color: blue;" title="Navaids" type="button"
-                        (click)="loadnavaids()">
-                        <div class="icon-container">
-                            <svg data-name="Layer 1" height="30" title="Navaids" width="20" id="Layer_1"
-                                viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
-                                <defs>
-                                    <style>
-                                        .cls-1 {
-                                            fill: none;
-                                        }
-                                    </style>
-                                </defs>
-                                <circle cx="16" cy="14" r="2" fill="blue" />
-                                <path
-                                    d="M29.8682,10.5039l-4-7a.9992.9992,0,0,0-1.3828-.3613L19.7231,6H12.2769L7.5146,3.1426a.9992.9992,0,0,0-1.3828.3613l-4,7a1,1,0,0,0,.3536,1.3535l4.7758,2.8657L11,21.2656V27a1,1,0,0,0,1,1h8a1,1,0,0,0,1-1V21.2656l3.7388-6.5425,4.7758-2.8657A1,1,0,0,0,29.8682,10.5039ZM18.8484,21H13.1516L8.5757,12.9922,11.4287,8h9.1426l2.853,4.9922Z"
-                                    transform="translate(0 0)" fill="blue" />
-                                <rect class="cls-1" data-name="&lt;Transparent Rectangle&gt;" height="32"
-                                    id="_Transparent_Rectangle_" transform="translate(32 32) rotate(-180)" width="32" />
-                            </svg>
-                        </div>
-                    </button>
-
-
-                    <!-- <button class="btn grid" style="color: blue;" type="button">
-                    <div class="icon-container">
-                        <i class="bi bi-grid-3x3"></i>
-                    </div>
-                </button> -->
-
-                    <button class="btn circle " style="color: blue;" title="Controlled Airspace" type="button"
-                        (click)="loadcontrolairspace()">
-                        <div class="icon-container">
-                            <img src="assets/CA.png" style="height: 21px; width: 22px;" title="Controlled Airspace"
-                                alt="Controlled Airspace" srcset="">
-                        </div>
-                    </button>
-
-                    <button class="btn Restricted_Airspace" type="button" title="Restricted Airspace"
-                        (click)="loadrestricted_areas()">
-                        <div class="icon-container">
-                            <img src="assets/Restricted_Airspace.png" title="Restricted Airspace"
-                                style="height: 25px; width: 25px;" alt="Restricted Airspace"
-                                srcset="Restricted Airspace">
-                        </div>
-                    </button>
-
-                    <button class="btn Obstacle" type="button" title="Aerodrome Obstacle"
-                        (click)="loadaerodrome_obstacle()">
-                        <div class="icon-container">
-                            <img src="assets/Lighted_Obstacle.png" title="Aerodrome Obstacle"
-                                style="height: 40px; width: 60px;" alt="Aerodrome Obstacle" srcset="Aerodrome Obstacle">
-                        </div>
-                    </button>
-
-                    <button class="btn airport" style="color: blue;" title="Airport" type="button"
-                        (click)="loadairport()">
-                        <div class="icon-container">
-                            <img src="assets/airport.png" title="Airport" style="height: 25px; width: 30px;"
-                                alt="Airport" srcset="">
-                        </div>
-                    </button>
 
                     <!-- <button class="btn live-location-button" (click)="loadairway2()" title="Thailand Conventional Airways" style="color: blue;" type="button">
                         <div class="icon-container">
@@ -550,3 +493,64 @@
 
     </mat-sidenav-container>
 </div>
+
+<mat-menu #afterMenu="matMenu" class="bg-transparent" xPosition="after">
+    <div class="d-grid gap-2">
+        <button mat-icon-button title="Conventional Airways" (click)="loadconvlinedata()">
+            <div class="icon-container"> <img src="assets/BlackAWY.png" title="Conventional Airways"
+                    style="height: 25px; width: 30px;" alt="Restricted_Airspace" srcset=""> </div>
+        </button>
+
+        <button mat-icon-button title="Non-Conventional Airways" (click)="loadnonconvlinedata()">
+            <div class="icon-container"> <img src="assets/AWY.png" title="Non-Conventional Airways"
+                    style="height: 25px; width: 30px;" alt="Restricted_Airspace" srcset=""> </div>
+        </button>
+
+        <button mat-icon-button title="FIR" color="primary" (click)="loadFIR()">
+            <div class="icon-container">
+                <i class="bi bi-pentagon" title="FIR"></i>
+            </div>
+        </button>
+
+        <button mat-icon-button title="Waypoint" color="primary" (click)="loadwaypoint()">
+            <div class="icon-container">
+                <i class="bi bi-triangle-fill" title="Waypoint"></i>
+            </div>
+        </button>
+
+        <button mat-icon-button title="Navaids" (click)="loadnavaids()">
+            <div class="icon-container">
+                <img src="assets/navaid.png" style="height: 25px; width: 30px;" title="Navaids"
+                    alt="Controlled Airspace">
+            </div>
+        </button>
+
+        <button mat-icon-button title="Controlled Airspace" (click)="loadcontrolairspace()">
+            <div class="icon-container">
+                <img src="assets/CA.png" style="height: 21px; width: 22px;" title="Controlled Airspace"
+                    alt="Controlled Airspace" srcset="">
+            </div>
+        </button>
+
+        <button mat-icon-button title="Restricted Airspace" (click)="loadrestricted_areas()">
+            <div class="icon-container">
+                <img src="assets/Restricted_Airspace.png" title="Restricted Airspace" style="height: 25px; width: 25px;"
+                    alt="Restricted Airspace" srcset="Restricted Airspace">
+            </div>
+        </button>
+
+        <button mat-icon-button title="Aerodrome Obstacle" (click)="loadaerodrome_obstacle()">
+            <div class="icon-container">
+                <img src="assets/Lighted_Obstacle.png" title="Aerodrome Obstacle" style="height: 50px; width: 60px;"
+                    alt="Aerodrome Obstacle" srcset="Aerodrome Obstacle">
+            </div>
+        </button>
+
+        <button mat-icon-button title="Airport" (click)="loadairport()">
+            <div class="icon-container">
+                <img src="assets/airport.png" title="Airport" style="height: 25px; width: 30px;" alt="Airport"
+                    srcset="">
+            </div>
+        </button>
+    </div>
+</mat-menu>

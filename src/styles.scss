@@ -5,7 +5,7 @@
     border: transparent;
     box-shadow: none;
     text-size-adjust: x-small;
-    overflow:hidden;
+    overflow: hidden;
 }
 
 .loader {
@@ -126,4 +126,13 @@ body {
 body {
     margin: 0;
     font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.mat-elevation-z8,
+.mat-mdc-elevation-specific.mat-elevation-z8 {
+    box-shadow: none;
+}
+
+.offcanvas-backdrop.show {
+    opacity: 0;
 }
