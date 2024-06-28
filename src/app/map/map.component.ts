@@ -31,7 +31,7 @@ export class MapComponent implements OnInit {
   geoJsonLayer!: L.GeoJSON;
   map!: L.Map;
   airportLayerGroup!: any;
-  wmsUrl ="http://ec2-3-19-221-197.us-east-2.compute.amazonaws.com:8080/geoserver/wms"
+  wmsUrl = "http://ec2-3-15-216-212.us-east-2.compute.amazonaws.com:8080/geoserver/wms"
   private waypointLayer!: L.TileLayer.WMS;
   private nonConvLineDataLayer!: L.TileLayer.WMS;
   private convLineDataLayer!: L.TileLayer.WMS;
@@ -44,11 +44,23 @@ export class MapComponent implements OnInit {
   private thailandenroute!: L.TileLayer.WMS;
   private FIR!: L.TileLayer.WMS;
 
+  menuOpen: boolean = false;
 
-  
+  toggleMenu() {
+    this.menuOpen = !this.menuOpen;
+  }
 
-  
- 
+  menuClosed() {
+    this.menuOpen = false;
+  }
+
+  stopPropagation(event: Event) {
+    event.stopPropagation();
+  }
+
+
+
+
   optionsAirport: { value: any; label: any; }[] = [
     { value: 'VOBL/Bengaluru (KIA)', label: 'VOBL/BLR/Bengaluru' },
     { value: 'VEPY/PAKYONG', label: 'VEPY/PYG/Pakyong' },
@@ -78,8 +90,21 @@ export class MapComponent implements OnInit {
 
 
   private _mobileQueryListener: () => void;
+  isExpanded = false;
+  searchQuery = '';
 
-  constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher,private formbuilder: FormBuilder,private authService: AuthService, private router : Router) {
+  toggleSearchBar() {
+    this.isExpanded = !this.isExpanded;
+    if (this.isExpanded) {
+      setTimeout(() => {
+        const searchInput = document.getElementById('site-search');
+        if (searchInput) {
+          searchInput.focus();
+        }
+      }, 0);
+    }
+  }
+  constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, private formbuilder: FormBuilder, private authService: AuthService, private router: Router) {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
@@ -87,6 +112,7 @@ export class MapComponent implements OnInit {
 
   ngOnDestroy(): void {
     this.mobileQuery.removeListener(this._mobileQueryListener);
+    
   }
 
 
@@ -815,7 +841,8 @@ export class MapComponent implements OnInit {
     });
   }
 
-  loadFIR() {
+  loadFIR(event: Event) {
+    this.stopPropagation(event);
     if (!this.firLayer) {
       // Add India FIR GeoJSON data
       fetch('assets/India_FIR.geojson')
@@ -835,8 +862,8 @@ export class MapComponent implements OnInit {
     }
   }
 
-  loadwaypoint() {
-   
+  loadwaypoint(event: Event) {
+    this.stopPropagation(event);
     const layerName = 'significantpoints';
     if (!this.waypointLayer) {
       this.waypointLayer = L.tileLayer.wms(
@@ -857,12 +884,13 @@ export class MapComponent implements OnInit {
       }
     }
   }
-  loadnonconvlinedata() {
-  
+
+  loadnonconvlinedata(event: Event) {
+    this.stopPropagation(event);
     const layerName = 'nonconvlinedata';
     if (!this.nonConvLineDataLayer) {
       this.nonConvLineDataLayer = L.tileLayer.wms(
-       this.wmsUrl,
+        this.wmsUrl,
         {
           layers: layerName,
           format: 'image/png',
@@ -879,8 +907,8 @@ export class MapComponent implements OnInit {
       }
     }
   }
-  loadconvlinedata() {
-   
+  loadconvlinedata(event: Event) {
+    this.stopPropagation(event);
     const layerName = 'convlinedata';
     if (!this.convLineDataLayer) {
       this.convLineDataLayer = L.tileLayer.wms(
@@ -901,8 +929,8 @@ export class MapComponent implements OnInit {
       }
     }
   }
-  loadnavaids() {
-   
+  loadnavaids(event: Event) {
+    this.stopPropagation(event);
     const layerName = 'navaids';
     if (!this.navaidsLayer) {
       this.navaidsLayer = L.tileLayer.wms(
@@ -923,8 +951,8 @@ export class MapComponent implements OnInit {
       }
     }
   }
-  loadcontrolairspace() {
-   
+  loadcontrolairspace(event: Event) {
+    this.stopPropagation(event);
     const layerName = 'controlairspace';
     if (!this.controlairspaceLayer) {
       this.controlairspaceLayer = L.tileLayer.wms(
@@ -945,8 +973,8 @@ export class MapComponent implements OnInit {
       }
     }
   }
-  loadaerodrome_obstacle() {
-   
+  loadaerodrome_obstacle(event: Event) {
+    this.stopPropagation(event);
     const layerName = 'aerodrome_obstacle';
     if (!this.aerodrome_obstacleLayer) {
       this.aerodrome_obstacleLayer = L.tileLayer.wms(
@@ -967,7 +995,8 @@ export class MapComponent implements OnInit {
       }
     }
   }
-  loadrestricted_areas() {
+  loadrestricted_areas(event: Event) {
+    this.stopPropagation(event);
     const layerName = 'restricted_areas';
     if (!this.restricted_areasLayer) {
       this.restricted_areasLayer = L.tileLayer.wms(
@@ -989,7 +1018,8 @@ export class MapComponent implements OnInit {
     }
   }
 
-  loadairport() {
+  loadairport(event: Event) {
+    this.stopPropagation(event);
     const layerName = 'airportdetails';
     if (!this.airportdetails) {
       this.airportdetails = L.tileLayer.wms(
@@ -1094,21 +1124,5 @@ export class MapComponent implements OnInit {
     this.router.navigate(['/login']);
   }
 
-  isExpanded = false;
-  searchQuery = '';
-
-  toggleSearchBar() {
-    this.isExpanded = !this.isExpanded;
-    if (this.isExpanded) {
-      setTimeout(() => {
-        const searchInput = document.getElementById('site-search');
-        if (searchInput) {
-          searchInput.focus();
-        }
-      }, 0);
-    }
-  }
-
- 
 
 }
