@@ -261,20 +261,17 @@
                             <option value="2">AIRAC 2404</option>
                             <option value="3">AIRAC 2405</option>
                         </select>
-
                         <div class="btn-group" role="group" aria-label="Basic example">
                             <input type="search" class="btn" id="site-search" placeholder="Search"
                                 [class.expanded]="isExpanded">
                             <button class="btn btn-outline-primary" type="button" (click)="toggleSearchBar()">
                                 <i class="bi bi-search"></i>
                             </button>
-                        </div>
+                        </div> 
                     </div>
-
-
-                    <button mat-mini-fab color="nun" class=" airplane" style="color: blue;" type="button">
+                    <button mat-mini-fab color="nun" class=" airplane" type="button">
                         <div class="icon-container">
-                            <i class="bi bi-airplane"></i>
+                            <mat-icon color="primary">airplanemode_active</mat-icon>
                         </div>
                     </button>
                     <button mat-mini-fab color="none" class="sideManu" (click)="toggleSidenav(snav)"
@@ -284,14 +281,14 @@
                         </div>
                     </button>
 
-                    <button mat-mini-fab color="none" class="manu1" [matMenuTriggerFor]="afterMenu"
+                    <button mat-mini-fab color="none" class="manu1" [matMenuTriggerFor]="belowMenu"
                         (click)="toggleMenu()">
                         <mat-icon color="primary">menu</mat-icon>
                         <!-- <mat-icon *ngIf="!menuOpen" color="primary">menu</mat-icon>
                         <mat-icon *ngIf="menuOpen" color="primary">close</mat-icon> -->
                     </button>
-                    <mat-menu #afterMenu="matMenu" class="bg-transparent" xPosition="after"  [hasBackdrop]="false">
-                        <div class="d-grid gap-2">
+                    <mat-menu #belowMenu="matMenu" yPosition="below" class="bg-transparent" [hasBackdrop]="false">
+                        <div class="d-grid gap-2 col-6 mx-auto  justify-content-md-end">
                             <button mat-mini-fab color="none" title="Conventional Airways"
                                 (click)="loadconvlinedata($event)">
                                 <div class="icon-container"> <img src="assets/BlackAWY.png" title="Conventional Airways"
