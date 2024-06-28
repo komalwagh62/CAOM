@@ -365,4 +365,13 @@ h1.example-app-name {
   width: 200px;
   opacity: 1;
 }
-
+.dropdown-menu .dropdown-menu {
+  display: none;
+  position: absolute;
+  left: 100%;
+  top: 0;
+  margin-top: -1px;
+}
+.dropdown-menu > .dropdown:hover > .dropdown-menu {
+  display: block;
+}
