@@ -269,7 +269,7 @@
                             </button>
                         </div> 
                     </div>
-                    <button mat-mini-fab color="nun" class=" airplane" type="button">
+                    <button mat-mini-fab class="airplane" disabled type="button">
                         <div class="icon-container">
                             <mat-icon color="primary">airplanemode_active</mat-icon>
                         </div>
@@ -289,38 +289,39 @@
                     </button>
                     <mat-menu #belowMenu="matMenu" yPosition="below" class="bg-transparent" [hasBackdrop]="false">
                         <div class="d-grid gap-2 col-6 mx-auto  justify-content-md-end">
-                            <button mat-mini-fab color="none" title="Conventional Airways"
+                            <button mat-mini-fab 
+                            class="mycolor" title="Conventional Airways"
                                 (click)="loadconvlinedata($event)">
                                 <div class="icon-container"> <img src="assets/BlackAWY.png" title="Conventional Airways"
                                         style="height: 25px; width: 30px;" alt="Restricted_Airspace" srcset=""> </div>
                             </button>
 
-                            <button mat-mini-fab color="none" title="Non-Conventional Airways"
+                            <button mat-mini-fab   class="mycolor" title="Non-Conventional Airways"
                                 (click)="loadnonconvlinedata($event)">
                                 <div class="icon-container"> <img src="assets/AWY.png" title="Non-Conventional Airways"
                                         style="height: 25px; width: 30px;" alt="Restricted_Airspace" srcset=""> </div>
                             </button>
 
-                            <button mat-mini-fab color="none" title="FIR" (click)="loadFIR($event)">
+                            <button mat-mini-fab   class="mycolor" title="FIR" (click)="loadFIR($event)">
                                 <div class="icon-container">
                                     <i class="bi bi-pentagon text-primary-emphasis" title="FIR"></i>
                                 </div>
                             </button>
 
-                            <button mat-mini-fab color="none" title="Waypoint" (click)="loadwaypoint($event)">
+                            <button mat-mini-fab   class="mycolor" title="Waypoint" (click)="loadwaypoint($event)">
                                 <div class="icon-container">
                                     <mat-icon title="Waypoint" color="primary">change_history</mat-icon>
                                 </div>
                             </button>
 
-                            <button mat-mini-fab color="none" title="Navaids" (click)="loadnavaids($event)">
+                            <button mat-mini-fab   class="mycolor" title="Navaids" (click)="loadnavaids($event)">
                                 <div class="icon-container">
                                     <img src="assets/navaid.png" style="height: 100%; width: 60%;" title="Navaids"
                                         alt="Controlled Airspace">
                                 </div>
                             </button>
 
-                            <button mat-mini-fab color="none" title="Controlled Airspace"
+                            <button mat-mini-fab   class="mycolor" title="Controlled Airspace"
                                 (click)="loadcontrolairspace($event)">
                                 <div class="icon-container">
                                     <img src="assets/CA.png" style="height: 100%; width: 60%; "
@@ -328,7 +329,7 @@
                                 </div>
                             </button>
 
-                            <button mat-mini-fab color="none" title="Restricted Airspace"
+                            <button mat-mini-fab   class="mycolor" title="Restricted Airspace"
                                 (click)="loadrestricted_areas($event)">
                                 <div class="icon-container">
                                     <img src="assets/Restricted_Airspace.png" title="Restricted Airspace"
@@ -337,7 +338,7 @@
                                 </div>
                             </button>
 
-                            <button mat-mini-fab color="none" title="Aerodrome Obstacle"
+                            <button mat-mini-fab   class="mycolor" title="Aerodrome Obstacle"
                                 (click)="loadaerodrome_obstacle($event)">
                                 <div class="icon-container">
                                     <img src="assets/Lighted_Obstacle.png" title="Aerodrome Obstacle"
@@ -346,7 +347,7 @@
                                 </div>
                             </button>
 
-                            <button mat-mini-fab color="none" title="Airport" (click)="loadairport($event)">
+                            <button mat-mini-fab   class="mycolor" title="Airport" (click)="loadairport($event)">
                                 <div class="icon-container">
                                     <img src="assets/airport.png" title="Airport" style="height: 25px; width: 30px;"
                                         alt="Airport" srcset="">
@@ -354,6 +355,9 @@
                             </button>
                         </div>
                     </mat-menu>
+
+                    
+                   
                     <!-- <button class="btn live-location-button" (click)="loadairway2()" title="Thailand Conventional Airways" style="color: blue;" type="button">
                         <div class="icon-container">
                             <img src="assets/BlackAWY.png" title="Thailand Conventional Airways"
