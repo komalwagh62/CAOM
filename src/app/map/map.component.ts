@@ -43,6 +43,7 @@ export class MapComponent implements OnInit {
   private Airway2!: L.TileLayer.WMS;
   private thailandenroute!: L.TileLayer.WMS;
   private FIR!: L.TileLayer.WMS;
+  private India_FIR!: L.TileLayer.WMS;
 
   menuOpen: boolean = false;
 
@@ -112,7 +113,7 @@ export class MapComponent implements OnInit {
 
   ngOnDestroy(): void {
     this.mobileQuery.removeListener(this._mobileQueryListener);
-    
+
   }
 
 
@@ -133,6 +134,12 @@ export class MapComponent implements OnInit {
     const streets = L.tileLayer('https://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
       subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
     });
+
+    // const BING_KEY = 'AuhiCJHlGzhg93IqUH_oCpl_-ZUrIE6SPftlyGYUvr9Amx5nzA-WqGcPquyFZl4L'
+
+    // const map = L.map('map').setView([51.505, -0.09], 13)
+
+    // const bingLayer = L.tileLayer.bing(BING_KEY).addTo(map)
 
     const darkMatter = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {});
 
@@ -843,21 +850,23 @@ export class MapComponent implements OnInit {
 
   loadFIR(event: Event) {
     this.stopPropagation(event);
-    if (!this.firLayer) {
-      // Add India FIR GeoJSON data
-      fetch('assets/India_FIR.geojson')
-        .then(response => response.json())
-        .then(data => {
-          this.airportLayerGroup.clearLayers();
-
-          this.firLayer = L.geoJSON(data).addTo(this.map);
-        });
+    const layerName = 'India_FIR';
+    if (!this.India_FIR) {
+      this.India_FIR = L.tileLayer.wms(
+        this.wmsUrl,
+        {
+          layers: layerName,
+          format: 'image/png',
+          transparent: true,
+        }
+      );
+      this.airportLayerGroup.clearLayers();
+      this.India_FIR.addTo(this.map).bringToFront();
     } else {
-      if (this.map.hasLayer(this.firLayer)) {
-        this.map.removeLayer(this.firLayer);
+      if (this.map.hasLayer(this.India_FIR)) {
+        this.map.removeLayer(this.India_FIR);
       } else {
-        this.firLayer.addTo(this.map);
-
+        this.India_FIR.addTo(this.map).bringToFront();
       }
     }
   }
