@@ -25,13 +25,15 @@ import { FooterComponent } from './shared/footer/footer.component';
 import { LoginComponent } from './login/login.component';
 
 import { LayoutModule } from '@angular/cdk/layout';
+import { TestingComponent } from './test/testing/testing.component';
 @NgModule({
   declarations: [
     AppComponent,
     MapComponent,
     SidenavComponent,
     LoginComponent,
-    FooterComponent
+    FooterComponent,
+    TestingComponent
 
   ],
   imports: [
@@ -51,7 +53,8 @@ import { LayoutModule } from '@angular/cdk/layout';
     MatSidenavModule,
     MatListModule,
     MatMenuModule,
-    LayoutModule
+    LayoutModule,
+    
 
   ],
   providers: [AuthGuard],

@@ -31,7 +31,7 @@ export class MapComponent implements OnInit {
   geoJsonLayer!: L.GeoJSON;
   map!: L.Map;
   airportLayerGroup!: any;
-  wmsUrl = "http://ec2-3-15-216-212.us-east-2.compute.amazonaws.com:8080/geoserver/wms"
+  wmsUrl = "http://ec2-3-144-187-162.us-east-2.compute.amazonaws.com:8080/geoserver/wms"
   private waypointLayer!: L.TileLayer.WMS;
   private nonConvLineDataLayer!: L.TileLayer.WMS;
   private convLineDataLayer!: L.TileLayer.WMS;
