@@ -9,7 +9,7 @@ import { Target } from '../target';
 })
 export class StreamServiceService {
   private baseUrl = 'https://api.airsafe.spire.com/v2/';
-  private apiUrl = 'https://opensky-network.org/api/states/own';
+  private apiUrl = 'https://opensky-network.org/api/states/all';
 
   constructor(private http: HttpClient) {}
 
