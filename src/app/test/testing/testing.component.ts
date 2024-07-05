@@ -112,7 +112,8 @@ export class TestingComponent implements OnInit {
             }
 
             chunks += textDecoder.decode(value, { stream: true });
-            console.log('Current chunks:', chunks);
+            // console.log('Current chunks:', chunks);
+            this.rawResponse = chunks;
             read();
           }).catch((error) => {
             if (error instanceof Error) {

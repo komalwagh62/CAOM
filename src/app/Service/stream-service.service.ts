@@ -9,6 +9,7 @@ import { Target } from '../target';
 })
 export class StreamServiceService {
   private baseUrl = 'https://api.airsafe.spire.com/v2/';
+  private apiUrl = 'https://opensky-network.org/api/states/own';
 
   constructor(private http: HttpClient) {}
 
@@ -22,5 +23,8 @@ export class StreamServiceService {
     return this.http.get<any[]>(url, { headers, params }).pipe(
       map(response => response.map(item => item.target as Target))
     );
+  }
+  getFlights(): Observable<any> {
+    return this.http.get(this.apiUrl);
   }
 }

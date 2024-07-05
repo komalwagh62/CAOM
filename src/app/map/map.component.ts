@@ -6,6 +6,7 @@ import * as L from 'leaflet';
 import 'leaflet-rotatedmarker';
 import { AuthService } from '../Service/auth.service';
 import { Router } from '@angular/router';
+import { StreamServiceService } from '../Service/stream-service.service';
 declare module 'leaflet' {
   interface MarkerOptions {
     rotationAngle?: number;
@@ -31,7 +32,7 @@ export class MapComponent implements OnInit {
   geoJsonLayer!: L.GeoJSON;
   map!: L.Map;
   airportLayerGroup!: any;
-  wmsUrl = "http://ec2-3-144-187-162.us-east-2.compute.amazonaws.com:8080/geoserver/wms"
+  wmsUrl = "http://ec2-3-137-193-127.us-east-2.compute.amazonaws.com:8080/geoserver/wms"
   private waypointLayer!: L.TileLayer.WMS;
   private nonConvLineDataLayer!: L.TileLayer.WMS;
   private convLineDataLayer!: L.TileLayer.WMS;
@@ -46,7 +47,7 @@ export class MapComponent implements OnInit {
   private India_FIR!: L.TileLayer.WMS;
 
   menuOpen: boolean = false;
-
+  private flightMarkers: Map<string, L.Marker> = new Map();
   toggleMenu() {
     this.menuOpen = !this.menuOpen;
   }
@@ -78,7 +79,7 @@ export class MapComponent implements OnInit {
   optionsVEPYTypeofProcedure: { value: any; label: any; }[] = [];
   optionsProcedureName: { value: any; label: any; }[] = [];
 
-  isSidenavOpen = true; // Boolean to track the state of the sidenav
+  isSidenavOpen = true; 
 
   toggleSidenav(snav: any) {
     snav.toggle();
@@ -105,7 +106,7 @@ export class MapComponent implements OnInit {
       }, 0);
     }
   }
-  constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, private formbuilder: FormBuilder, private authService: AuthService, private router: Router) {
+  constructor(changeDetectorRef: ChangeDetectorRef,private flightService: StreamServiceService, media: MediaMatcher, private formbuilder: FormBuilder, private authService: AuthService, private router: Router) {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
@@ -127,7 +128,53 @@ export class MapComponent implements OnInit {
     this.initMap();
     this.watchAirportChanges();
   }
+ 
+  onMapReady(map: L.Map) {
+    this.map = map;
+  }
 
+  loadFlights() {
+    this.flightService.getFlights().subscribe(data => {
+      this.updateMap(data.states);
+    });
+  }
+
+  private updateMap(flights: any[]) {
+   
+    const flightIcon = L.icon({
+      iconUrl: 'assets/plane.png',
+      iconSize: [32, 32], 
+      iconAnchor: [16, 16], 
+      popupAnchor: [0, -16] 
+    });
+
+    flights.forEach((flight: any) => {
+      const latitude = flight[6];
+      const longitude = flight[5];
+      const callsign = flight[1];
+
+      if (latitude && longitude) {
+        if (this.flightMarkers.has(callsign)) {
+         
+          const marker = this.flightMarkers.get(callsign);
+          marker?.setLatLng([latitude, longitude]);
+        } else {
+          
+          const marker = L.marker([latitude, longitude], { icon: flightIcon }).addTo(this.map);
+          marker.bindPopup(`<b>Flight:</b> ${callsign}`);
+          this.flightMarkers.set(callsign, marker);
+        }
+      }
+    });
+
+    
+    this.flightMarkers.forEach((marker, callsign) => {
+      if (!flights.find(flight => flight[1] === callsign)) {
+        this.map.removeLayer(marker);
+        this.flightMarkers.delete(callsign);
+      }
+    });
+  }
   initMap(): void {
     this.map = L.map('map', { zoomControl: false, attributionControl: false }).setView([20.5937, 78.9629], 5);
 
