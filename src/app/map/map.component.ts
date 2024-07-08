@@ -7,6 +7,7 @@ import 'leaflet-rotatedmarker';
 import { AuthService } from '../Service/auth.service';
 import { Router } from '@angular/router';
 import { StreamServiceService } from '../Service/stream-service.service';
+import { Subscription } from 'rxjs';
 declare module 'leaflet' {
   interface MarkerOptions {
     rotationAngle?: number;
@@ -32,7 +33,7 @@ export class MapComponent implements OnInit {
   geoJsonLayer!: L.GeoJSON;
   map!: L.Map;
   airportLayerGroup!: any;
-  wmsUrl = "http://ec2-3-137-193-127.us-east-2.compute.amazonaws.com:8080/geoserver/wms"
+  wmsUrl = "http://ec2-3-15-155-112.us-east-2.compute.amazonaws.com:8080/geoserver/wms"
   private waypointLayer!: L.TileLayer.WMS;
   private nonConvLineDataLayer!: L.TileLayer.WMS;
   private convLineDataLayer!: L.TileLayer.WMS;
@@ -48,6 +49,9 @@ export class MapComponent implements OnInit {
 
   menuOpen: boolean = false;
   private flightMarkers: Map<string, L.Marker> = new Map();
+  private flightSubscription: Subscription | null = null;
+  private isLoading: boolean = false;
+  private updateInterval: any;
   toggleMenu() {
     this.menuOpen = !this.menuOpen;
   }
@@ -112,10 +116,6 @@ export class MapComponent implements OnInit {
     this.mobileQuery.addListener(this._mobileQueryListener);
   }
 
-  ngOnDestroy(): void {
-    this.mobileQuery.removeListener(this._mobileQueryListener);
-
-  }
 
 
   ngOnInit(): void {
@@ -127,26 +127,51 @@ export class MapComponent implements OnInit {
     });
     this.initMap();
     this.watchAirportChanges();
+      
   }
- 
+  ngOnDestroy(): void {
+    this.clearMarkers();
+    this.flightSubscription?.unsubscribe();
+    clearInterval(this.updateInterval);
+    this.mobileQuery.removeListener(this._mobileQueryListener);
+  }
+
   onMapReady(map: L.Map) {
     this.map = map;
   }
 
   loadFlights() {
-    this.flightService.getFlights().subscribe(data => {
-      this.updateMap(data.states);
-    });
+    if (this.isLoading) {
+     
+      this.flightSubscription?.unsubscribe();
+      this.isLoading = false;
+      this.updateInterval = setInterval(() => {
+        this.loadFlights();
+      }, 10000);
+    }
+
+    this.isLoading = true;
+    this.flightSubscription = this.flightService.getFlights().subscribe(
+      data => {
+        this.updateMap(data.states);
+        this.isLoading = false;
+      },
+      error => {
+        console.error('Error loading flight data', error);
+        this.isLoading = false;
+      }
+    );
   }
 
   private updateMap(flights: any[]) {
-   
     const flightIcon = L.icon({
-      iconUrl: 'assets/plane.png',
+      iconUrl: 'assets/plane.png', 
       iconSize: [32, 32], 
-      iconAnchor: [16, 16], 
+      iconAnchor: [16, 16],
       popupAnchor: [0, -16] 
     });
+
+    const newMarkers: Map<string, L.Marker> = new Map();
 
     flights.forEach((flight: any) => {
       const latitude = flight[6];
@@ -154,26 +179,40 @@ export class MapComponent implements OnInit {
       const callsign = flight[1];
 
       if (latitude && longitude) {
-        if (this.flightMarkers.has(callsign)) {
-         
-          const marker = this.flightMarkers.get(callsign);
-          marker?.setLatLng([latitude, longitude]);
+        let marker = this.flightMarkers.get(callsign);
+
+        if (marker) {
+          // Update marker position
+          marker.setLatLng([latitude, longitude]);
         } else {
-          
-          const marker = L.marker([latitude, longitude], { icon: flightIcon }).addTo(this.map);
+          // Create a new marker
+          marker = L.marker([latitude, longitude], { icon: flightIcon }).addTo(this.map);
           marker.bindPopup(`<b>Flight:</b> ${callsign}`);
-          this.flightMarkers.set(callsign, marker);
         }
+
+        newMarkers.set(callsign, marker);
       }
     });
 
-    
+    // Remove old markers that are no longer present
     this.flightMarkers.forEach((marker, callsign) => {
-      if (!flights.find(flight => flight[1] === callsign)) {
+      if (!newMarkers.has(callsign)) {
         this.map.removeLayer(marker);
-        this.flightMarkers.delete(callsign);
       }
     });
+
+    // Update the flightMarkers map
+    this.flightMarkers = newMarkers;
+  }
+
+  private clearMarkers() {
+    // Remove all markers from the map
+    this.flightMarkers.forEach((marker, callsign) => {
+      this.map.removeLayer(marker);
+    });
+
+    // Clear the flightMarkers map
+    this.flightMarkers.clear();
   }
   initMap(): void {
     this.map = L.map('map', { zoomControl: false, attributionControl: false }).setView([20.5937, 78.9629], 5);
