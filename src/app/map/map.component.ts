@@ -7,7 +7,8 @@ import 'leaflet-rotatedmarker';
 import { AuthService } from '../Service/auth.service';
 import { Router } from '@angular/router';
 import { StreamServiceService } from '../Service/stream-service.service';
-import { Subscription } from 'rxjs';
+import { Plane } from '../target';
+
 declare module 'leaflet' {
   interface MarkerOptions {
     rotationAngle?: number;
@@ -28,12 +29,12 @@ export class MapComponent implements OnInit {
   selectedRunway: string[] = [];
   selectedTypeofProcedure: string[] = [];
   selectedProcedureName: string[] = [];
-  private firLayer!: L.GeoJSON;
+  private markers: { [key: string]: L.Marker } = {};
   lineGeoJsonLayer!: L.GeoJSON;
   geoJsonLayer!: L.GeoJSON;
   map!: L.Map;
   airportLayerGroup!: any;
-  wmsUrl = "http://ec2-3-15-155-112.us-east-2.compute.amazonaws.com:8080/geoserver/wms"
+  wmsUrl = "http://ec2-52-14-206-195.us-east-2.compute.amazonaws.com:8080/geoserver/wms"
   private waypointLayer!: L.TileLayer.WMS;
   private nonConvLineDataLayer!: L.TileLayer.WMS;
   private convLineDataLayer!: L.TileLayer.WMS;
@@ -48,10 +49,7 @@ export class MapComponent implements OnInit {
   private India_FIR!: L.TileLayer.WMS;
 
   menuOpen: boolean = false;
-  private flightMarkers: Map<string, L.Marker> = new Map();
-  private flightSubscription: Subscription | null = null;
-  private isLoading: boolean = false;
-  private updateInterval: any;
+
   toggleMenu() {
     this.menuOpen = !this.menuOpen;
   }
@@ -83,7 +81,7 @@ export class MapComponent implements OnInit {
   optionsVEPYTypeofProcedure: { value: any; label: any; }[] = [];
   optionsProcedureName: { value: any; label: any; }[] = [];
 
-  isSidenavOpen = true; 
+  isSidenavOpen = true;
 
   toggleSidenav(snav: any) {
     snav.toggle();
@@ -110,13 +108,11 @@ export class MapComponent implements OnInit {
       }, 0);
     }
   }
-  constructor(changeDetectorRef: ChangeDetectorRef,private flightService: StreamServiceService, media: MediaMatcher, private formbuilder: FormBuilder, private authService: AuthService, private router: Router) {
+  constructor(changeDetectorRef: ChangeDetectorRef, private flightService: StreamServiceService, media: MediaMatcher, private formbuilder: FormBuilder, private authService: AuthService, private router: Router) {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
   }
-
-
 
   ngOnInit(): void {
     this.Airform = this.formbuilder.group({
@@ -127,12 +123,9 @@ export class MapComponent implements OnInit {
     });
     this.initMap();
     this.watchAirportChanges();
-      
+
   }
   ngOnDestroy(): void {
-    this.clearMarkers();
-    this.flightSubscription?.unsubscribe();
-    clearInterval(this.updateInterval);
     this.mobileQuery.removeListener(this._mobileQueryListener);
   }
 
@@ -140,92 +133,95 @@ export class MapComponent implements OnInit {
     this.map = map;
   }
 
-  loadFlights() {
-    if (this.isLoading) {
-     
-      this.flightSubscription?.unsubscribe();
-      this.isLoading = false;
-      this.updateInterval = setInterval(() => {
-        this.loadFlights();
-      }, 10000);
-    }
-
-    this.isLoading = true;
-    this.flightSubscription = this.flightService.getFlights().subscribe(
-      data => {
-        this.updateMap(data.states);
-        this.isLoading = false;
+  spireAPI(): void {
+    this.flightService.listenToStream().subscribe({
+      next: (data: { satellite: string[][], terrestrial: string[][] }) => {
+        this.updateMapWithPlaneData(data);
       },
-      error => {
-        console.error('Error loading flight data', error);
-        this.isLoading = false;
-      }
-    );
+      error: err => console.error('Error listening to stream', err)
+    });
   }
 
-  private updateMap(flights: any[]) {
-    const flightIcon = L.icon({
-      iconUrl: 'assets/plane.png', 
-      iconSize: [32, 32], 
-      iconAnchor: [16, 16],
-      popupAnchor: [0, -16] 
-    });
+  private updateMapWithPlaneData(data: { satellite: string[][], terrestrial: string[][] }): void {
+    if (data.satellite.length > 1 || data.terrestrial.length > 1) {
+      console.log('Processing plane data:', data);
 
-    const newMarkers: Map<string, L.Marker> = new Map();
+      [...data.satellite, ...data.terrestrial].forEach((plane: string[]) => {
+        const target: Plane = {
+          icao_address: plane[1],
+          callsign: plane[7],
+          origin_country: plane[2],
+          time_position: plane[0],
+          last_contact: plane[0],
+          longitude: parseFloat(plane[2]),
+          latitude: parseFloat(plane[3]),
+          altitude_baro: parseFloat(plane[4]),
+          on_ground: plane[5] === 'true',
+          velocity: parseFloat(plane[6]),
+          heading: parseFloat(plane[7]),
+          vertical_rate: parseFloat(plane[8]),
+          sensors: plane[9],
+          geo_altitude: parseFloat(plane[10]),
+          squawk: plane[11],
+          spi: plane[12] === 'true',
+          position_source: parseInt(plane[13])
+        };
 
-    flights.forEach((flight: any) => {
-      const latitude = flight[6];
-      const longitude = flight[5];
-      const callsign = flight[1];
+        if (!isNaN(target.latitude) && !isNaN(target.longitude)) {
+          if (this.markers[target.icao_address]) {
+            // Move existing marker
+            this.markers[target.icao_address].setLatLng([target.latitude, target.longitude]);
+          } else {
+            // Create a new marker with a plane icon
+            const planeIcon = L.icon({
+              iconUrl: 'assets/plane.png', // Replace with the path to your plane icon
+              iconSize: [32, 32], // Adjust size as needed
+              iconAnchor: [16, 16] // Adjust anchor as needed
+            });
 
-      if (latitude && longitude) {
-        let marker = this.flightMarkers.get(callsign);
+            const marker = L.marker([target.latitude, target.longitude], { icon: planeIcon });
+            marker.addTo(this.map).on('click', () => {
+              this.displayPlaneData(target);
+            });
 
-        if (marker) {
-          // Update marker position
-          marker.setLatLng([latitude, longitude]);
+            this.markers[target.icao_address] = marker;
+          }
         } else {
-          // Create a new marker
-          marker = L.marker([latitude, longitude], { icon: flightIcon }).addTo(this.map);
-          marker.bindPopup(`<b>Flight:</b> ${callsign}`);
+          console.warn('Missing or invalid latitude or longitude for target:', target);
         }
-
-        newMarkers.set(callsign, marker);
-      }
-    });
-
-    // Remove old markers that are no longer present
-    this.flightMarkers.forEach((marker, callsign) => {
-      if (!newMarkers.has(callsign)) {
-        this.map.removeLayer(marker);
-      }
-    });
-
-    // Update the flightMarkers map
-    this.flightMarkers = newMarkers;
+      });
+    } else {
+      console.error('No valid plane data found', data);
+    }
   }
 
-  private clearMarkers() {
-    // Remove all markers from the map
-    this.flightMarkers.forEach((marker, callsign) => {
-      this.map.removeLayer(marker);
-    });
-
-    // Clear the flightMarkers map
-    this.flightMarkers.clear();
+  private displayPlaneData(target: Plane): void {
+    L.popup()
+      .setLatLng([target.latitude, target.longitude])
+      .setContent(`
+        <div>
+          <p><strong>ICAO Address:</strong> ${target.icao_address}</p>
+          <p><strong>Callsign:</strong> ${target.callsign}</p>
+          <p><strong>Origin Country:</strong> ${target.origin_country}</p>
+          <p><strong>Longitude:</strong> ${target.longitude}</p>
+          <p><strong>Latitude:</strong> ${target.latitude}</p>
+          <p><strong>Altitude:</strong> ${target.altitude_baro}</p>
+          <p><strong>Velocity:</strong> ${target.velocity}</p>
+          <p><strong>Heading:</strong> ${target.heading}</p>
+          <p><strong>Vertical Rate:</strong> ${target.vertical_rate}</p>
+          <p><strong>Geo Altitude:</strong> ${target.geo_altitude}</p>
+          <p><strong>Squawk:</strong> ${target.squawk}</p>
+        </div>
+      `)
+      .openOn(this.map);
   }
+
   initMap(): void {
     this.map = L.map('map', { zoomControl: false, attributionControl: false }).setView([20.5937, 78.9629], 5);
 
     const streets = L.tileLayer('https://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
       subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
     });
-
-    // const BING_KEY = 'AuhiCJHlGzhg93IqUH_oCpl_-ZUrIE6SPftlyGYUvr9Amx5nzA-WqGcPquyFZl4L'
-
-    // const map = L.map('map').setView([51.505, -0.09], 13)
-
-    // const bingLayer = L.tileLayer.bing(BING_KEY).addTo(map)
 
     const darkMatter = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {});
 
@@ -1201,13 +1197,6 @@ export class MapComponent implements OnInit {
     }
   }
 
-  private showGetFeatureInfo(data: string, latlng: L.LatLng): void {
-    console.log(data)
-    L.popup()
-      .setLatLng(latlng)
-      .setContent(data)
-      .openOn(this.map);
-  }
 
   changeLineColor(color: string) {
     this.lineGeoJsonLayer.setStyle({ color });

@@ -1,17 +1,16 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { MapComponent } from './map/map.component';
-import { AppModule } from './app.module';
+
 import { AuthGuard } from './guards/auth.guard';
 import { LoginComponent } from './login/login.component';
-import { TestingComponent } from './test/testing/testing.component';
 
 const routes: Routes = [
   {
     path: '', component: MapComponent, pathMatch: 'full', canActivate: [AuthGuard]
   },
   { path: 'login', component: LoginComponent },
-  { path: 'test', component: TestingComponent },
+
 
   // {
   //   path: '', 
