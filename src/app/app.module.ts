@@ -25,6 +25,7 @@ import { FooterComponent } from './shared/footer/footer.component';
 import { LoginComponent } from './login/login.component';
 
 import { LayoutModule } from '@angular/cdk/layout';
+import { MapViewerComponent } from './map-viewer/map-viewer.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { LayoutModule } from '@angular/cdk/layout';
     SidenavComponent,
     LoginComponent,
     FooterComponent,
+    MapViewerComponent,
 
 
   ],
@@ -54,6 +56,7 @@ import { LayoutModule } from '@angular/cdk/layout';
     MatListModule,
     MatMenuModule,
     LayoutModule,
+    MatSidenavModule
     
   ],
   providers: [AuthGuard],

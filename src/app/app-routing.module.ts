@@ -4,13 +4,14 @@ import { MapComponent } from './map/map.component';
 
 import { AuthGuard } from './guards/auth.guard';
 import { LoginComponent } from './login/login.component';
+import { MapViewerComponent } from './map-viewer/map-viewer.component';
 
 const routes: Routes = [
   {
     path: '', component: MapComponent, pathMatch: 'full', canActivate: [AuthGuard]
   },
   { path: 'login', component: LoginComponent },
-
+  {path:'mapview',component:MapViewerComponent}
 
   // {
   //   path: '', 
