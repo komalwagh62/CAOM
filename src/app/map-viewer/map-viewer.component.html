@@ -16,13 +16,12 @@
   </button>
 
   <!-- Button for Non-Conventional Airways -->
-  <button *ngIf="menuOpen" mat-mini-fab class="mycolor" title="Non-Conventional Airways">
+  <button *ngIf="menuOpen" mat-mini-fab class="mycolor" title="Non-Conventional Airways" (click) = "toggleNonConventionalAirwaysLayer()">
     <div class="icon-container">
-      <img src="assets/AWY.png" title="Non-Conventional Airways" style="height: 25px; width: 30px;" alt="Non-Conventional Airways">
+      <img src="assets/AWY.png" title="Non-Conventional Airways"  style="height: 25px; width: 30px;" alt="Non-Conventional Airways">
     </div>
   </button>
 
-  <!-- Icon button for Filter Data -->
   <!-- Icon button for Filter Data -->
   <button mat-mini-fab color="primary" class="filter-icon" title="Filter Data" (click)="toggleFilterPopup()">
     <mat-icon>filter_list</mat-icon>
