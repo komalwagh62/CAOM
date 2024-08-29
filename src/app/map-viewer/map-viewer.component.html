@@ -3,7 +3,9 @@
   <mat-icon color="primary">menu</mat-icon>
 </button>
 
-
+<button mat-mini-fab color="none" class="filter-icon" title="Filter Data" (click)="toggleFilterPopup()">
+  <mat-icon color="primary">filter_list</mat-icon>
+</button>
 <mat-menu #belowMenu="matMenu" yPosition="below" class="bg-transparent" [hasBackdrop]="false">
   <div class="d-grid gap-2 col-6 mx-auto  justify-content-md-end">
     <button mat-mini-fab class="mycolor" title="Conventional Airways" (click)="toggleConventionalAirwaysLayer()">
@@ -15,17 +17,49 @@
       <div class="icon-container"> <img src="assets/AWY.png" title="Non-Conventional Airways"
           style="height: 25px; width: 30px;" alt="Restricted_Airspace"> </div>
     </button>
+    <button mat-mini-fab class="mycolor" title="FIR">
+      <div class="icon-container">
+        <i class="bi bi-pentagon text-primary-emphasis" title="FIR"></i>
+      </div>
+    </button>
 
     <button mat-mini-fab class="mycolor" title="Waypoint" (click)="toggleWaypoints()">
       <div class="icon-container">
-          <mat-icon title="Waypoint" color="primary">change_history</mat-icon>
+        <mat-icon title="Waypoint" color="primary">change_history</mat-icon>
       </div>
-  </button>
+    </button>
 
+    <button mat-mini-fab class="mycolor" title="Navaids" (click)="togglenavaids()">
+      <div class="icon-container">
+        <img src="assets/navaid.png" style="height: 100%; width: 60%;" title="Navaids" alt="Controlled Airspace">
+      </div>
+    </button>
+
+    <button mat-mini-fab class="mycolor" title="Controlled Airspace" >
+      <div class="icon-container">
+        <img src="assets/CA.png" style="height: 100%; width: 60%; " title="Controlled Airspace"
+          alt="Controlled Airspace">
+      </div>
+    </button>
+
+    <button mat-mini-fab class="mycolor" title="Restricted Airspace">
+      <div class="icon-container">
+        <img src="assets/Restricted_Airspace.png" title="Restricted Airspace" style="height: 25px; width: 25px;"
+          alt="Restricted Airspace">
+      </div>
+    </button>
+
+    <button mat-mini-fab class="mycolor" title="Aerodrome Obstacle">
+      <div class="icon-container">
+        <img src="assets/Lighted_Obstacle.png" title="Aerodrome Obstacle" style="height: 80%;  width: 50px; "
+          alt="Aerodrome Obstacle">
+      </div>
+    </button>
 
 
 
   </div>
+
 </mat-menu>
 
 <!-- Filter Popup -->

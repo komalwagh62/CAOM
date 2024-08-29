@@ -17,7 +17,8 @@ export class MapViewerComponent implements OnInit {
   iconLayer: any;
   conventionalAirwaysLayer: any;
   nonConventionalAirwaysLayer: any;
-  waypointsPoint: any
+  waypointsPoint: any;
+  navaidsData: any;
   popup: any;
   filterPopupVisible: boolean = false;
   menuOpen: boolean = false;
@@ -32,6 +33,7 @@ export class MapViewerComponent implements OnInit {
       console.error('OpenLayers library failed to load.');
       return;
     }
+
 
     this.map = new ol.Map({
       view: new ol.View({
@@ -76,10 +78,15 @@ export class MapViewerComponent implements OnInit {
     });
     this.map.addLayer(this.waypointsPoint);
 
+    this.navaidsData = new ol.layer.Vector({
+      source: new ol.source.Vector()
+    });
+    this.map.addLayer(this.navaidsData);
+
     this.conventionalAirwaysLayer.setVisible(false);
     this.nonConventionalAirwaysLayer.setVisible(false);
     this.waypointsPoint.setVisible(false);
-
+    this.navaidsData.setVisible(false);
     this.map.on('click', (event: any) => {
       this.displayFeatureInfo(event.coordinate);
     });
@@ -350,12 +357,18 @@ export class MapViewerComponent implements OnInit {
 
         // Add filtered GeoJSON data to the appropriate layer
         if (type === 'conv') {
-          this.addGeoJSONToLayer(data, this.conventionalAirwaysLayer);
+          this.conventionalAirwaysLayer.getSource().clear(); // Clear existing features
+          this.addGeoJSONToLayer(this.conventionalAirwaysLayer, data);
         } else {
-          this.addGeoJSONToLayer(data, this.nonConventionalAirwaysLayer);
-
+          this.nonConventionalAirwaysLayer.getSource().clear(); // Clear existing features
+          this.addGeoJSONToLayer(this.nonConventionalAirwaysLayer, data);
         }
+
+        // Fit map to the new features
+        this.fitMapToLayer(type);
       }
+    }).catch(error => {
+      console.error('Error fetching or filtering GeoJSON data:', error);
     });
   }
 
@@ -367,12 +380,19 @@ export class MapViewerComponent implements OnInit {
     // Check if the featureValue is less than the inputValue
     return featureValue < inputValue;
   }
+  fitMapToLayer(type: string): void {
+    const layer = type === 'conv' ? this.conventionalAirwaysLayer : this.nonConventionalAirwaysLayer;
+    const extent = layer.getSource().getExtent();
+    this.map.getView().fit(extent, {
+      padding: [50, 50, 50, 50],
+      maxZoom: 15
+    });
+  }
 
   displayFeatureInfo(coordinate: any): void {
     const feature = this.map.forEachFeatureAtPixel(this.map.getPixelFromCoordinate(coordinate), (feature: any) => {
       return feature;
     });
-    console.log(feature, "wsergty")
     if (feature) {
       const properties = feature.getProperties();
       const displayProperties = [
@@ -488,83 +508,157 @@ export class MapViewerComponent implements OnInit {
 
   toggleWaypoints(): void {
     const isVisible = this.waypointsPoint.getVisible();
-  
+
     if (!isVisible) {
       // Fetch GeoJSON data only if the layer is not visible
       this.fetchGeoJSONData('http://localhost:3002/waypointdata').then(data => {
         if (data && data.features) {
           // Clear existing features
           this.waypointsPoint.getSource().clear();
-          console.log(data.features, "hb");
-  
           // Add GeoJSON data to the waypoints layer
-          this.addGeoJSONToLayerWithIcons(data, this.waypointsPoint);
+          this.addGeoJSONToWaypointLayerWithIcons(data, this.waypointsPoint);
         }
       });
     }
-  
+
     // Toggle visibility
     this.waypointsPoint.setVisible(!isVisible);
   }
-  
+
+  togglenavaids(): void {
+    const isVisible = this.navaidsData.getVisible();
+
+    if (!isVisible) {
+      // Fetch GeoJSON data only if the layer is not visible
+      this.fetchGeoJSONData('http://localhost:3002/navaiddata').then(data => {
+        if (data && data.features) {
+          // Clear existing features
+          this.navaidsData.getSource().clear();
+          // Add GeoJSON data to the waypoints layer
+          this.addGeoJSONToNavaidLayerWithIcons(data, this.navaidsData);
+        }
+      });
+    }
+
+    // Toggle visibility
+    this.navaidsData.setVisible(!isVisible);
+  }
+
   // Function to add GeoJSON data to the layer with icon styling
-  addGeoJSONToLayerWithIcons(geojsonData: any, layer: any): void {
+  addGeoJSONToWaypointLayerWithIcons(geojsonData: any, layer: any): void {
     const vectorSource = new ol.source.Vector({
       features: new ol.format.GeoJSON().readFeatures(geojsonData, {
         featureProjection: 'EPSG:3857' // Ensure correct projection
       })
     });
-  
-    // const iconStyle = new ol.style.Style({
-    //   image: new ol.style.Icon({
-    //     src: 'assets/triangle.png', // Path to your icon in the assets folder
-    //     scale: 0.05, // Adjust the scale as needed
-    //     anchor: [0.5, 1], // Anchor at the bottom center
-    //     iconSize: [20, 30],
-    //   })
-    // });
-  
-    // vectorSource.getFeatures().forEach((feature: any) => {
-    //   // Apply the icon style only to specific geometries or all features
-    //   feature.setStyle(iconStyle);
-    // });
-  
+
+    const triangleStyle = new ol.style.Style({
+      image: new ol.style.RegularShape({
+        points: 3, // Creates a triangle
+        radius: 4, // Radius controls the size of the triangle; decrease for a smaller triangle
+        fill: new ol.style.Fill({ color: 'black' }), // Black color
+        angle: Math.PI / 2, // Rotate the triangle to point upwards
+      }),
+      // Optionally add text or other styling here
+    });
+
+    vectorSource.getFeatures().forEach((feature: any) => {
+      // Apply the triangle style to all features
+      feature.setStyle(triangleStyle);
+    });
+
     layer.setSource(vectorSource);
-      // Add click event listener for waypoints
-  this.map.on('click', (event: { coordinate: any; }) => {
-    this.displayWaypointInfo(event.coordinate);
-  });
-}
 
-// Function to display waypoint info on click
-displayWaypointInfo(coordinate: any): void {
-  const pixel = this.map.getPixelFromCoordinate(coordinate);
-  const feature = this.map.forEachFeatureAtPixel(pixel, (feature: any) => {
-    return feature;
-  });
-
-  if (feature) {
-    const properties = feature.getProperties();
-    let info = '<h3>Waypoint Info</h3>';
-    info += `<strong>ID:</strong> ${properties.id}<br>`;
-    info += `<strong>Waypoints:</strong> ${properties.waypoints}<br>`;
-    info += `<strong>Name of Routes:</strong> ${properties.name_of_routes}<br>`;
-
-    // Update the popup content and position
-    const popupContentElement = document.getElementById('popup-content');
-    if (popupContentElement) {
-      popupContentElement.innerHTML = info;
-    }
-
-    // Set the position of the popup
-    this.popup.setPosition(coordinate);
-  } else {
-    // Hide the popup if no waypoint is clicked
-    this.popup.setPosition(undefined);
+    // Add click event listener for waypoints
+    this.map.on('click', (event: { coordinate: any; }) => {
+      this.displayWaypointInfo(event.coordinate);
+    });
   }
-}
 
-  
+  addGeoJSONToNavaidLayerWithIcons(geojsonData: any, layer: any): void {
+    const vectorSource = new ol.source.Vector({
+      features: new ol.format.GeoJSON().readFeatures(geojsonData, {
+        featureProjection: 'EPSG:3857' // Ensure correct projection
+      })
+    });
+
+    const iconStyle = new ol.style.Style({
+      image: new ol.style.Icon({
+        src: 'assets/navaid_icon.png', // Path to your icon in the assets folder
+        scale: 0.05, // Adjust the scale as needed
+        anchor: [0.5, 1], // Anchor at the bottom center
+        iconSize: [20, 30],
+      })
+    });
+
+    vectorSource.getFeatures().forEach((feature: any) => {
+      // Apply the icon style only to specific geometries or all features
+      feature.setStyle(iconStyle);
+    });
+
+    layer.setSource(vectorSource);
+
+    // Add click event listener for waypoints
+    this.map.on('click', (event: { coordinate: any; }) => {
+      this.displayNavaidInfo(event.coordinate);
+    });
+  }
+
+  // Function to display waypoint info on click
+  displayWaypointInfo(coordinate: any): void {
+    const pixel = this.map.getPixelFromCoordinate(coordinate);
+    const feature = this.map.forEachFeatureAtPixel(pixel, (feature: any) => {
+      return feature;
+    });
+
+    if (feature) {
+      const properties = feature.getProperties();
+      let info = '<h3>Waypoint Info</h3>';
+      info += `<strong>ID:</strong> ${properties.id}<br>`;
+      info += `<strong>Waypoints:</strong> ${properties.waypoints}<br>`;
+      info += `<strong>Name of Routes:</strong> ${properties.name_of_routes}<br>`;
+
+      // Update the popup content and position
+      const popupContentElement = document.getElementById('popup-content');
+      if (popupContentElement) {
+        popupContentElement.innerHTML = info;
+      }
+
+      // Set the position of the popup
+      this.popup.setPosition(coordinate);
+    } else {
+      // Hide the popup if no waypoint is clicked
+      this.popup.setPosition(undefined);
+    }
+  }
+
+  displayNavaidInfo(coordinate: any): void {
+    const pixel = this.map.getPixelFromCoordinate(coordinate);
+    const feature = this.map.forEachFeatureAtPixel(pixel, (feature: any) => {
+      return feature;
+    });
+
+    if (feature) {
+      const properties = feature.getProperties();
+      let info = '<h3>Navaid Info</h3>';
+      info += `<strong>ID:</strong> ${properties.id}<br>`;
+      info += `<strong>Airport ICAO:</strong> ${properties.airport_icao}<br>`;
+      info += `<strong>Navaid information:</strong> ${properties.navaid_information}<br>`;
+
+
+      // Update the popup content and position
+      const popupContentElement = document.getElementById('popup-content');
+      if (popupContentElement) {
+        popupContentElement.innerHTML = info;
+      }
+
+      // Set the position of the popup
+      this.popup.setPosition(coordinate);
+    } else {
+      // Hide the popup if no waypoint is clicked
+      this.popup.setPosition(undefined);
+    }
+  }
 
   addGeoJSONToLayer(data: any, layer: any): void {
     const vectorSource = new ol.source.Vector({

@@ -5,8 +5,7 @@ const wkx = require('wkx');
 const app = express();
 const port = 3002;
 
-app.use(cors()); // Enable CORS for all routes
-
+app.use(cors());
 const pool = new Pool({
   user: 'postgres',
   host: 'mydb.cxeos2wmmsqf.us-east-2.rds.amazonaws.com',
@@ -52,7 +51,7 @@ app.get('/convlinedata', async (req, res) => {
         }
       }))
     };
-    console.log(geojson,"efr")
+   
     res.json(geojson);
   } catch (err) {
     console.error('Error executing query or processing data:', err);
@@ -123,6 +122,42 @@ app.get('/waypointdata', async (req, res) => {
           id: row.id,
           waypoints: row.waypoints,
           name_of_routes: row.name_of_routes
+        }
+      }))
+    };
+
+    // Send the GeoJSON response
+    res.json(geojson);
+  } catch (err) {
+    console.error('Error executing query or processing data:', err);
+    res.status(500).send('Server Error');
+  }
+});
+
+app.get('/navaiddata', async (req, res) => {
+  try {
+    // Define the SQL query
+    const query = 'SELECT * FROM navaids';
+    
+    // Execute the query
+    const result = await pool.query(query);
+    
+    // Convert the results to GeoJSON
+    const geojson = {
+      type: "FeatureCollection",
+      features: result.rows.map(row => ({
+        type: "Feature",
+        geometry: wkx.Geometry.parse(Buffer.from(row.geom, 'hex')).toGeoJSON(),
+        properties: {
+          id: row.id,
+          airport_icao: row.airport_icao,
+          navaid_information:row.navaid_information, 
+          identification:row.identification, 
+          frequency_and_channel:row.frequency_and_channel, 
+          hours_of_operation: row.hours_of_operation,
+          elevation: row.elevation, 
+          service_volume_radius: row.service_volume_radius, 
+          remarks: row.remarks
         }
       }))
     };
